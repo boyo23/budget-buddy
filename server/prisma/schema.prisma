@@ -12,7 +12,7 @@ datasource db {
 
 model Category {
   id      String    @id @default(uuid())
-  name    String
+  name    String    @unique
   expense Expense[]
 }
 
@@ -29,30 +29,31 @@ model User {
 }
 
 model Expense {
-  id            String    @id @default(uuid())
+  id            String   @id @default(uuid())
   price         Float
   quantity      Int
   date          DateTime
   paymentMethod String
-  categoryId    String?
-  userId        String?
-  Category      Category? @relation(fields: [categoryId], references: [id])
-  User          User?     @relation(fields: [userId], references: [id])
+  categoryId    String
+  userId        String
+  Category      Category @relation(fields: [categoryId], references: [id])
+  User          User     @relation(fields: [userId], references: [id])
 }
 
 model Goal {
   id         String    @id @default(uuid())
+  name       String    @unique
   addedAt    DateTime  @default(now())
   targetedAt DateTime
   savings    Savings[]
-  userId     String?
-  User       User?     @relation(fields: [userId], references: [id])
+  userId     String
+  User       User      @relation(fields: [userId], references: [id])
 }
 
 model Savings {
   id     String   @id @default(uuid())
   amount Float
   date   DateTime @default(now())
-  goalId String?
-  Goal   Goal?    @relation(fields: [goalId], references: [id])
+  goalId String
+  Goal   Goal     @relation(fields: [goalId], references: [id])
 }

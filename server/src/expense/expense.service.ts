@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import type { User } from '@/user/user.service'
-import type { Category } from '@/category/category.service'
 
 const prisma = new PrismaClient()
 
@@ -10,8 +8,8 @@ type Expense = {
   quantity: number
   date: string
   paymentMethod: string
-  category: Category
-  user: User
+  categoryId: string
+  userId: string
 }
 
 // GET
