@@ -10,8 +10,6 @@ type User = {
   role: string
 }
 
-// GET
-
 const listUsers = async (): Promise<Omit<User, 'id' | 'password'>[]> => {
   return prisma.user.findMany({
     select: {
@@ -42,8 +40,6 @@ const getUserByUsername = async (username: string): Promise<User | null> => {
   })
 }
 
-// POST
-
 const createUser = async (user: Omit<User, 'id' | 'role'>): Promise<User> => {
   const { email, username, password } = user
 
@@ -55,8 +51,6 @@ const createUser = async (user: Omit<User, 'id' | 'role'>): Promise<User> => {
     },
   })
 }
-
-// PUT
 
 const updateUser = async (id: string, user: Omit<User, 'id' | 'role'>): Promise<User> => {
   const { email, username, password } = user
@@ -70,8 +64,6 @@ const updateUser = async (id: string, user: Omit<User, 'id' | 'role'>): Promise<
     },
   })
 }
-
-// DELETE
 
 const deleteUser = async (id: string): Promise<void> => {
   await prisma.user.delete({

@@ -10,12 +10,4 @@ type Goal = {
   userId: string
 }
 
-// GET
-
-// POST
-
-// PUT
-
-// DELETE
-
 export { Goal }

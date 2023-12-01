@@ -12,12 +12,4 @@ type Expense = {
   userId: string
 }
 
-// GET
-
-// POST
-
-// PUT
-
-// DELETE
-
 export { Expense }

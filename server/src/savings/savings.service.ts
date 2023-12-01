@@ -9,12 +9,4 @@ type Savings = {
   goalId: string
 }
 
-// GET
-
-// POST
-
-// PUT
-
-// DELETE
-
 export { Savings }
