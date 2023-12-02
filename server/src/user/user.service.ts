@@ -10,6 +10,18 @@ type User = {
   role: string
 }
 
+type UserPublic = {
+  id: string
+  username: string
+}
+
+type UserPrivate = {
+  id: string
+  email: string
+  username: string
+  password: string
+}
+
 const listUsers = async (): Promise<Omit<User, 'id' | 'password'>[]> => {
   return prisma.user.findMany({
     select: {
@@ -71,4 +83,15 @@ const deleteUser = async (id: string): Promise<void> => {
   })
 }
 
-export { User, listUsers, getUserById, getUserByUsername, getUserByEmail, createUser, updateUser, deleteUser }
+export {
+  User,
+  UserPrivate,
+  UserPublic,
+  listUsers,
+  getUserById,
+  getUserByUsername,
+  getUserByEmail,
+  createUser,
+  updateUser,
+  deleteUser,
+}
