@@ -54,10 +54,10 @@ export default function ExpenseOverview() {
   return (
     <div className="max-h-[520px] overflow-y-auto scroll-smooth p-6">
       <div className="flex">
-        <div className="w-full bg-white">
-          <table className="w-full border border-gray-400">
-            <thead className="bg-contrast text-3xl text-white">
-              <tr className="w-auto">
+        <div className="w-full bg-white dark:bg-darkPrimary">
+          <table className="w-full border border-gray-400 dark:border-gray-700">
+            <thead className="bg-contrast dark:bg-primary text-3xl text-white">
+              <tr className="w-auto dark:text-darkWhite">
                 <th className="w-[20%] border-collapse p-2">Expense</th>
                 <th className="w-[15%] border-collapse p-2">Category</th>
                 <th className="w-[20%] border-collapse p-2">Payment method</th>
@@ -68,7 +68,7 @@ export default function ExpenseOverview() {
             </thead>
             <tbody>
               {data.map((item) => (
-                <tr key={item.id} className="text-xl text-black">
+                <tr key={item.id} className="text-xl text-black dark:text-darkText">
                   <td className="border border-gray-400 p-2 text-center">
                     <p>{item.expense}</p>
                   </td>

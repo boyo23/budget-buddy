@@ -1,14 +1,16 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useContext } from 'react'
 import Carousel from '@material-tailwind/react/components/Carousel'
 import ExpenseSummary from '../expense-summary/expense-summary'
 import IconButton from '@material-tailwind/react/components/IconButton'
+import { SavingsContext } from '@/context/savings-context'
 
 export default function ExpenseCarousel(props: any) {
   const ExpenseStatistics = lazy(() => import('./expense-statistics'))
   const ExpenseOverview = lazy(() => import('./expense-overview'))
+  const ctx = useContext(SavingsContext)
 
   return (
-    <div className={`${props.className} flex w-4/6`}>
+    <div className={`${props.className} flex w-4/6 dark:bg-darkPrimary rounded-md`}>
       <Carousel
         prevArrow={({ handlePrev }) => (
           <IconButton
@@ -21,9 +23,9 @@ export default function ExpenseCarousel(props: any) {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
-              viewBox="0 0 24 24"
+              viewBox="0 0 26 26"
               strokeWidth={4}
-              stroke="#262C50"
+              stroke={`${ctx.theme === "light" ? "#262C50" : "#48528E"}`}
               className="h-6 w-6"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -43,14 +45,14 @@ export default function ExpenseCarousel(props: any) {
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={4}
-              stroke="#262C50"
+              stroke={`${ctx.theme === "light" ? "#262C50" : "#48528E"}`}
               className="h-6 w-6"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
           </IconButton>
         )}
-        className="w-full rounded-md bg-white"
+        className="w-full rounded-md bg-white dark:bg-darkPrimary"
       >
         <ExpenseSummary />
 
@@ -64,8 +66,8 @@ export default function ExpenseCarousel(props: any) {
           <Suspense
             fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading overview...</span>}
           >
-            <h1 className="flex justify-center p-4 text-4xl font-bold text-primary">OVERVIEW</h1>
-            <hr className="flex w-full border-gray-400" />
+            <h1 className="flex justify-center p-4 text-4xl font-bold text-primary dark:text-contrast">OVERVIEW</h1>
+            <hr className="flex w-full border-gray-400 dark:border-gray-700" />
 
             <ExpenseOverview />
           </Suspense>

@@ -19,7 +19,10 @@ type SavingsContextProps = {
   setPieData: Dispatch<SetStateAction<PieData>>
   thresholdClicked: boolean
   setThresholdClicked: Dispatch<SetStateAction<boolean>>
-  clickThresholdHandler: () => void
+  clickThresholdHandler: () => void,
+  theme: string,
+  setTheme: Dispatch<SetStateAction<string>>,
+  handleThemeSwitch: () => void,
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
@@ -37,6 +40,9 @@ export const SavingsContext = createContext<SavingsContextProps>({
   thresholdClicked: false,
   setThresholdClicked: () => {},
   clickThresholdHandler: () => {},
+  theme: "light",
+  setTheme: () => {},
+  handleThemeSwitch: () => {}
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -44,6 +50,16 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [expenseClicked, setExpenseClicked] = useState<boolean>(false)
   const [categoryClicked, setCategoryClicked] = useState<boolean>(false)
   const [thresholdClicked, setThresholdClicked] = useState<boolean>(false)
+  const [theme, setTheme] = useState("light")
+
+  useEffect(() => {
+    theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
+  }, [theme])
+
+  const handleThemeSwitch = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
+  }
+
   const [pieData, setPieData] = useState<PieData>({
     categoryNames: [],
     data: [],
@@ -94,6 +110,9 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         thresholdClicked,
         setThresholdClicked,
         clickThresholdHandler,
+        theme,
+        setTheme,
+        handleThemeSwitch
       }}
     >
       {children}
