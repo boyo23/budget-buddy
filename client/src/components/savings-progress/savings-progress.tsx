@@ -119,7 +119,7 @@ export default function SavingsProgress() {
       <div className={`flex flex-col overflow-x-auto rounded-md bg-white`}>
         <div className="">
           <div className="relative flex justify-center">
-            <h1 className="text-primary p-4 text-4xl font-bold">PROGRESS</h1>
+            <h1 className="p-4 text-4xl font-bold text-primary">PROGRESS</h1>
             <div className="absolute right-12 top-1/2 -translate-y-1/2 transform">
               <svg
                 onClick={goalClickHandler}

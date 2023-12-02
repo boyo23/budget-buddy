@@ -64,7 +64,7 @@ export default function ExpenseCarousel(props: any) {
           <Suspense
             fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading overview...</span>}
           >
-            <h1 className="text-primary flex justify-center p-4 text-4xl font-bold">OVERVIEW</h1>
+            <h1 className="flex justify-center p-4 text-4xl font-bold text-primary">OVERVIEW</h1>
             <hr className="flex w-full border-gray-400" />
 
             <ExpenseOverview />

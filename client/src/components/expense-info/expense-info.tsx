@@ -45,19 +45,19 @@ export default function ExpenseInfo() {
           </table>
 
           <div className="mb-4">
-            <button onClick={ctx.addCategoryHandler} className="bg-contrast w-full rounded-md p-2 text-3xl text-white">
+            <button onClick={ctx.addCategoryHandler} className="w-full rounded-md bg-contrast p-2 text-3xl text-white">
               Add a new category
             </button>
           </div>
           <div className="mt-auto">
-            <button onClick={ctx.addExpenseHandler} className="bg-contrast w-full rounded-md p-2 text-3xl text-white">
+            <button onClick={ctx.addExpenseHandler} className="w-full rounded-md bg-contrast p-2 text-3xl text-white">
               Add expense
             </button>
           </div>
         </div>
         <Dialog className="font-" open={ctx.categoryClicked} handler={ctx.setCategoryClicked}>
           <div style={{ minHeight: '66.66%' }} className="flex flex-grow flex-col rounded-md border-l bg-white">
-            <h1 className="text-primary p-4 text-center text-4xl font-bold">CATEGORY</h1>
+            <h1 className="p-4 text-center text-4xl font-bold text-primary">CATEGORY</h1>
 
             <div className="">
               <Form action={ctx.addCategoryHandler} heading="" buttonName="Add" inputText={['New category']} />

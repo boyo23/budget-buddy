@@ -86,7 +86,7 @@ export default function SavingsTable(props: any) {
             </tbody>
           </table>
           <div className="relative w-full p-4">
-            <div className="flex h-10 w-full overflow-hidden border border-gray-400 border-slate-500">
+            <div className="border-slate-500 flex h-10 w-full overflow-hidden border border-gray-400">
               <h1
                 style={{}}
                 // onClick={progressClickHandler}

@@ -10,7 +10,7 @@ export default function ExpenseHeading() {
     <div className="">
       <div className="flex items-center justify-center">
         <div className="flex-grow">
-          <h1 className="text-primary flex justify-center p-4 text-4xl font-bold">SUMMARY</h1>
+          <h1 className="flex justify-center p-4 text-4xl font-bold text-primary">SUMMARY</h1>
         </div>
         <div onClick={ctx.clickThresholdHandler} className="relative right-20">
           <svg className="h-12 w-12 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

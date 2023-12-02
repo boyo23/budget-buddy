@@ -50,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSave, children }) => {
         id="expense"
         value={updatedData.expense}
         onChange={(e) => setUpdatedData({ ...updatedData, expense: e.target.value })}
-        className="my-2 w-full rounded-md border bg-slate-200 p-2"
+        className="bg-slate-200 my-2 w-full rounded-md border p-2"
       />
 
       <label htmlFor="category">Category</label>
@@ -58,7 +58,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSave, children }) => {
         id="category"
         value={updatedData.category}
         onChange={(e) => setUpdatedData({ ...updatedData, category: e.target.value })}
-        className="my-2 w-full rounded-md border bg-slate-200 p-2"
+        className="bg-slate-200 my-2 w-full rounded-md border p-2"
       >
         <option value="Food">Food</option>
         <option value="Transportation">Transportation</option>
@@ -72,7 +72,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSave, children }) => {
         id="paymentMethod"
         value={updatedData.paymentMethod}
         onChange={(e) => setUpdatedData({ ...updatedData, paymentMethod: e.target.value })}
-        className="my-2 w-full rounded-md border bg-slate-200 p-2"
+        className="bg-slate-200 my-2 w-full rounded-md border p-2"
       >
         <option value="Gcash">Gcash</option>
         <option value="Credit Card">Credit Card</option>
@@ -86,7 +86,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSave, children }) => {
         id="amount"
         value={updatedData.amount}
         onChange={(e) => setUpdatedData({ ...updatedData, amount: Number(e.target.value) })}
-        className="my-2 w-full rounded-md border bg-slate-200 p-2"
+        className="bg-slate-200 my-2 w-full rounded-md border p-2"
       />
 
       <label htmlFor="date">Date Added</label>
@@ -95,7 +95,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSave, children }) => {
         id="date"
         value={updatedData.date}
         onChange={(e) => setUpdatedData({ ...updatedData, date: e.target.value })}
-        className="my-2 w-full rounded-md border bg-slate-200 p-2"
+        className="bg-slate-200 my-2 w-full rounded-md border p-2"
       />
 
       <button

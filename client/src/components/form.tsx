@@ -19,14 +19,14 @@ export default function Form(props: any) {
           props.inputText.map((name: any) => (
             <div className="flex items-center justify-between">
               <h1 className="text-2xl">{name}</h1>
-              <input className="w-3/6 rounded-md border border-slate-400 p-2 text-xl" type="text" name="" id="" />
+              <input className="border-slate-400 w-3/6 rounded-md border p-2 text-xl" type="text" name="" id="" />
             </div>
           ))}
         {/* Displays input fields with type date if exist */}
         {props.inputDate && (
           <div className="flex items-center justify-between">
             <h1 className="text-2xl">{props.inputDate}</h1>
-            <input type="date" className="w-3/6 rounded-md border border-slate-400 p-2 text-xl" />
+            <input type="date" className="border-slate-400 w-3/6 rounded-md border p-2 text-xl" />
           </div>
         )}
         {/* Displays input fields with type password if exist */}
@@ -34,7 +34,7 @@ export default function Form(props: any) {
           props.inputPassword.map((password: any, index: any) => (
             <div key={index} className="flex items-center justify-between">
               <h1 className="text-2xl">{password}</h1>
-              <input type="password" className="w-3/6 rounded-md border border-slate-400 p-2 text-2xl font-bold" />
+              <input type="password" className="border-slate-400 w-3/6 rounded-md border p-2 text-2xl font-bold" />
             </div>
           ))}
         {/* Displays input fields with type select if exist */}
@@ -43,7 +43,7 @@ export default function Form(props: any) {
           props.inputSelect.map(({ name, data }: any, index: any) => (
             <div key={index} className="flex items-center justify-between">
               <h1 className="text-2xl">{name}</h1>
-              <select className="w-3/6 rounded-md border border-slate-400 p-2 text-xl" name={name} id={name}>
+              <select className="border-slate-400 w-3/6 rounded-md border p-2 text-xl" name={name} id={name}>
                 {data.map((option: any, optionIndex: any) => (
                   <option key={optionIndex} value={option}>
                     {option}

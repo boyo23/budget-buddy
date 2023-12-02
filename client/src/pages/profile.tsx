@@ -23,7 +23,7 @@ function Profile() {
             >
               <Form
                 action={() => console.log('Clicked')}
-                className="border- w-2/6 rounded-none border-r border-slate-400"
+                className="border- border-slate-400 w-2/6 rounded-none border-r"
                 heading="PERSONAL"
                 buttonName="Make changes"
                 inputText={['Email', 'First name', 'Last name']}

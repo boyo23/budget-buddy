@@ -48,7 +48,7 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
         </div>
 
         <div className="relative mt-4 w-full">
-          <div className="flex h-10 w-full overflow-hidden border border-gray-400 border-slate-500">
+          <div className="border-slate-500 flex h-10 w-full overflow-hidden border border-gray-400">
             <h1
               onClick={progressClickHandler}
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer whitespace-nowrap text-xl text-primary transition-all hover:scale-110 hover:font-bold"
