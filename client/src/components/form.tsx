@@ -1,14 +1,10 @@
-// import { useContext } from 'react'
-// import { SavingsContext } from '@/components/context/savings-context'
-
 export default function Form(props: any) {
-  // const savingsCtx = useContext(SavingsContext)
   const twoButtons = (
     <div className="flex w-full gap-2">
-      <button type="submit" className="bg-contrast mt-6 w-3/6 rounded-md p-2 text-3xl text-white">
+      <button type="submit" className="mt-6 w-3/6 rounded-md bg-contrast p-2 text-3xl text-white">
         {props.buttonName}
       </button>
-      <button onClick={() => props.action()} className={`bg-contrast mt-6 w-3/6 rounded-md p-2 text-3xl text-white`}>
+      <button onClick={() => props.action()} className={`mt-6 w-3/6 rounded-md bg-contrast p-2 text-3xl text-white`}>
         Close
       </button>
     </div>
@@ -60,7 +56,7 @@ export default function Form(props: any) {
           {props.formType === '1' ? (
             <button
               type="submit"
-              className="bg-contrast mt-6 w-full rounded-md p-2 text-3xl text-white"
+              className="mt-6 w-full rounded-md bg-contrast p-2 text-3xl text-white"
               onClick={props.action}
             >
               {props.buttonName}
