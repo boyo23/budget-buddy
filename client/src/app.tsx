@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import NotFound from './pages/not-found'
+import NotFound from '@/pages/not-found'
 
 export default function App() {
   return (
