@@ -1,5 +1,4 @@
 export default function Form(props: any) {
-
   const twoButtons =
     <div className='flex gap-2 w-full dark:bg-darkPrimary'>
       <button type="submit" className="text-3xl p-2 bg-contrast text-white rounded-md w-3/6 mt-6 dark:bg-transparent dark:text-contrast dark:border dark:border-gray-700 dark:hover:border-gray-500">
@@ -9,12 +8,12 @@ export default function Form(props: any) {
         Close
       </button>
     </div>
+  )
 
   return (
     <div className={`bg-white dark:bg-darkPrimary rounded-md h-fit ${props.className}`}>
       {props.heading === "" ? null : <h1 className=" text-3xl font-bold text-center p-4 text-primary dark:text-contrast">{props.heading}</h1>}
       <hr className="w-full border-gray-400 dark:border-gray-700 bg-red-200" />
-
 
       {/* <hr className="w-full border-gray-400" /> */}
 
@@ -49,8 +48,16 @@ export default function Form(props: any) {
             <h1 className="text-2xl dark:text-darkText">{password}</h1>
             <input type='password' className='border border-gray-400 rounded-md w-3/6 p-2 font-bold text-2xl' />
           </div>
-        ))}
+        )}
 
+        {/* Displays input fields with type password if exist */}
+        {props.inputPassword &&
+          props.inputPassword.map((password: any, index: any) => (
+            <div key={index} className="flex items-center justify-between">
+              <h1 className="text-2xl">{password}</h1>
+              <input type="password" className="w-3/6 rounded-md border border-gray-400 p-2 text-2xl font-bold" />
+            </div>
+          ))}
 
         {/* Displays input fields with type select if exist */}
         {props.inputSelect && props.inputSelect.length > 0 && props.inputSelect.map(({ name, data }: any, index: any) => (
@@ -75,7 +82,6 @@ export default function Form(props: any) {
           {props.formType === "1" ? <button type="submit" className="text-3xl p-2 bg-contrast text-white rounded-md w-full mt-6  dark:bg-primary dark:hover:border-gray-500 dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast" onClick={props.action}>
             {props.buttonName}
           </button> : twoButtons}
-
         </div>
       </div>
     </div>
