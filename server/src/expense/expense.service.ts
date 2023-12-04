@@ -26,6 +26,7 @@ type ExpenseWrite = {
 
 const prisma = new PrismaClient()
 
+// ADD ENDPOINT
 const listExpenses = async (): Promise<ExpenseRead[]> => {
   return prisma.expense.findMany({
     select: {
@@ -55,6 +56,52 @@ const listExpenses = async (): Promise<ExpenseRead[]> => {
   })
 }
 
+// ADD ENDPOINT
+const listExpensesByCategory = async (categoryId: string, userId: string): Promise<Omit<ExpenseRead, 'User'>[]> => {
+  return prisma.expense.findMany({
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      quantity: true,
+      date: true,
+      paymentMethod: true,
+      Category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    where: {
+      categoryId,
+      userId,
+    },
+  })
+}
+
+const listExpensesByUser = async (userId: string): Promise<Omit<ExpenseRead, 'User'>[]> => {
+  return prisma.expense.findMany({
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      quantity: true,
+      date: true,
+      paymentMethod: true,
+      Category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    where: {
+      userId,
+    },
+  })
+}
+
 const createExpense = async (expense: Omit<ExpenseWrite, 'id'>): Promise<ExpenseWrite> => {
   const { name, price, quantity, date, paymentMethod, categoryId, userId } = expense
   return prisma.expense.create({
@@ -80,4 +127,4 @@ const createExpense = async (expense: Omit<ExpenseWrite, 'id'>): Promise<Expense
   })
 }
 
-export { ExpenseRead, ExpenseWrite, listExpenses, createExpense }
+export { ExpenseRead, ExpenseWrite, listExpenses, listExpensesByCategory, listExpensesByUser, createExpense }
