@@ -23,7 +23,7 @@
    Install dependencies
 
    ```bash
-   npm install cors express express-validator jsonwebtoken
+   npm install --save cors express express-validator jsonwebtoken
    ```
 
    Install devDependencies
