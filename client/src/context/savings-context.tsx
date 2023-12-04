@@ -54,6 +54,7 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
+    console.log("clicked theme!")
   }, [theme])
 
   const handleThemeSwitch = () => {
