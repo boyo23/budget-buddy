@@ -47,7 +47,6 @@ export const SavingsContext = createContext<SavingsContextProps>({
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [goalIsClicked, setGoalIsClicked] = useState<boolean>(false)
-  const [expenseClicked, setExpenseClicked] = useState<boolean>(false)
   const [categoryClicked, setCategoryClicked] = useState<boolean>(false)
   const [thresholdClicked, setThresholdClicked] = useState<boolean>(false)
   const [theme, setTheme] = useState("light")
@@ -71,10 +70,6 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
     data: [3000, 1800, 30000, 5000, 6000],
   }
 
-  const addExpenseHandler = () => {
-    console.log(expenseClicked)
-    setExpenseClicked(!expenseClicked)
-  }
 
   const addCategoryHandler = () => {
     console.log(categoryClicked)
@@ -100,9 +95,6 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         goalIsClicked,
         setGoalIsClicked,
         goalClickHandler,
-        addExpenseHandler,
-        expenseClicked,
-        setExpenseClicked,
         pieData,
         setPieData,
         categoryClicked,
