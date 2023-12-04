@@ -2,16 +2,30 @@ import { Router } from 'express'
 import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
+//import { authenticateToken } from '@/utils/jwt'
 import * as ExpenseService from './expense.service'
 
 export const expenseRouter = Router()
 
+// ADMIN ACCESS ONLY
+expenseRouter.get('/', async (_: Request, res: Response) => {
+  try {
+    const expenses = await ExpenseService.listExpenses()
+    return res.status(200).json(expenses)
+  } catch (err: any) {
+    return res.status(500).json(err.message)
+  }
+})
+
 expenseRouter.post(
   '/',
   [
-    body('price').isNumeric().withMessage('Price is not numeric'),
-    body('quantity').isNumeric().withMessage('Quantity is not numeric'),
-    body('date').isISO8601().withMessage('Date is not in the right format (ISO8601)').toDate(),
+    body('price').isNumeric(),
+    body('quantity').isNumeric(),
+    body('date').isISO8601(),
+    body('paymentMethod').isString(),
+    body('categoryId').isString(),
+    body('userId').isString(),
   ],
   async (req: Request, res: Response) => {
     const errors = validationResult(req)

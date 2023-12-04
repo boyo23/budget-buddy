@@ -5,7 +5,7 @@ type SavingsRead = {
   id: string
   amount: number
   date: Date
-  goal: Goal
+  Goal: Goal
 }
 
 type SavingsWrite = {
