@@ -87,17 +87,9 @@ export default function Form(props: any) {
           ))}
 
         <div className="mt-auto flex gap-3">
-          {props.formType === '1' ? (
-            <button
-              type="submit"
-              className="mt-6 w-full rounded-md bg-contrast p-2 text-3xl text-white  dark:bg-primary dark:hover:border-gray-500"
-              onClick={props.action}
-            >
-              {props.buttonName}
-            </button>
-          ) : (
-            twoButtons
-          )}
+          {props.formType === "1" ? <button type="submit" className="text-3xl p-2 bg-contrast text-white rounded-md w-full mt-6  dark:bg-primary dark:hover:border-gray-500 dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast" onClick={props.action}>
+            {props.buttonName}
+          </button> : twoButtons}
         </div>
       </div>
     </div>

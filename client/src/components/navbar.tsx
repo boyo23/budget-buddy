@@ -6,7 +6,7 @@ export default function Navbar() {
     <nav className={`bg-white transition duration-300 dark:bg-darkPrimary`}>
       <div className="flex items-center justify-between p-6 text-3xl">
         <div className=''>
-          <Link to="/">
+          <Link to="/home">
             <h1 className="font-bold text-contrast dark:text-contrast">BudgetBuddy</h1>
           </Link>
         </div>
