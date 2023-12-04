@@ -85,10 +85,10 @@ export default function ExpenseOverview() {
                     <p>{item.date}</p>
                   </td>
                   <td className="flex gap-2 border border-gray-400 p-2 text-center">
-                    <button className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white">
+                    <button className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:text-contrast dark:border-gray-700 dark:border dark:hover:border-gray-500">
                       Edit
                     </button>
-                    <button className=" flex flex-grow rounded-md bg-contrast p-2 text-center text-white">
+                    <button className=" flex flex-grow rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:text-contrast dark:border-gray-700 dark:border dark:hover:border-gray-500">
                       Delete
                     </button>
                   </td>
