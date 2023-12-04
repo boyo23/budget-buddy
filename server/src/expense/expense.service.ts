@@ -24,4 +24,18 @@ type ExpenseWrite = {
 
 const prisma = new PrismaClient()
 
-export { ExpenseRead, ExpenseWrite }
+const createExpense = async (expense: Omit<ExpenseWrite, 'id'>): Promise<ExpenseWrite> => {
+  const { price, quantity, date, paymentMethod, categoryId, userId } = expense
+  return prisma.expense.create({
+    data: {
+      price,
+      quantity,
+      date,
+      paymentMethod,
+      categoryId,
+      userId,
+    },
+  })
+}
+
+export { ExpenseRead, ExpenseWrite, createExpense }

@@ -11,4 +11,16 @@ type User = {
 
 const prisma = new PrismaClient()
 
-export { User }
+const createUser = async (user: Omit<User, 'id' | 'threshold' | 'role'>): Promise<User> => {
+  const { email, username, password } = user
+
+  return prisma.user.create({
+    data: {
+      email,
+      username,
+      password,
+    },
+  })
+}
+
+export { User, createUser }

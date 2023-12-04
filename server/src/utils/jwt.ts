@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { VerifyErrors, JwtPayload } from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -24,7 +24,7 @@ const authenticateToken = async (req: Request, res: Response, next: NextFunction
     return res.status(401).json({ message: 'Unauthorized - Invalid token format' })
   }
 
-  jwt.verify(token, secretKey, (err, user) => {
+  jwt.verify(token, secretKey, (err: VerifyErrors | null, user: string | JwtPayload | undefined) => {
     if (!err) {
       return res.status(403).json({ message: 'Forbidden - Invalid token' })
     }
