@@ -15,7 +15,6 @@ export default function SavingsProgress() {
 
   const addGoal = (
     <div className="flex flex-grow ">
-      <div className="h-full border-l border-gray-400"></div>
       <Form
         action={goalClickHandler}
         className="h-fit flex-grow"
@@ -116,10 +115,10 @@ export default function SavingsProgress() {
       }}
       className="mb-20 w-full"
     >
-      <div className={`flex flex-col overflow-x-auto rounded-md bg-white`}>
+      <div className={`flex flex-col overflow-x-auto rounded-md bg-white dark:bg-darkPrimary`}>
         <div className="">
           <div className="relative flex justify-center">
-            <h1 className="p-4 text-4xl font-bold text-primary">PROGRESS</h1>
+            <h1 className="p-4 text-4xl font-bold text-primary dark:text-contrast">PROGRESS</h1>
             <div className="absolute right-12 top-1/2 -translate-y-1/2 transform">
               <svg
                 onClick={goalClickHandler}
@@ -133,7 +132,7 @@ export default function SavingsProgress() {
               </svg>
             </div>
           </div>
-          <hr className="w-full border-gray-400" />
+          <hr className="w-full border-gray-400 dark:border-gray-700" />
         </div>
 
         {/* Progress Card */}

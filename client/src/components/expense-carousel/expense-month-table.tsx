@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { StickyNavbar } from '../expense-summary/expense-edit-nav'
+import { Dialog } from '@material-tailwind/react'
 
 type DataType = {
   id: number
@@ -86,6 +88,7 @@ const sampleData: DataType[] = [
 
 export default function ExpenseOverview(props: any) {
   const [data, setData] = useState<DataType[]>(sampleData)
+  const [editIsClicked, setEditIsClicked] = useState<boolean>(false)
   const [monthName, setMonthName] = useState('')
 
   useEffect(() => {
@@ -131,14 +134,19 @@ export default function ExpenseOverview(props: any) {
     }
   }, [props.monthClicked])
 
+  const editClickHandler = () => {
+    setEditIsClicked(!editIsClicked)
+  }
+
   return (
     <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md">
       <div className="flex">
-        <div className="w-full bg-white">
-          <h1 className="my-4 text-center text-5xl font-bold text-primary">{monthName}</h1>
+        <div className="w-full bg-white dark:bg-darkPrimary">
+          {editIsClicked && <StickyNavbar/>}
+          <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{monthName}</h1>
           <table className="w-full border border-gray-400">
-            <thead className="bg-contrast text-3xl text-white">
-              <tr className="">
+            <thead className="bg-contrast text-3xl text-white dark:bg-primary">
+              <tr className="dark:text-darkWhite">
                 <th className="border-collapse p-2 ">Expense</th>
                 <th className="border-collapse p-2 ">Category</th>
                 <th className="border-collapse p-2 ">Payment method</th>
@@ -149,7 +157,7 @@ export default function ExpenseOverview(props: any) {
             </thead>
             <tbody>
               {data.map((item) => (
-                <tr key={item.id} className="text-xl text-black">
+                <tr key={item.id} className="text-xl text-black dark:text-darkText">
                   <td className="border border-gray-400 p-2 text-center">
                     <p>{item.expense}</p>
                   </td>
@@ -166,10 +174,10 @@ export default function ExpenseOverview(props: any) {
                     <p>{item.date}</p>
                   </td>
                   <td className="flex gap-2 border border-gray-400 p-2 text-center">
-                    <button className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white">
+                    <button onClick={editClickHandler} className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300">
                       Edit
                     </button>
-                    <button className=" flex flex-grow justify-center rounded-md bg-contrast p-2 text-center text-white">
+                    <button className=" flex flex-grow justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300">
                       Delete
                     </button>
                   </td>

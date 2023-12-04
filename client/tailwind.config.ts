@@ -11,6 +11,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
@@ -20,14 +21,21 @@ const config: Config = {
       colors: {
         primary: '#262C50',
         contrast: '#F33579',
+        darkPrimary: '#0E132A',
+        darkText: '#48528E',
+        darkWhite: '#E0E0E0',
       },
     },
     fontFamily: {
       sans: ['"Jost"', 'sans-serif'],
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
 
 // Wrap your configuration using withMT
 module.exports = withMT(config)
+
+

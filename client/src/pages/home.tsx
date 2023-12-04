@@ -17,14 +17,14 @@ export default function Home() {
 
   return (
     <SavingsContextProvider>
-      <div className="">
+      <div className="dark:bg-primary">
         <Navbar />
 
         <div className="mt-4 flex justify-center">
           <div className="w-6/6 mx-4 grid grid-cols-5 grid-rows-1 gap-4">
             <div className="col-span-5 col-start-1">
-              <div className="cursor-pointer rounded-md bg-contrast">
-                <h1 onClick={toggleOpenExpenses} className="flex justify-center p-4 text-5xl font-bold text-white ">
+              <div className="cursor-pointer rounded-md bg-contrast dark:bg-darkPrimary ">
+                <h1 onClick={toggleOpenExpenses} className="flex justify-center p-4 text-5xl font-bold text-white dark:text-contrast">
                   EXPENSES
                 </h1>
               </div>
@@ -38,8 +38,8 @@ export default function Home() {
             </div>
 
             <div className="col-span-5 row-start-2 h-fit">
-              <div onClick={toggleOpenSavings} className="cursor-pointer rounded-md bg-contrast">
-                <h1 className="flex justify-center rounded-md p-4 text-5xl font-bold text-white">SAVINGS</h1>
+              <div onClick={toggleOpenSavings} className="cursor-pointer rounded-md bg-contrast dark:bg-darkPrimary">
+                <h1 className="flex justify-center rounded-md p-4 text-5xl font-bold text-white dark:text-contrast">SAVINGS</h1>
               </div>
 
               <Collapse open={openSavings}>
@@ -51,9 +51,9 @@ export default function Home() {
           </div>
         </div>
 
-        <footer className="mt-6 bg-white">
+        <footer className="mt-6 bg-white dark:bg-darkPrimary">
           <div className="flex justify-center p-6 text-3xl">
-            <h1 className="flex h-32 items-center text-5xl font-bold">FOOTER</h1>
+            <h1 className="flex h-32 items-center text-5xl font-bold dark:text-contrast">FOOTER</h1>
           </div>
         </footer>
       </div>
