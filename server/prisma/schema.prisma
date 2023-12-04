@@ -10,48 +10,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  username  String    @unique
-  password  String
-  role      String    @default("USER")
-  expenses  Expense[]
-  goals     Goal[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+model Category {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  expense Expense[]
 }
 
 model Expense {
-  id            String    @id @default(uuid())
-  amount        Float
+  id            String   @id @default(uuid())
+  price         Float
+  quantity      Int
   date          DateTime
   paymentMethod String
-  userId        String?
-  categoryId    String?
-  User          User?     @relation(fields: [userId], references: [id])
-  Category      Category? @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  userId        String
+  Category      Category @relation(fields: [categoryId], references: [id])
+  User          User     @relation(fields: [userId], references: [id])
 }
 
-model Category {
-  id      String    @id @default(uuid())
-  name    String
-  expense Expense[]
+model Goal {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  addedAt    DateTime  @default(now())
+  targetedAt DateTime
+  savings    Savings[]
+  userId     String
+  User       User      @relation(fields: [userId], references: [id])
 }
 
 model Savings {
   id     String   @id @default(uuid())
   amount Float
   date   DateTime @default(now())
-  goalId String?
-  Goal   Goal?    @relation(fields: [goalId], references: [id])
+  goalId String
+  Goal   Goal     @relation(fields: [goalId], references: [id])
 }
 
-model Goal {
-  id         String    @id @default(uuid())
-  addedAt    DateTime  @default(now())
-  targetedAt DateTime
-  savings    Savings[]
-  userId     String?
-  User       User?     @relation(fields: [userId], references: [id])
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  username  String    @unique
+  password  String
+  threshold Float     @default(10000)
+  role      String    @default("USER")
+  expenses  Expense[]
+  goals     Goal[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
