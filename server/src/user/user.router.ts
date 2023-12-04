@@ -1,39 +1,34 @@
 import { Router } from 'express'
 import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
+import crypto from 'crypto'
 
-//import { authenticateToken } from '@/utils/jwt'
-import * as UserService from './user.service'
+import * as UserServices from './user.service'
 
 export const userRouter = Router()
 
-// ADMIN ACCESS ONLY
+const validateUsername = async (value: string) => {
+  const user = await UserServices.getUserByUsername(value)
+  if (user) {
+    throw new Error('Conflict - Username already in use')
+  }
+}
+
 userRouter.get('/', async (_: Request, res: Response) => {
   try {
-    const user = await UserService.listUsers()
-    return res.status(200).json(user)
+    const users = await UserServices.listUsers()
+    return res.status(201).json(users)
   } catch (err: any) {
-    return res.status(500).json(err.message)
+    console.error('Error creating user:', err)
+    return res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
 userRouter.post(
-  '/',
+  '/register',
   [
-    body('email').isEmail().normalizeEmail().escape(),
-    body('username').custom(async (value) => {
-      try {
-        const user = await UserService.findUserByUsername(value)
-        if (user) {
-          throw new Error('Username already in use')
-        }
-      } catch (err) {
-        console.error(err)
-        throw new Error('An error has occured when validating the username')
-      }
-    }),
+    body('username').custom(validateUsername),
     body('password')
-      .isLength({ min: 8 })
       .isStrongPassword({
         minLength: 8,
         minLowercase: 1,
@@ -42,21 +37,27 @@ userRouter.post(
         minSymbols: 1,
       })
       .withMessage(
-        'Password must be greater than 8 and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        'Password must be greater than 8 characters and contain at least one lowercase letter, one uppercase letter, one number, and one special character',
       ),
+    body('email').isEmail().normalizeEmail().escape(),
   ],
   async (req: Request, res: Response) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-    }
-
     try {
-      const user = req.body
-      const newUser = await UserService.createUser(user)
+      const errors = validationResult(req)
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+      }
+
+      const hashedPassword = crypto.createHash('sha256').update(req.body.password).digest('hex')
+      const user = { ...req.body, password: hashedPassword }
+
+      const newUser = await UserServices.createUser(user)
+
       return res.status(201).json(newUser)
-    } catch (err: any) {
-      return res.status(500).json(err.message)
+    } catch (error: any) {
+      console.error('Error creating user:', error)
+      return res.status(500).json({ error: 'Internal Server Error' })
     }
   },
 )
