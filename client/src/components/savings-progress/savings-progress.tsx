@@ -1,9 +1,19 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
-import Form from '../form'
 import { Dialog } from '@material-tailwind/react'
+import { SavingsContext } from '@/context/savings-context'
+import { useForm } from 'react-hook-form'
+import Form from '../forms/form'
+import FormHeading from '../forms/form-heading'
+import FormNumber from '../forms/form-number'
+import FormButtonContainer from '../forms/form-button-container'
+import FormButton from '../forms/form-button'
+import FormFieldsContainer from '../forms/form-container'
+import FormText from '../forms/form-text'
+import FormDate from '../forms/form-date'
 
 export default function SavingsProgress() {
   const [goalIsClicked, setGoalIsClicked] = useState(false)
+  const { register, handleSubmit, watch } = useForm()
 
   useEffect(() => {
     console.log(goalIsClicked)
@@ -12,18 +22,6 @@ export default function SavingsProgress() {
   const goalClickHandler = () => {
     setGoalIsClicked(!goalIsClicked)
   }
-
-  const addGoal = (
-    <div className="flex flex-grow ">
-      <Form
-        action={goalClickHandler}
-        className="h-fit flex-grow"
-        heading="ADD GOAL"
-        buttonName="Add"
-        inputText={['Name', 'Target savings', 'Target date']}
-      />
-    </div>
-  )
 
   const sampleData = [
     {
@@ -119,7 +117,7 @@ export default function SavingsProgress() {
         <div className="">
           <div className="relative flex justify-center">
             <h1 className="p-4 text-4xl font-bold text-primary dark:text-contrast">PROGRESS</h1>
-            <div className="absolute right-12 top-1/2 -translate-y-1/2 transform">
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 transform cursor-pointer">
               <svg
                 onClick={goalClickHandler}
                 className="rounded-full p-2 transition-all duration-200 hover:scale-105"
@@ -153,10 +151,21 @@ export default function SavingsProgress() {
           </div>
           {
             <Dialog className="font-" open={goalIsClicked} handler={goalClickHandler}>
-              {addGoal}
+              <Form handleSubmit={handleSubmit} key="88">
+                <FormHeading inputHeading="Add a goal" />
+                <FormFieldsContainer>
+                  {/* @ts-ignore */}
+                  <FormText register={register} name="name" inputName="Name" />
+                  <FormNumber register={register} name="targetSavings" inputName="Target savings" />
+                  <FormDate register={register} name="targetDate" inputName="Date" />
+                  <FormButtonContainer>
+                    <FormButton buttonName="Update" />
+                    <FormButton type="button" buttonName="Close" buttonAction={goalClickHandler} />
+                  </FormButtonContainer>
+                </FormFieldsContainer>
+              </Form>
             </Dialog>
           }
-          {/* {goalIsClicked ? addGoal : null} */}
         </div>
       </div>
     </div>

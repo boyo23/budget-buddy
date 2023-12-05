@@ -16,12 +16,12 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
 
   const progressClickHandler = () => {
     setProgressIsClicked(!progressIsClicked)
-    console.log(progressIsClicked)
+    // console.log(progressIsClicked)
   }
 
   const cardClickHandler = () => {
     setCardIsClicked(!cardIsClicked)
-    console.log(cardIsClicked)
+    // console.log(cardIsClicked)
   }
 
   const percentage = ((savingsBalance / savingsGoal) * 100).toFixed(1)

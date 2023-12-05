@@ -22,8 +22,8 @@ const config: Config = {
         primary: '#262C50',
         contrast: '#F33579',
         darkPrimary: '#0E132A',
-        darkText: '#48528E',
-        darkWhite: '#E0E0E0',
+        darkText: '#656ea6',
+        darkWhite: '#F0F0F0',
       },
     },
     fontFamily: {

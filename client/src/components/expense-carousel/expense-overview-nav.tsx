@@ -8,7 +8,7 @@ import {
 import { SavingsContext } from "@/context/savings-context";
 import { useForm, Controller } from "react-hook-form";
 
-export function StickyExpenseNav() {
+export function StickyOverviewNav() {
   const [openNav, setOpenNav] = React.useState(false);
   const ctx = useContext(SavingsContext)
 
@@ -22,8 +22,8 @@ export function StickyExpenseNav() {
   const { control, handleSubmit, watch, register } = useForm()
   // console.log(watch())
   return (
-    <Navbar className="sticky top-0 z-10 h-fit max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 dark:bg-primary ">
-      <form onSubmit={handleSubmit(data => console.log(data))} className="flex items-center justify-between text-blue-gray-900 gap-4 ">
+    <Navbar className="sticky top-0 z-10 h-auto max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 dark:bg-primary ">
+      <form onSubmit={handleSubmit(data => console.log(data))} className="flex items-center text-blue-gray-900 gap-4 justify-between">
 
         <Controller
           name="expense"

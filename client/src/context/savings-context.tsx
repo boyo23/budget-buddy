@@ -23,6 +23,11 @@ type SavingsContextProps = {
   theme: string,
   setTheme: Dispatch<SetStateAction<string>>,
   handleThemeSwitch: () => void,
+  fetchedData: {},
+  userData: {},
+  profileIsChanged: boolean,
+  setProfileIsChanged: Dispatch<SetStateAction<boolean>>
+  profileChangeHandler: () => void
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
@@ -42,7 +47,12 @@ export const SavingsContext = createContext<SavingsContextProps>({
   clickThresholdHandler: () => {},
   theme: "light",
   setTheme: () => {},
-  handleThemeSwitch: () => {}
+  handleThemeSwitch: () => {},
+  fetchedData: {},
+  userData: {},
+  profileIsChanged: false,
+  setProfileIsChanged: () => {},
+  profileChangeHandler: () => {},
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -50,6 +60,7 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [categoryClicked, setCategoryClicked] = useState<boolean>(false)
   const [thresholdClicked, setThresholdClicked] = useState<boolean>(false)
   const [theme, setTheme] = useState("light")
+  const [profileIsChanged, setProfileIsChanged] = useState<boolean>(false)
 
   useEffect(() => {
     theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
@@ -68,6 +79,10 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const fetchedData = {
     categoryNames: ['Food', 'Transportation', 'Tuition', 'General', 'Clothes'],
     data: [3000, 1800, 30000, 5000, 6000],
+  }
+
+  const profileChangeHandler = () => {
+    setProfileIsChanged(true)
   }
 
 
@@ -89,6 +104,17 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
     setGoalIsClicked(!goalIsClicked)
   }
 
+  const userData = {
+    "email": "lanutanenzo@gmail.com",
+    "firstName": "Achille Lorenzo",
+    "lastName": "Lanutan",
+    "password": "dianneMyLove",
+  }
+
+  useEffect(() => {
+    console.log(profileIsChanged)
+  }, [profileIsChanged])
+
   return (
     <SavingsContext.Provider
       value={{
@@ -105,7 +131,11 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         clickThresholdHandler,
         theme,
         setTheme,
-        handleThemeSwitch
+        handleThemeSwitch,
+        fetchedData,
+        userData,
+        profileIsChanged,
+        profileChangeHandler
       }}
     >
       {children}

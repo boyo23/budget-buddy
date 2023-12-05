@@ -21,7 +21,7 @@ export default function CandleStick({ month }: { month: string }) {
       </Dialog>
       <div
         onClick={monthClickHandler}
-        className="relative flex h-[400px] w-14 cursor-pointer flex-col-reverse overflow-hidden border border-gray-400 hover:border-2 hover:border-black dark:border dark:border-gray-400 dark:bg-darkWhite dark:hover:border-2"
+        className="relative flex h-[400px] w-14 cursor-pointer flex-col-reverse overflow-hidden border border-gray-400 hover:border-1 hover:border-black dark:border dark:border-gray-400 dark:bg-darkWhite dark:hover:border-2"
       >
         <div className={`bg-contrast`} style={{ height: `50%` }} />
       </div>
