@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { StickyNavbar } from '../expense-summary/expense-edit-nav'
+import { StickyExpenseNav } from '../expense-summary/expense-edit-nav'
 import { Dialog } from '@material-tailwind/react'
 
 type DataType = {
@@ -142,10 +142,10 @@ export default function ExpenseOverview(props: any) {
     <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md">
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
-          {editIsClicked && <StickyNavbar/>}
+          {editIsClicked && <StickyExpenseNav/>}
           <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{monthName}</h1>
           <table className="w-full border border-gray-400">
-            <thead className="bg-contrast text-3xl text-white dark:bg-primary">
+            <thead className="bg-contrast text-2xl text-white dark:bg-primary">
               <tr className="dark:text-darkWhite">
                 <th className="border-collapse p-2 ">Expense</th>
                 <th className="border-collapse p-2 ">Category</th>
@@ -174,10 +174,10 @@ export default function ExpenseOverview(props: any) {
                     <p>{item.date}</p>
                   </td>
                   <td className="flex gap-2 border border-gray-400 p-2 text-center">
-                    <button onClick={editClickHandler} className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300">
+                    <button onClick={editClickHandler} className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300 text-xl">
                       Edit
                     </button>
-                    <button className=" flex flex-grow justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300">
+                    <button className=" flex flex-grow justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300 text-xl">
                       Delete
                     </button>
                   </td>

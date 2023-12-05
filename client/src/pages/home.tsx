@@ -46,7 +46,7 @@ export default function Home() {
 
             <Collapse open={openSavings}>
               <div className="mt-4 flex">
-                {/* <SavingsProgress /> */}
+                <SavingsProgress />
               </div>
             </Collapse>
           </div>

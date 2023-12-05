@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { StickyExpenseNav } from '../expense-summary/expense-edit-nav'
 
 type DataType = {
   id: number
@@ -50,11 +51,18 @@ const sampleData: DataType[] = [
 
 export default function ExpenseOverview() {
   const [data, setData] = useState<DataType[]>(sampleData)
+  const [editIsClicked, setEditIsClicked] = useState<boolean>(false)
+  
+  const editClickHandler = () => {
+    setEditIsClicked(!editIsClicked)
+  }
 
   return (
-    <div className="max-h-[520px] overflow-y-auto scroll-smooth p-6">
+    <div className="max-h-[520px] overflow-y-auto scroll-smooth">
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
+        {editIsClicked && <StickyExpenseNav/>}
+
           <table className="w-full border border-gray-400 dark:border-gray-700">
             <thead className="bg-contrast dark:bg-primary text-3xl text-white">
               <tr className="w-auto dark:text-darkWhite">
@@ -85,7 +93,7 @@ export default function ExpenseOverview() {
                     <p>{item.date}</p>
                   </td>
                   <td className="flex gap-2 border border-gray-400 p-2 text-center">
-                    <button className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:text-contrast dark:border-gray-700 dark:border dark:hover:border-gray-500">
+                    <button onClick={editClickHandler} className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:text-contrast dark:border-gray-700 dark:border dark:hover:border-gray-500">
                       Edit
                     </button>
                     <button className=" flex flex-grow rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:text-contrast dark:border-gray-700 dark:border dark:hover:border-gray-500">

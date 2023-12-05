@@ -1,10 +1,20 @@
 import { useContext } from 'react'
 import { Dialog } from '@material-tailwind/react'
 import { SavingsContext } from '@/context/savings-context'
-import Form from '../form'
+import Form from '../forms/form'
+import FormHeading from '../forms/form-heading'
+import FormNumber from '../forms/form-number'
+import FormButtonContainer from '../forms/form-button-container'
+import FormButton from '../forms/form-button'
+import FormFieldsContainer from '../forms/form-container'
+import { useForm } from 'react-hook-form'
+import FormText from '../forms/form-text'
+import ExpenseThresholdForm from './expense-threshold-form'
+
 
 export default function ExpenseHeading() {
   const ctx = useContext(SavingsContext)
+  const { register, handleSubmit, watch } = useForm()
 
   return (
     <div className="">
@@ -29,8 +39,18 @@ export default function ExpenseHeading() {
       </div>
       <hr className="flex w-full border-gray-400 dark:border-gray-700" />
 
-      <Dialog className="font-" open={ctx.thresholdClicked} handler={ctx.setThresholdClicked}>
-        <Form action={ctx.clickThresholdHandler} heading="UPDATE" buttonName="Update" inputNum={['Threshold']} />
+      <Dialog className="font-" open={ctx.thresholdClicked} handler={ctx.clickThresholdHandler} key="99">
+        <Form handleSubmit={handleSubmit} key="88">
+          <FormHeading inputHeading="Threshold" />
+          <FormFieldsContainer>
+            {/* @ts-ignore */}
+            <FormText register={register} name="threshold" inputName="Update threshold" />
+            <FormButtonContainer>
+              <FormButton buttonName="Update" buttonAction={null} />
+              <FormButton buttonName="Close" buttonAction={ctx.clickThresholdHandler} />
+            </FormButtonContainer>
+          </FormFieldsContainer>
+        </Form>
       </Dialog>
     </div>
   )
