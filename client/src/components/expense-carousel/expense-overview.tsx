@@ -62,7 +62,7 @@ export default function ExpenseOverview() {
     <div className="max-h-[520px] overflow-y-auto scroll-smooth ">
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary ">
-        {editIsClicked && <StickyOverviewNav/>}
+        {editIsClicked && <StickyOverviewNav action={() => editClickHandler()}/>}
 
           <table className="w-full border border-gray-400 dark:border-gray-700">
             <thead className="bg-contrast dark:bg-primary text-3xl text-white">

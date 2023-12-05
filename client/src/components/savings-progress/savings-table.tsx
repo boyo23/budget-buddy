@@ -61,6 +61,7 @@ export default function SavingsTable(props: any) {
 
   return (
     <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md relative">
+
       <div className="absolute right-12 top-10 -translate-y-1/2 transform cursor-pointer">
         <svg
           onClick={clickAddSavingsHandler}
@@ -72,15 +73,14 @@ export default function SavingsTable(props: any) {
         >
           <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
         </svg>
+
       </div>
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
-        {editIsClicked && <StickySavingsNav/>}
+          {editIsClicked && <StickySavingsNav action={() => editClickHandler()}/>}
 
-          {addNewSavingsClicked && <StickyAddNav />}
+          {addNewSavingsClicked && <StickyAddNav action={() => clickAddSavingsHandler()} />}
           <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{props.goalName}</h1>
-
-
 
           <table className="w-full border border-gray-400">
             <thead className="bg-contrast text-2xl text-white dark:bg-primary">

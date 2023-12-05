@@ -8,7 +8,7 @@ import {
 import { SavingsContext } from "@/context/savings-context";
 import { useForm, Controller } from "react-hook-form";
 
-export function StickyExpenseNav() {
+export function StickyExpenseNav({action}) {
   const [openNav, setOpenNav] = React.useState(false);
   const ctx = useContext(SavingsContext)
 
@@ -70,6 +70,9 @@ export function StickyExpenseNav() {
         <input {...register("date")} type='date' className='border border-blue-gray-200 rounded-md w-full h-full p-2 text-md dark:bg-transparent dark:text-white dark:border-gray-300 text-xl focus:border-red-500 focus-within:border-red-500' />
         <button type="submit" className="w-full rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300 text-xl">
           Update
+        </button>
+        <button onClick={action} type="submit" className="w-full rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300 text-xl">
+          Close
         </button>
       </form>
     </Navbar>
