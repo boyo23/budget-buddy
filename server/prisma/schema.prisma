@@ -8,60 +8,60 @@ datasource db {
 }
 
 model User {
- id        String    @id @default(uuid())
- username  String    @unique
- password  String
- email     String    @unique
- threshold Float     @default(10000.00)
- role      String    @default("USER")
- createdAt DateTime  @default(now())
- updatedAt DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  email     String   @unique
+  threshold Float    @default(10000.00)
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
- categories Category[]
- expenses  Expense[]
- goals     Goal[]
+  categories Category[]
+  expenses   Expense[]
+  goals      Goal[]
 }
 
 model Category {
- id      String   @id @default(uuid())
- name    String   @unique
- userId  String
+  id     String @id @default(uuid())
+  name   String @unique
+  userId String
 
- User    User     @relation(fields: [userId], references: [id])
- expenses Expense[]
+  User     User      @relation(fields: [userId], references: [id])
+  expenses Expense[]
 }
 
 model Expense {
- id           String   @id @default(uuid())
- name         String
- price        Float
- quantity     Int
- date         DateTime
- paymentMethod String
- userId       String
- categoryId   String
+  id            String   @id @default(uuid())
+  name          String
+  price         Float
+  quantity      Int
+  date          DateTime
+  paymentMethod String
+  userId        String
+  categoryId    String
 
- User         User     @relation(fields: [userId], references: [id])
- Category     Category @relation(fields: [categoryId], references: [id])
+  User     User     @relation(fields: [userId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id])
 }
 
 model Goal {
- id        String   @id @default(uuid())
- name      String   @unique
- addedAt   DateTime @default(now())
- targetedAt DateTime
- userId    String
+  id         String   @id @default(uuid())
+  name       String   @unique
+  addedAt    DateTime @default(now())
+  targetedAt DateTime
+  userId     String
 
- User      User     @relation(fields: [userId], references: [id])
- savings   Savings[]
+  User    User      @relation(fields: [userId], references: [id])
+  savings Savings[]
 }
 
 model Savings {
- id    String  @id @default(uuid())
- amount Float
- target Float
- date  DateTime
- goalId String
+  id     String   @id @default(uuid())
+  amount Float
+  target Float
+  date   DateTime
+  goalId String
 
- Goal  Goal    @relation(fields: [goalId], references: [id])
+  Goal Goal @relation(fields: [goalId], references: [id])
 }

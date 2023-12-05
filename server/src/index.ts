@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 
 import { userRouter } from './user/user.router'
+import { expenseRouter } from './expense/expense.router'
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ app.use(express.json())
 app.use(cors({ credentials: true }))
 
 app.use('/user', userRouter)
+app.use('/expense', expenseRouter)
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`)

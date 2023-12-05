@@ -7,57 +7,47 @@ import * as UserServices from './user.service'
 
 export const userRouter = Router()
 
-const validateUsername = async (value: string) => {
-  const user = await UserServices.getUserByUsername(value)
-  if (user) {
-    throw new Error('Conflict - Username already in use')
-  }
-}
-
-userRouter.get('/', async (_: Request, res: Response) => {
-  try {
-    const users = await UserServices.listUsers()
-    return res.status(201).json(users)
-  } catch (err: any) {
-    console.error('Error creating user:', err)
-    return res.status(500).json({ error: 'Internal Server Error' })
-  }
-})
-
 userRouter.post(
   '/register',
   [
-    body('username').custom(validateUsername),
+    body('username').custom(async (value) => {
+      if (await UserServices.findUser(value)) {
+        throw new Error('Username is already in use')
+      }
+    }),
+    /* prettier-ignore */
     body('password')
-      .isStrongPassword({
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-      .withMessage(
-        'Password must be greater than 8 characters and contain at least one lowercase letter, one uppercase letter, one number, and one special character',
-      ),
-    body('email').isEmail().normalizeEmail().escape(),
+      .isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+      .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+      .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+      .matches(/\d/).withMessage('Password must contain at least one number')
+      .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special character'),
+    body('email')
+      .isEmail()
+      .normalizeEmail()
+      .custom(async (value) => {
+        if (await UserServices.findUser(value)) {
+          throw new Error('Username is already in use')
+        }
+      }),
   ],
-  async (req: Request, res: Response) => {
+  async (request: Request, response: Response) => {
     try {
-      const errors = validationResult(req)
+      const errors = validationResult(request)
 
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
+        return response.status(400).json({ errors: errors.array() })
       }
 
-      const hashedPassword = crypto.createHash('sha256').update(req.body.password).digest('hex')
-      const user = { ...req.body, password: hashedPassword }
+      const hashedPassword = crypto.createHash('sha256').update(request.body.password).digest('hex')
+      const user = { ...request.body, password: hashedPassword }
 
       const newUser = await UserServices.createUser(user)
 
-      return res.status(201).json(newUser)
+      return response.status(201).json(newUser)
     } catch (error: any) {
       console.error('Error creating user:', error)
-      return res.status(500).json({ error: 'Internal Server Error' })
+      return response.status(500).json({ error: 'Internal Server Error' })
     }
   },
 )
