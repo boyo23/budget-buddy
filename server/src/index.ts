@@ -2,8 +2,8 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 
-import { userRouter } from './user/user.router'
-import { expenseRouter } from './expense/expense.router'
+import { userRouter } from '@/user/user.router'
+import { expenseRouter } from '@/expense/expense.router'
 
 dotenv.config()
 
