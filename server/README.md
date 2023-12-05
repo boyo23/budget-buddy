@@ -10,14 +10,6 @@
    npm init --yes
    ```
 
-1. Prettier
-
-   Install prettier
-
-   ```bash
-   npm install --save-dev eslint-config-prettier eslint-plugin-prettier prettier
-   ```
-
 1. Dependencies
 
    Install dependencies
@@ -30,6 +22,14 @@
 
    ```bash
    npm install --save-dev @types/cors @types/express @types/jsonwebtoken @types/node dotenv eslint prisma ts-node typescript
+   ```
+
+1. Prettier (Optional)
+
+   Install prettier
+
+   ```bash
+   npm install --save-dev eslint-config-prettier eslint-plugin-prettier prettier
    ```
 
 ## Configuration
@@ -52,32 +52,6 @@
 
    ```bash
    npm init @eslint/config
-   ```
-
-1. Prettier
-
-   Create `.prettierrc` with the following content
-
-   ```json
-   {
-     "printWidth": 120,
-     "tabWidth": 2,
-     "singleQuote": true,
-     "semi": false
-   }
-   ```
-
-   Configure `extends, plugins, and rules` in `.eslintrc.cjs`
-
-   ```javascript
-   module.exports = {
-     extends: ['...', 'plugin:prettier/recommended'],
-     plugins: ['...', 'prettier'],
-     rules: {
-      '...',
-      'prettier/prettier': ['error']
-     }
-   }
    ```
 
 1. Prisma
@@ -122,5 +96,31 @@
      },
      "include": ["src/**/*.ts"],
      "exclude": ["node_modules"]
+   }
+   ```
+
+1. Prettier (Optional)
+
+   Create `.prettierrc` with the following content
+
+   ```json
+   {
+     "printWidth": 120,
+     "tabWidth": 2,
+     "singleQuote": true,
+     "semi": false
+   }
+   ```
+
+   Configure `extends, plugins, and rules` in `.eslintrc.cjs`
+
+   ```javascript
+   module.exports = {
+     extends: ['...', 'plugin:prettier/recommended'],
+     plugins: ['...', 'prettier'],
+     rules: {
+      '...',
+      'prettier/prettier': ['warn']
+     }
    }
    ```

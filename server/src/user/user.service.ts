@@ -1,74 +1,32 @@
 import { PrismaClient } from '@prisma/client'
-
-type User = {
-  id: string
-  email: string
-  username: string
-  password: string
-  threshold: number
-  role: string
-}
+import type { User, Expense } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const listUsers = async (): Promise<Omit<User, 'email' | 'password'>[]> => {
-  return prisma.user.findMany({
-    select: {
-      id: true,
-      email: false,
-      username: true,
-      password: false,
-      threshold: true,
-      role: true,
-      expenses: false,
-      goals: false,
-      createdAt: false,
-      updatedAt: false,
-    },
-  })
-}
-
-const findUserByUsername = async (): Promise<Omit<User, 'email' | 'password'>> | null => {
-  return prisma.user.findUnique({
-    select: {
-      id: true,
-      email: false,
-      username: true,
-      password: false,
-      threshold: true,
-      role: true,
-      expenses: false,
-      goals: false,
-      createdAt: false,
-      updatedAt: false,
-    },
+const findUser = async (key: string): Promise<User | null> => {
+  return prisma.user.findFirst({
     where: {
-      username,
+      OR: [{ id: key }, { username: key }, { email: key }],
     },
   })
 }
 
-const createUser = async (user: Omit<User, 'id' | 'threshold' | 'role'>): Promise<User> => {
-  const { email, username, password } = user
+const findExpenses = async (id: string): Promise<{ expenses: Expense[] } | null> => {
+  return prisma.user.findFirst({
+    where: { id },
+    select: { expenses: true },
+  })
+}
+
+const createUser = async (user: User): Promise<User> => {
+  const { username, password, email } = user
   return prisma.user.create({
-    select: {
-      id: true,
-      email: true,
-      username: true,
-      password: true,
-      threshold: true,
-      role: true,
-      expenses: true,
-      goals: true,
-      createdAt: true,
-      updatedAt: true,
-    },
     data: {
-      email,
       username,
       password,
+      email,
     },
   })
 }
 
-export { User, listUsers, findUserByUsername, createUser }
+export { findUser, findExpenses, createUser }
