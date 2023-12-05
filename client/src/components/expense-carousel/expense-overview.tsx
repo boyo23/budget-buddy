@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { StickyExpenseNav } from '../expense-summary/expense-edit-nav'
+import { StickyOverviewNav } from './expense-overview-nav'
 
 type DataType = {
   id: number
@@ -61,7 +62,7 @@ export default function ExpenseOverview() {
     <div className="max-h-[520px] overflow-y-auto scroll-smooth">
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
-        {editIsClicked && <StickyExpenseNav/>}
+        {editIsClicked && <StickyOverviewNav/>}
 
           <table className="w-full border border-gray-400 dark:border-gray-700">
             <thead className="bg-contrast dark:bg-primary text-3xl text-white">

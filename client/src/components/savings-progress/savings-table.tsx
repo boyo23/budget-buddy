@@ -4,8 +4,7 @@ type DataType = {
   amount: number
   date: Date
 }
-import { StickyNavbar } from '../expense-summary/expense-edit-nav'
-import StickySavingsNav from './savings-edit-nav'
+import StickyAddNav from './savings-add-nav'
 
 const sampleData: DataType[] = [
   {
@@ -26,6 +25,7 @@ export default function SavingsTable(props: any) {
   const [editId, setEditId] = useState<number | null>(null)
   const [selectedItem, setSelectedItem] = useState<DataType | null>(null)
   const [editIsClicked, setEditIsClicked] = useState<boolean>(false)
+  const [addNewSavingsClicked, setAddNewSavingsClicked] = useState<boolean>(false)
 
   const editClickHandler = () => {
     setEditIsClicked(!editIsClicked)
@@ -52,13 +52,32 @@ export default function SavingsTable(props: any) {
     }
   }
 
+  const clickAddSavingsHandler = () => {
+    setAddNewSavingsClicked(!addNewSavingsClicked)
+  }
+
 
   return (
-    <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md">
+    <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md relative">
+      <div className="absolute right-12 top-10 -translate-y-1/2 transform cursor-pointer">
+        <svg
+          onClick={clickAddSavingsHandler}
+          className="rounded-full p-2 transition-all duration-200 hover:scale-105"
+          style={{ fill: '#fff', backgroundColor: 'f33579' }}
+          xmlns="http://www.w3.org/2000/svg"
+          height="3em"
+          viewBox="0 0 448 512"
+        >
+          <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+        </svg>
+      </div>
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
-          {editIsClicked && <StickySavingsNav />}
+
+          {addNewSavingsClicked && <StickyAddNav />}
           <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{props.goalName}</h1>
+
+
           <table className="w-full border border-gray-400">
             <thead className="bg-contrast text-2xl text-white dark:bg-primary">
               <tr className="dark:text-darkWhite">
