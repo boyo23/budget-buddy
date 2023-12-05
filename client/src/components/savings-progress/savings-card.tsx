@@ -32,7 +32,7 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
         {/* @ts-ignore */}
         <SavingsTable goalName={goalName} percentage={percentage} />
       </Dialog>
-      <div className="rounded-md border border-gray-400 p-6 dark:border-gray-700">
+      <div className="rounded-md border border-gray-400 p-6 dark:border-gray-700 dark:bg-darkCard">
         <h1 onClick={cardClickHandler} className="mb-4 flex justify-center text-2xl  dark:text-contrast">
           {goalName}
         </h1>
