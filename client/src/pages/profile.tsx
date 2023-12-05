@@ -25,20 +25,21 @@ function Profile() {
         </div>
         <div className="mt-4 flex">
           <div className="w-full">
+            
             <div
               className=" min-h-[240px] flex justify-center rounded-md bg-white dark:bg-darkPrimary"
             >
-              <Form handleSubmit={handleSubmit}>
+              <Form className={` w-2/6`} handleSubmit={handleSubmit}>
                 <FormHeading inputHeading="PROFILE" />
                 <FormFieldsContainer>
                   {/* @ts-ignore */}
                   <FormText defaultValue={ctx.userData.email} register={register} name="email" inputName="Email" />
                   <FormText defaultValue={ctx.userData.firstName} register={register} name="firstName" inputName="First name" />
                   <FormText defaultValue={ctx.userData.lastName} register={register} name="lastName" inputName="Last name" />
-                  <FormPassword defaultValue={ctx.userData.password} register={register} name="password" inputName="Password"/>
+                  <FormPassword defaultValue={ctx.userData.password} register={register} name="password" inputName="Password" />
 
                   {ctx.profileIsChanged && <FormPassword register={register} name="newPassword" inputName="New password" />}
-                  
+
                   <FormButtonContainer>
                     <FormButton buttonName="Update" buttonAction={null} />
                     <FormButton buttonName="Close" buttonAction={ctx.clickThresholdHandler} />

@@ -14,14 +14,14 @@ export default function CandleStick({ month }: { month: string }) {
   }, [monthIsClicked])
 
   return (
-    <div className="flex w-min flex-col p-2">
+    <div className="flex w-min flex-col p-2 ">
       <Dialog className="font-family" size="xl" open={monthIsClicked} handler={monthClickHandler}>
         {/* @ts-ignore */}
         <ExpenseMonthTable monthClicked={month} />
       </Dialog>
       <div
         onClick={monthClickHandler}
-        className="relative flex h-[400px] w-14 cursor-pointer flex-col-reverse overflow-hidden border border-gray-400 hover:border-1 hover:border-black dark:border dark:border-gray-400 dark:bg-darkWhite dark:hover:border-2"
+        className="relative flex h-[400px] w-14 cursor-pointer flex-col-reverse overflow-hidden border border-gray-400 hover:border-1 hover:border-black dark:border dark:border-gray-400 dark:bg-darkWhite dark:hover:border-2 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]"
       >
         <div className={`bg-contrast`} style={{ height: `50%` }} />
       </div>

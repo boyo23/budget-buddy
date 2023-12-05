@@ -27,22 +27,22 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
   const percentage = ((savingsBalance / savingsGoal) * 100).toFixed(1)
 
   return (
-    <div style={{ width: '350px' }} className="m-4 cursor-pointer p-2 transition-all duration-100 hover:scale-105">
+    <div style={{ width: '350px' }} className="m-4 cursor-pointer p-2 transition-all duration-100 hover:scale-105 ">
       <Dialog size="xl" open={cardIsClicked} handler={cardClickHandler}>
         {/* @ts-ignore */}
         <SavingsTable goalName={goalName} percentage={percentage} />
       </Dialog>
-      <div className="rounded-md border border-gray-400 p-6 dark:border-gray-700 dark:bg-darkCard">
-        <h1 onClick={cardClickHandler} className="mb-4 flex justify-center text-2xl  dark:text-contrast">
+      <div className="rounded-md border border-gray-400 p-6 dark:border-gray-700 dark:bg-darkCard ">
+        <h1 onClick={cardClickHandler} className="mb-4 flex justify-center text-2xl  dark:text-contrast text-primary">
           {goalName}
         </h1>
 
-        <div className="flex justify-between text-xl dark:text-darkText">
+        <div className="flex justify-between text-xl dark:text-darkText text-blue-gray-500">
           <h1>Date added</h1>
           <h1 className="font-bold text-green-500 ">{dateAdded}</h1>
         </div>
 
-        <div className="flex justify-between text-xl dark:text-darkText">
+        <div className="flex justify-between text-xl dark:text-darkText text-blue-gray-500">
           <h1>Target date</h1>
           <h1 className="font-bold text-green-500">{targetDate}</h1>
         </div>

@@ -59,9 +59,9 @@ export default function ExpenseOverview() {
   }
 
   return (
-    <div className="max-h-[520px] overflow-y-auto scroll-smooth">
+    <div className="max-h-[520px] overflow-y-auto scroll-smooth ">
       <div className="flex">
-        <div className="w-full bg-white dark:bg-darkPrimary">
+        <div className="w-full bg-white dark:bg-darkPrimary ">
         {editIsClicked && <StickyOverviewNav/>}
 
           <table className="w-full border border-gray-400 dark:border-gray-700">
