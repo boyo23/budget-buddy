@@ -5,6 +5,7 @@ type DataType = {
   date: Date
 }
 import StickyAddNav from './savings-add-nav'
+import StickySavingsNav from './savings-edit-nav'
 
 const sampleData: DataType[] = [
   {
@@ -29,6 +30,7 @@ export default function SavingsTable(props: any) {
 
   const editClickHandler = () => {
     setEditIsClicked(!editIsClicked)
+    console.log(editIsClicked)
   }
 
   const deleteItem = (id: number) => {
@@ -73,9 +75,11 @@ export default function SavingsTable(props: any) {
       </div>
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
+        {editIsClicked && <StickySavingsNav/>}
 
           {addNewSavingsClicked && <StickyAddNav />}
           <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{props.goalName}</h1>
+
 
 
           <table className="w-full border border-gray-400">

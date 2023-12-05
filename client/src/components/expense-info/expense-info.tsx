@@ -65,17 +65,17 @@ export default function ExpenseInfo() {
       <div className="flex flex-grow flex-col p-6 overflow-y-scroll max-h-96">
         <table className="w-full table-auto text-left">
           <thead className=''>
-            <tr className='text-2xl'>
+            <tr className='text-2xl dark:text-darkWhite'>
               <th className='border-b border-b-gray-300 pb-4 flex-grow'>Expense</th>
               <th className='border-b border-b-gray-300 pb-4 flex-grow'>Date added</th>
               <th className='border-b border-b-gray-300 pb-4 flex-grow'>Price</th>
             </tr>
           </thead>
           <tbody className='text-xl'>
-            <tr>
+            <tr className='dark:text-darkText'>
               <td className='border-b border-gray-300 py-2'>Hotdog</td>
               <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
+              <td className='border-b border-gray-300 py-2 dark:text-green-400'>P100,000</td>
             </tr>
             <tr>
               <td className='border-b border-gray-300 py-2'>Donut</td>
