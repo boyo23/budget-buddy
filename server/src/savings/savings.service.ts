@@ -14,4 +14,8 @@ const createSavings = async (savings: Omit<Savings, 'id'>): Promise<Savings> => 
   })
 }
 
-export { createSavings }
+const deleteSavings = async (id: string): Promise<void> => {
+  await prisma.savings.delete({ where: { id } })
+}
+
+export { createSavings, deleteSavings }
