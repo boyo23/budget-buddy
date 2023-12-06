@@ -23,6 +23,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
-    'prettier/prettier': ['error'],
+    '@typescript-eslint/no-unused-vars': 'off',
+    'prettier/prettier': ['warn'],
   },
 }

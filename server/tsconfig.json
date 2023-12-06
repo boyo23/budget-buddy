@@ -1,21 +1,18 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "target": "ES2018",
-    "module": "CommonJS",
-    "outDir": "./dist",
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "esnext.asynciterable"],
-    "typeRoots": ["./node_modules/@types"],
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],
-  "files": ["types.d.ts"]
+  "files": ["./types.d.ts"],
+  "include": ["src/**/*"]
 }

@@ -1,6 +1,6 @@
-import * as dotenv from 'dotenv'
-import { Request, Response, NextFunction } from 'express'
-import jwt, { VerifyErrors, JwtPayload } from 'jsonwebtoken'
+import dotenv from 'dotenv'
+import type { Request, Response, NextFunction } from 'express'
+import jwt, { Secret, VerifyErrors } from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -9,27 +9,27 @@ if (!process.env.SECRET_ACCESS_KEY) {
   process.exit(1)
 }
 
-const secretKey: string = process.env.SECRET_ACCESS_KEY as string
+const secretKey: Secret = process.env.SECRET_ACCESS_KEY as string
 
-const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization
+const authenticateToken = async (request: Request, response: Response, next: NextFunction) => {
+  const authHeader = request.headers.authorization
 
   if (!authHeader) {
-    return res.status(401).json({ message: 'Unauthorized - No token provided' })
+    return response.status(401).json({ message: 'No token provided' })
   }
 
-  const [bearer, token] = authHeader.split('')
+  const [bearer, token] = authHeader.split(' ')
 
   if (bearer !== 'Bearer' || !token) {
-    return res.status(401).json({ message: 'Unauthorized - Invalid token format' })
+    return response.status(401).json({ message: 'Invalid token format' })
   }
 
-  jwt.verify(token, secretKey, (err: VerifyErrors | null, user: string | JwtPayload | undefined) => {
-    if (!err) {
-      return res.status(403).json({ message: 'Forbidden - Invalid token' })
+  jwt.verify(token, secretKey, (error: VerifyErrors | null, user: any) => {
+    if (error) {
+      return response.status(403).json({ message: 'Token is invalid or expired' })
     }
 
-    req.user = user
+    request.user = user
     next()
   })
 }

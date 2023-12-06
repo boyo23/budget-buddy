@@ -1,31 +1,21 @@
 import { PrismaClient } from '@prisma/client'
-
-type Category = {
-  id: string
-  name: string
-}
+import type { Category } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const listCategories = async (): Promise<Category[]> => {
-  return prisma.category.findMany({
-    select: {
-      id: true,
-      name: true,
-    },
+const findCategory = async (name: string): Promise<Category | null> => {
+  return prisma.category.findFirst({
+    where: { name },
   })
 }
 
-const createCategory = async (name: string): Promise<Category> => {
+const createCategory = async (name: string, userId: string): Promise<Category> => {
   return prisma.category.create({
-    select: {
-      id: true,
-      name: true,
-    },
     data: {
       name,
+      userId,
     },
   })
 }
 
-export { Category, listCategories, createCategory }
+export { findCategory, createCategory }

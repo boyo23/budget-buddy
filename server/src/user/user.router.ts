@@ -1,62 +1,87 @@
+import dotenv from 'dotenv'
 import { Router } from 'express'
-import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
+import type { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
-//import { authenticateToken } from '@/utils/jwt'
-import * as UserService from './user.service'
+import * as UserServices from './user.service'
+
+dotenv.config()
+
+if (!process.env.SECRET_ACCESS_KEY) {
+  console.error('Error: Environment variable `SECRET_ACCESS_KEY` does not exist!')
+  process.exit(1)
+}
+
+const secretKey: string = process.env.SECRET_ACCESS_KEY as string
 
 export const userRouter = Router()
 
-// ADMIN ACCESS ONLY
-userRouter.get('/', async (_: Request, res: Response) => {
-  try {
-    const user = await UserService.listUsers()
-    return res.status(200).json(user)
-  } catch (err: any) {
-    return res.status(500).json(err.message)
-  }
-})
-
 userRouter.post(
-  '/',
+  '/register',
   [
-    body('email').isEmail().normalizeEmail().escape(),
     body('username').custom(async (value) => {
-      try {
-        const user = await UserService.findUserByUsername(value)
-        if (user) {
-          throw new Error('Username already in use')
-        }
-      } catch (err) {
-        console.error(err)
-        throw new Error('An error has occured when validating the username')
+      if (await UserServices.findUser(value)) {
+        throw new Error('Username already exist')
       }
     }),
+    /* prettier-ignore */
     body('password')
-      .isLength({ min: 8 })
-      .isStrongPassword({
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-      .withMessage(
-        'Password must be greater than 8 and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-      ),
+      .isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+      .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+      .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+      .matches(/\d/).withMessage('Password must contain at least one number')
+      .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special character'),
+    body('email')
+      .isEmail()
+      .normalizeEmail()
+      .custom(async (value) => {
+        if (await UserServices.findUser(value)) {
+          throw new Error('Email already in use')
+        }
+      }),
   ],
-  async (req: Request, res: Response) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-    }
-
+  async (request: Request, response: Response) => {
     try {
-      const user = req.body
-      const newUser = await UserService.createUser(user)
-      return res.status(201).json(newUser)
-    } catch (err: any) {
-      return res.status(500).json(err.message)
+      const errors = validationResult(request)
+
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ message: errors.array() })
+      }
+
+      const hashedPassword = await bcrypt.hash(request.body.password, 10)
+
+      const user = { ...request.body, password: hashedPassword }
+
+      const newUser = await UserServices.createUser(user)
+
+      return response.status(201).json(newUser)
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }
   },
 )
+
+userRouter.post('/login', async (request: Request, response: Response) => {
+  try {
+    const user = await UserServices.findUser(request.body.username)
+
+    if (!user) {
+      return response.status(404).json({ message: 'Username not found' })
+    }
+
+    const { password, ...userInfo } = user
+    const isPasswordValid = await bcrypt.compare(request.body.password, password)
+
+    if (!isPasswordValid) {
+      return response.status(401).json({ message: 'Incorrect password' })
+    }
+
+    const token = jwt.sign(userInfo, secretKey, { expiresIn: '1h' })
+
+    return response.status(201).json({ token, message: 'Login sucessful' })
+  } catch (error: any) {
+    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+  }
+})

@@ -2,43 +2,39 @@ import { Router } from 'express'
 import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
-//import { authenticateToken } from '@/utils/jwt'
-import * as ExpenseService from './expense.service'
+import { authenticateToken } from '../utils/jwt'
+import * as ExpenseServices from './expense.service'
 
 export const expenseRouter = Router()
-
-// ADMIN ACCESS ONLY
-expenseRouter.get('/', async (_: Request, res: Response) => {
-  try {
-    const expenses = await ExpenseService.listExpenses()
-    return res.status(200).json(expenses)
-  } catch (err: any) {
-    return res.status(500).json(err.message)
-  }
-})
 
 expenseRouter.post(
   '/',
   [
+    body('name').isString(),
     body('price').isNumeric(),
     body('quantity').isNumeric(),
-    body('date').isISO8601(),
-    body('paymentMethod').isString(),
-    body('categoryId').isString(),
-    body('userId').isString(),
+    body('paymentMethod')
+      .isString()
+      .isIn(['CASH', 'GCASH', 'CREDIT', 'DEBIT'])
+      .withMessage((value) => `The payment method ${value} is invalid.`),
+    body('date')
+      .matches(/^\d{4}-\d{2}-\d{2}$/)
+      .withMessage('Invalid date format. Enter the date in the following format: YYYY-MM-DD.'),
   ],
-  async (req: Request, res: Response) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-    }
-
+  authenticateToken,
+  async (request: Request, response: Response) => {
     try {
-      const expense = req.body
-      const newExpense = await ExpenseService.createExpense(expense)
-      return res.status(201).json(newExpense)
-    } catch (err: any) {
-      return res.status(500).json(err.message)
+      const errors = validationResult(request)
+
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ errors: errors.array() })
+      }
+
+      const newExpense = await ExpenseServices.createExpense(request.body)
+
+      return response.status(201).json(newExpense)
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }
   },
 )
