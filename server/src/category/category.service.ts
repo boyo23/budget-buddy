@@ -9,7 +9,8 @@ const findCategory = async (name: string): Promise<Category | null> => {
   })
 }
 
-const createCategory = async (name: string, userId: string): Promise<Category> => {
+const createCategory = async (category: Omit<Category, 'id'>): Promise<Category> => {
+  const { name, userId } = category
   return prisma.category.create({
     data: {
       name,

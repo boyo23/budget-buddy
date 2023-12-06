@@ -1,13 +1,12 @@
 import { PrismaClient } from '@prisma/client'
-import type { User, Expense } from '@prisma/client'
+import type { Category, Expense, User } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const findUser = async (key: string): Promise<User | null> => {
+const findCategories = async (id: string): Promise<{ categories: Category[] } | null> => {
   return prisma.user.findFirst({
-    where: {
-      OR: [{ id: key }, { username: key }, { email: key }],
-    },
+    where: { id },
+    select: { categories: true },
   })
 }
 
@@ -18,7 +17,15 @@ const findExpenses = async (id: string): Promise<{ expenses: Expense[] } | null>
   })
 }
 
-const createUser = async (user: User): Promise<User> => {
+const findUser = async (key: string): Promise<User | null> => {
+  return prisma.user.findFirst({
+    where: {
+      OR: [{ id: key }, { username: key }, { email: key }],
+    },
+  })
+}
+
+const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
   const { username, password, email } = user
   return prisma.user.create({
     data: {
@@ -29,4 +36,4 @@ const createUser = async (user: User): Promise<User> => {
   })
 }
 
-export { findUser, findExpenses, createUser }
+export { findCategories, findExpenses, findUser, createUser }

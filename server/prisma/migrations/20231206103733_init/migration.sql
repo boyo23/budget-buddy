@@ -36,6 +36,7 @@ CREATE TABLE "Expense" (
 CREATE TABLE "Goal" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
+    "amount" REAL NOT NULL,
     "addedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "targetedAt" DATETIME NOT NULL,
     "userId" TEXT NOT NULL,
@@ -46,7 +47,6 @@ CREATE TABLE "Goal" (
 CREATE TABLE "Savings" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "amount" REAL NOT NULL,
-    "target" REAL NOT NULL,
     "date" DATETIME NOT NULL,
     "goalId" TEXT NOT NULL,
     CONSTRAINT "Savings_goalId_fkey" FOREIGN KEY ("goalId") REFERENCES "Goal" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
