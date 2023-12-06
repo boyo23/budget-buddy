@@ -15,4 +15,8 @@ const createGoal = async (goal: Omit<Goal, 'id' | 'addedAt'>): Promise<Goal> => 
   })
 }
 
-export { createGoal }
+const deleteGoal = async (id: string): Promise<void> => {
+  await prisma.goal.delete({ where: { id } })
+}
+
+export { createGoal, deleteGoal }

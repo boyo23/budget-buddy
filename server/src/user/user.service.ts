@@ -19,13 +19,11 @@ const findExpenses = async (id: string): Promise<{ expenses: Expense[] } | null>
 
 const findUser = async (key: string): Promise<User | null> => {
   return prisma.user.findFirst({
-    where: {
-      OR: [{ id: key }, { username: key }, { email: key }],
-    },
+    where: { OR: [{ id: key }, { username: key }, { email: key }] },
   })
 }
 
-const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
+const createUser = async (user: Pick<User, 'username' | 'password' | 'email'>): Promise<Omit<User, 'id'>> => {
   const { username, password, email } = user
   return prisma.user.create({
     data: {
@@ -36,4 +34,8 @@ const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
   })
 }
 
-export { findCategories, findExpenses, findUser, createUser }
+const deleteUser = async (id: string): Promise<void> => {
+  await prisma.user.delete({ where: { id } })
+}
+
+export { findCategories, findExpenses, findUser, createUser, deleteUser }

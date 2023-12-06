@@ -18,4 +18,8 @@ const createExpense = async (expense: Omit<Expense, 'id'>): Promise<Expense> => 
   })
 }
 
-export { createExpense }
+const deleteExpense = async (id: string): Promise<void> => {
+  await prisma.expense.delete({ where: { id } })
+}
+
+export { createExpense, deleteExpense }

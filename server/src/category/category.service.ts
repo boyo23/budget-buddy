@@ -19,4 +19,8 @@ const createCategory = async (category: Omit<Category, 'id'>): Promise<Category>
   })
 }
 
-export { findCategory, createCategory }
+const deleteCategory = async (id: string): Promise<void> => {
+  await prisma.category.delete({ where: { id } })
+}
+
+export { findCategory, createCategory, deleteCategory }
