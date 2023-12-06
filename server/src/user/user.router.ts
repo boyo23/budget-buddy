@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import * as UserServices from '@/user/user.service'
+import * as UserServices from './user.service'
 
 dotenv.config()
 

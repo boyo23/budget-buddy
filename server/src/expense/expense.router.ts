@@ -2,8 +2,8 @@ import { Router } from 'express'
 import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
-import { authenticateToken } from '@/utils/jwt'
-import * as ExpenseServices from '@/expense/expense.service'
+import { authenticateToken } from '../utils/jwt'
+import * as ExpenseServices from './expense.service'
 
 export const expenseRouter = Router()
 

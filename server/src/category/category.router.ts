@@ -2,8 +2,8 @@ import { Router } from 'express'
 import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
-import { authenticateToken } from '@/utils/jwt'
-import * as CategoryServices from '@/category/category.service'
+import { authenticateToken } from '../utils/jwt'
+import * as CategoryServices from './category.service'
 
 export const categoryRouter = Router()
 

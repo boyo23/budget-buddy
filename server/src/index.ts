@@ -2,8 +2,9 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 
-import { userRouter } from '@/user/user.router'
-import { expenseRouter } from '@/expense/expense.router'
+import { categoryRouter } from './category/category.router'
+import { expenseRouter } from './expense/expense.router'
+import { userRouter } from './user/user.router'
 
 dotenv.config()
 
@@ -18,8 +19,9 @@ const app = express()
 app.use(express.json())
 app.use(cors({ credentials: true }))
 
-app.use('/user', userRouter)
+app.use('/category', categoryRouter)
 app.use('/expense', expenseRouter)
+app.use('/user', userRouter)
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`)
