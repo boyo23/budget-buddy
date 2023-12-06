@@ -7,7 +7,7 @@ const FormPassword = ({ name, inputName, register, defaultValue }) => {
       <input
         {...register(name)}
         // @ts-ignore
-        className="w-3/6 rounded-md border border-gray-400 text-xl font-serif"
+        className="w-3/6 rounded-md border border-gray-400 text-xl font-serif text-primary"
         type="password"
         name={name}
         defaultValue={defaultValue}

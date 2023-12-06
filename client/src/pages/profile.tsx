@@ -9,13 +9,25 @@ import FormButton from '@/components/forms/form-button'
 import { SavingsContext } from '@/context/savings-context'
 import { useForm } from 'react-hook-form'
 import FormPassword from '@/components/forms/form-password'
+import { Dialog, Typography } from '@material-tailwind/react'
 
 
 function Profile() {
   const [isHovering, setIsHovering] = useState(false)
-  const ctx = useContext(SavingsContext)
+  const [isDeleteClicked, setIsDeleteClicked] = useState(false)
+  const [isUpdateClicked, setIsUpdateClicked] = useState(false)
 
+  const updateClickHandler = () => {
+    setIsUpdateClicked(!isUpdateClicked)
+  }
+
+  const deleteClickHandler = () => {
+    setIsDeleteClicked(!isDeleteClicked)
+  }
+
+  const ctx = useContext(SavingsContext)
   const { register, watch, handleSubmit } = useForm()
+  // console.log(watch())
   return (
     <div className='dark:bg-primary h-screen'>
       <Navbar />
@@ -25,24 +37,24 @@ function Profile() {
         </div>
         <div className="mt-4 flex">
           <div className="w-full">
-            
+
             <div
               className=" min-h-[240px] flex justify-center rounded-md bg-white dark:bg-darkPrimary"
             >
-              <Form className={` w-2/6`} handleSubmit={handleSubmit}>
+              <Form className={` w-2/6`}>
                 <FormHeading inputHeading="PROFILE" />
                 <FormFieldsContainer>
                   {/* @ts-ignore */}
-                  <FormText defaultValue={ctx.userData.email} register={register} name="email" inputName="Email" />
-                  <FormText defaultValue={ctx.userData.firstName} register={register} name="firstName" inputName="First name" />
-                  <FormText defaultValue={ctx.userData.lastName} register={register} name="lastName" inputName="Last name" />
-                  <FormPassword defaultValue={ctx.userData.password} register={register} name="password" inputName="Password" />
+                  <FormText defaultValue={ctx.userData?.email} register={register} name="email" inputName="Email" isDisabled={true} />
+                  <FormText defaultValue={ctx.userData?.firstName} register={register} name="firstName" inputName="First name" />
+                  <FormText defaultValue={ctx.userData?.lastName} register={register} name="lastName" inputName="Last name" />
+                  <FormPassword defaultValue={ctx.userData?.password} register={register} name="password" inputName="Password" />
 
                   {ctx.profileIsChanged && <FormPassword register={register} name="newPassword" inputName="New password" />}
 
                   <FormButtonContainer>
-                    <FormButton buttonName="Update" buttonAction={null} />
-                    <FormButton buttonName="Close" buttonAction={ctx.clickThresholdHandler} />
+                    <FormButton type="button" buttonName="Update profile" buttonAction={updateClickHandler} />
+                    {/* <FormButton type="button" buttonName="Close" buttonAction={ctx.clickThresholdHandler} /> */}
                   </FormButtonContainer>
                 </FormFieldsContainer>
               </Form>
@@ -52,7 +64,18 @@ function Profile() {
 
 
                 <div className="flex justify-center">
+                  <Dialog open={isDeleteClicked} handler={deleteClickHandler}>
+                    <Form handleSubmit={handleSubmit}>
+                      <FormHeading inputHeading="Are you sure?" />
+                      <Typography className='m-auto text-center w-4/6 text-xl'>Deleting your account would permanently remove your account from our database which is irreversible.</Typography>
+                      <FormButtonContainer className="pb-6 px-6">
+                        <FormButton buttonAction={null} buttonName="Yes, I think." />
+                        <FormButton buttonAction={deleteClickHandler} buttonName="No." />
+                      </FormButtonContainer>
+                    </Form>
+                  </Dialog>
                   <button
+                    onClick={deleteClickHandler}
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
                     type="submit"
@@ -70,6 +93,25 @@ function Profile() {
           </div>
         </div>
       </div>
+      <Dialog open={isUpdateClicked} handler={updateClickHandler}>
+        <Form className={``} handleSubmit={handleSubmit}>
+          <FormHeading inputHeading="Profile" />
+          <FormFieldsContainer>
+            {/* @ts-ignore */}
+            <FormText defaultValue={ctx.userData?.email} register={register} name="email" inputName="Email" isDisabled={true} />
+            <FormText defaultValue={ctx.userData?.firstName} register={register} name="firstName" inputName="First name" />
+            <FormText defaultValue={ctx.userData?.lastName} register={register} name="lastName" inputName="Last name" />
+            <FormPassword defaultValue={ctx.userData?.password} register={register} name="password" inputName="Current password" />
+
+            <FormPassword register={register} name="newPassword" inputName="New password" />
+
+            <FormButtonContainer>
+              <FormButton buttonName="Update profile" buttonAction={null} />
+              <FormButton type="button" buttonName="Close" buttonAction={updateClickHandler} />
+            </FormButtonContainer>
+          </FormFieldsContainer>
+        </Form>
+      </Dialog>
     </div>
   )
 }

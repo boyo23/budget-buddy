@@ -64,7 +64,7 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
-    console.log("clicked theme!")
+    // console.log("clicked theme!")
   }, [theme])
 
   const handleThemeSwitch = () => {
@@ -82,7 +82,8 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const profileChangeHandler = () => {
-    setProfileIsChanged(true)
+    setProfileIsChanged(data)
+    // console.log(profileIsChanged)
   }
 
 
@@ -97,7 +98,7 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     setPieData(fetchedData)
-    console.log(goalIsClicked)
+    // console.log(goalIsClicked)
   }, [goalIsClicked])
 
   const goalClickHandler = () => {
@@ -105,15 +106,15 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const userData = {
-    "email": "lanutanenzo@gmail.com",
-    "firstName": "Achille Lorenzo",
-    "lastName": "Lanutan",
-    "password": "dianneMyLove",
+    email: "lanutanenzo@gmail.com",
+    firstName: "Achille Lorenzo",
+    lastName: "Lanutan",
+    password: "dianneMyLove",
   }
 
-  useEffect(() => {
-    console.log(profileIsChanged)
-  }, [profileIsChanged])
+  // useEffect(() => {
+  //   console.log(profileIsChanged)
+  // }, [profileIsChanged])
 
   return (
     <SavingsContext.Provider

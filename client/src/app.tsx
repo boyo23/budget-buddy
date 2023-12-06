@@ -3,7 +3,6 @@ import Home from '@/pages/home'
 import Profile from '@/pages/profile'
 import NotFound from '@/pages/not-found'
 import SavingsContextProvider from './context/savings-context'
-import { Footer } from './components/footer'
 
 export default function App() {
   return (
