@@ -1,12 +1,17 @@
-'use client'
-import React, { useState } from 'react'
+
+import React, { useState, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { SavingsContext } from '@/context/savings-context'
+import { Navigate, redirect, useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
+  const ctx = useContext(SavingsContext)
 
   const isLoginButtonDisabled = username === '' || password === ''
 
@@ -17,23 +22,35 @@ export default function Login() {
     setStateFunction(event.target.value)
   }
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    if (username !== '' && password !== '') {
-      setIsLoggedIn(true)
-      console.log('NICE')
-    }
-  }
-
   const { register, handleSubmit } = useForm()
-
-  const onSubmit = (data: any) => {
-    handleLogin(data)
-    console.log(data)
-  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
+
+  const handlePost = async (data: any) => {
+    console.log("Reached handlePost()")
+    const response = await fetch('http://localhost:3000/user/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      if(response.ok) {
+        const data = await response.json()
+        console.log(data)
+        ctx.setStatusCode(response.status)
+        const decodedToken = jwtDecode(data.token)
+        ctx.setUserToken(decodedToken)
+        console.log(decodedToken)
+        navigate("/protectedRoute")
+      } else {
+        navigate("/protectedRoute")
+      }
+  }
+  // useEffect(() => {
+  //   ctx.statusCode === 201 && navigate("/protectedRoute")
+  // }, [ctx.statusCode])
+
 
   return (
     <div className=" bg-gradient-to-r from-pink-400 to-pink-600">
@@ -48,7 +65,7 @@ export default function Login() {
 
         <div className="z-10 flex justify-center self-center">
           <div className="w-100 mx-auto ml-3 mr-3 rounded-3xl bg-white shadow-lg p-16">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit((data) => handlePost(data))}>
               <div className="mb-4">
                 <h3 className="text-5xl font-bold text-gray-800 text-center">Login </h3>
               </div>
@@ -60,7 +77,7 @@ export default function Login() {
                     className="w-full rounded-lg border border-gray-300 bg-slate-100 px-4 py-2 text-black focus:border-pink-400 focus:outline-none text-xl"
                     type="text"
                     {...register('username', { required: true })}
-                    onChange={(event) => handleInputChange(event, setUsername)}
+                  // onChange={(event) => handleInputChange(event, setUsername)}
                   />
                 </div>
 
@@ -70,7 +87,7 @@ export default function Login() {
                     className={`w-full content-center rounded-lg border border-gray-300 bg-slate-100 px-4 py-2 pr-6 text-black focus:border-pink-400 focus:outline-none !font-serif text-xl ${showPassword && `!font-sans`}`}
                     type={showPassword ? 'text' : 'password'}
                     {...register('password', { required: true })}
-                    // onChange={(event) => handleInputChange(event, setPassword)}
+                  // onChange={(event) => handleInputChange(event, setPassword)}
                   />
                   <svg
                     onClick={togglePasswordVisibility}
@@ -95,9 +112,11 @@ export default function Login() {
                 </div>
 
                 <button
-                  className={`flex w-full justify-center ${isLoginButtonDisabled ? 'cursor-not-allowed bg-pink-400' : 'bg-pink-600 hover:bg-pink-500'
-                    } cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-gray-100 transition duration-100 ease-in`}
-                  disabled={isLoginButtonDisabled}
+                  onClick={() => setIsLoggedIn(true)}
+                  type='submit'
+                // className={`flex w-full justify-center ${isLoginButtonDisabled ? 'cursor-not-allowed bg-pink-400' : 'bg-pink-600 hover:bg-pink-500'
+                //   } cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-gray-100 transition duration-100 ease-in`}
+                // disabled={isLoginButtonDisabled}
                 >
                   Login
                 </button>
