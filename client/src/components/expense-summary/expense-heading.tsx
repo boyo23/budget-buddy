@@ -17,7 +17,8 @@ export default function ExpenseHeading() {
   const { register, handleSubmit, watch } = useForm()
 
   return (
-    <div className="">
+    <div className="shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] dark:shadow-[rgba(243,53,121,1)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]
+    ">
       <div className="flex items-center justify-center">
         <div className="flex-grow">
           <h1 className="flex justify-center p-4 text-4xl font-bold text-primary dark:text-contrast">SUMMARY</h1>

@@ -23,41 +23,52 @@ type Expense = {
 
 export default function ExpenseAddForm(props: any) {
   const [expenseClicked, setExpenseClicked] = useState<boolean>(false)
-  const [expenseBody, setExpenseBody] = useState<Expense>({
-    price: 0,
-    quantity: 0,
-    date: new Date(),
-    paymentMethod: "",
-    categoryId: "",
-    userId: "",
-  })
+  // const [expenseBody, setExpenseBody] = useState({
+  //   price: 0,
+  //   quantity: 0,
+  //   date: new Date(),
+  //   paymentMethod: "",
+  //   categoryId: "",
+  //   userId: "",
+  // })
 
-  const addExpenseHandler = () => {
-    console.log(expenseClicked)
-    setExpenseClicked(!expenseClicked)
+  const handlePost = (data) => {
+    console.log("Reached handlePost()")
+    fetch('http://localhost:3000/expense', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
   }
 
-  const API_ADDEXPENSE = async () => {
-    const url = "https://localhost:3000/api/expense"
+  // const addExpenseHandler = () => {
+  //   console.log(expenseClicked)
+  //   setExpenseClicked(!expenseClicked)
+  // }
 
-    try {
-      await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(expenseBody)
-      })
-    } catch (err: any) {
-      console.log(err)
-    }
-  }
+  // const API_ADDEXPENSE = async () => {
+  //   const url = "https://localhost:3000/api/expense"
+
+  //   try {
+  //     await fetch(url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify(expenseBody)
+  //     })
+  //   } catch (err: any) {
+  //     console.log(err)
+  //   }
+  // }
 
   const ctx = useContext(SavingsContext)
 
   const { register, handleSubmit } = useForm()
   return (
-    <Form handleSubmit={handleSubmit} className="">
+    <Form handleSubmit={() => handleSubmit(data => handlePost(data))} className="">
       <FormHeading inputHeading="ADD EXPENSE" />
       <FormFieldsContainer>
         {/* @ts-ignore */}
@@ -66,18 +77,17 @@ export default function ExpenseAddForm(props: any) {
         <FormNumber register={register} name="quantity" inputName="Quantity" />
         <FormDate register={register} name="date" inputName="Date" />
         <FormSelect register={register} inputName="Payment method" name="paymentMethod">
-          <FormSelectOption optionName="Cash" optionValue="cash" />
-          <FormSelectOption optionName="GCash" optionValue="gcash" />
-          <FormSelectOption optionName="Credit card" optionValue="credit" />
-          <FormSelectOption optionName="Debit card" optionValue="debit" />
-          <FormSelectOption optionName="Paypal" optionValue="paypal" />
+          <FormSelectOption optionName="Cash" optionValue="CASH" />
+          <FormSelectOption optionName="GCash" optionValue="GCASH" />
+          <FormSelectOption optionName="Credit card" optionValue="CREDIT" />
+          <FormSelectOption optionName="Debit card" optionValue="DEBIT" />
         </FormSelect>
         <FormSelect register={register} inputName="Category" name="category">
-          <FormSelectOption optionName="Food" optionValue="food" />
-          <FormSelectOption optionName="Tuition" optionValue="tuition" />
-          <FormSelectOption optionName="Clothes" optionValue="clothes" />
-          <FormSelectOption optionName="Transportation" optionValue="transportation" />
-          <FormSelectOption optionName="General" optionValue="general" />
+          <FormSelectOption optionName="Food" optionValue="1" />
+          <FormSelectOption optionName="Tuition" optionValue="2" />
+          <FormSelectOption optionName="Clothes" optionValue="3" />
+          <FormSelectOption optionName="Transportation" optionValue="4" />
+          <FormSelectOption optionName="General" optionValue="5" />
         </FormSelect>
         <FormButtonContainer>
           <FormButton buttonName="Add"/>

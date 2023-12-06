@@ -142,7 +142,7 @@ export default function ExpenseOverview(props: any) {
     <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md">
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
-          {editIsClicked && <StickyExpenseNav/>}
+          {editIsClicked && <StickyExpenseNav action={() => editClickHandler()}/>}
           <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{monthName}</h1>
           <table className="w-full border border-gray-400">
             <thead className="bg-contrast text-2xl text-white dark:bg-primary">

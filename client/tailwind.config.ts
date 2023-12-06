@@ -24,6 +24,7 @@ const config: Config = {
         darkPrimary: '#0E132A',
         darkText: '#656ea6',
         darkWhite: '#F0F0F0',
+        darkCard: '#171a2e'
       },
     },
     fontFamily: {
