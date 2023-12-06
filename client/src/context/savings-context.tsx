@@ -1,4 +1,5 @@
 import { createContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react'
+import { redirect } from 'react-router-dom'
 
 type PieData = {
   categoryNames: string[]
@@ -27,7 +28,9 @@ type SavingsContextProps = {
   userData: {},
   profileIsChanged: boolean,
   setProfileIsChanged: Dispatch<SetStateAction<boolean>>
-  profileChangeHandler: () => void
+  profileChangeHandler: () => void,
+  userToken: string
+  setUserToken: Dispatch<SetStateAction<string>>
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
@@ -53,6 +56,8 @@ export const SavingsContext = createContext<SavingsContextProps>({
   profileIsChanged: false,
   setProfileIsChanged: () => {},
   profileChangeHandler: () => {},
+  userToken: "",
+  setUserToken: () => {},
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -61,10 +66,10 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [thresholdClicked, setThresholdClicked] = useState<boolean>(false)
   const [theme, setTheme] = useState("light")
   const [profileIsChanged, setProfileIsChanged] = useState<boolean>(false)
+  const [userToken, setUserToken] = useState("")
 
   useEffect(() => {
     theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
-    // console.log("clicked theme!")
   }, [theme])
 
   const handleThemeSwitch = () => {
@@ -136,7 +141,9 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         fetchedData,
         userData,
         profileIsChanged,
-        profileChangeHandler
+        profileChangeHandler,
+        userToken,
+        setUserToken
       }}
     >
       {children}
