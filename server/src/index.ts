@@ -4,6 +4,8 @@ import cors from 'cors'
 
 import { categoryRouter } from './category/category.router'
 import { expenseRouter } from './expense/expense.router'
+import { goalRouter } from './goal/goal.router'
+import { savingsRouter } from './savings/savings.router'
 import { userRouter } from './user/user.router'
 
 dotenv.config()
@@ -21,6 +23,8 @@ app.use(cors({ credentials: true }))
 
 app.use('/category', categoryRouter)
 app.use('/expense', expenseRouter)
+app.use('/goal', goalRouter)
+app.use('/savings', savingsRouter)
 app.use('/user', userRouter)
 
 app.listen(port, () => {

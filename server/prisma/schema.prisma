@@ -48,6 +48,7 @@ model Expense {
 model Goal {
   id         String   @id @default(uuid())
   name       String   @unique
+  amount     Float
   addedAt    DateTime @default(now())
   targetedAt DateTime
   userId     String
@@ -59,7 +60,6 @@ model Goal {
 model Savings {
   id     String   @id @default(uuid())
   amount Float
-  target Float
   date   DateTime
   goalId String
 

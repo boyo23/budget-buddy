@@ -3,7 +3,7 @@ import type { Expense } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const createExpense = async (expense: Expense): Promise<Expense> => {
+const createExpense = async (expense: Omit<Expense, 'id'>): Promise<Expense> => {
   const { name, price, quantity, date, paymentMethod, userId, categoryId } = expense
   return prisma.expense.create({
     data: {
