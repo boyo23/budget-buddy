@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from '@/pages/home'
 import Profile from '@/pages/profile'
 import Login from '@/pages/login'
@@ -14,6 +14,7 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login/>}></Route>
+          <Route path="/redirect" element={ <Navigate to="/home" /> } />
           <Route path="/register" element={<Register/>}></Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>

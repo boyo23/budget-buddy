@@ -2,13 +2,16 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { SavingsContext } from '@/context/savings-context'
-import { redirect } from 'react-router-dom'
+import { Navigate, redirect, useNavigate } from 'react-router-dom'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
+  const [statusCode, setStatusCode] = useState(0)
+  const ctx = useContext(SavingsContext)
 
   const isLoginButtonDisabled = username === '' || password === ''
 
@@ -37,6 +40,8 @@ export default function Login() {
     setShowPassword(!showPassword)
   }
 
+  
+
   const handlePost = async (data) => {
     console.log("Reached handlePost()")
     await fetch('http://localhost:3000/user/login', {
@@ -44,23 +49,19 @@ export default function Login() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json()
+        setStatusCode(response.status)
+      })
       .then((data) => {
         ctx.setUserToken(data)
         console.log(data)
       })
-      .then(() => {
-        if (ctx.userToken !== "") {
-          redirect("/home")
-          console.log("reached /home")
-        } else {
-          redirect("/login")
-          console.log("reached /login")
-        }
-      })
   }
+  useEffect(() => {
+    statusCode === 201 && navigate("/home")
+  }, [statusCode])
 
-  const ctx = useContext(SavingsContext)
 
   return (
     <div className=" bg-gradient-to-r from-pink-400 to-pink-600">
