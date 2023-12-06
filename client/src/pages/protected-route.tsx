@@ -6,14 +6,14 @@ import Home from './home'
 export default function ProtectedRoute() {
   const ctx = useContext(SavingsContext)
 
-  if (ctx.userToken) {
+  if (ctx.token) {
     return (
       <Navigate to="/home" replace />
     )
   } else {
 
     console.log(1)
-    console.log(ctx.userToken)
+    console.log(ctx.token)
     console.log(2)
 
     return (

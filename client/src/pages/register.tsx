@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -7,6 +8,7 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
   const [errorState, setErrorState] = useState<string>("");
+  const navigate = useNavigate()
 
   const isRegisterButtonDisabled =
     username === "" || email === "" || password === "";
@@ -51,13 +53,14 @@ const Register: React.FC = () => {
         const responseData = await response.json();
         console.log("Registration successful", responseData);
         setIsRegistered(true);
+        navigate("/login")
       }
     } catch (error) {
       console.error("Error during registration:", error);
     }
   };
 
-  console.log(watch());
+  // console.log(watch());
   return (
     <form onSubmit={handleSubmit(data => onSubmit(data))}>
       <div className=" bg-gradient-to-r from-pink-500 to-pink-400">

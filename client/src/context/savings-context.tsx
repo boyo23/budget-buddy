@@ -29,10 +29,12 @@ type SavingsContextProps = {
   profileIsChanged: boolean,
   setProfileIsChanged: Dispatch<SetStateAction<boolean>>
   profileChangeHandler: () => void,
-  userToken: any
-  setUserToken: Dispatch<SetStateAction<any>>,
+  token: any
+  setToken: Dispatch<SetStateAction<any>>,
   statusCode: number,
-  setStatusCode: Dispatch<SetStateAction<number>>
+  setStatusCode: Dispatch<SetStateAction<number>>,
+  bareToken: any,
+  setBareToken: Dispatch<SetStateAction<any>>
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
@@ -58,10 +60,12 @@ export const SavingsContext = createContext<SavingsContextProps>({
   profileIsChanged: false,
   setProfileIsChanged: () => {},
   profileChangeHandler: () => {},
-  userToken: null,
-  setUserToken: () => {},
+  token: null,
+  setToken: () => {},
   statusCode: 0,
-  setStatusCode: () => {}
+  setStatusCode: () => {},
+  bareToken: null,
+  setBareToken: () => {}
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -70,7 +74,8 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [thresholdClicked, setThresholdClicked] = useState<boolean>(false)
   const [theme, setTheme] = useState("light")
   const [profileIsChanged, setProfileIsChanged] = useState<boolean>(false)
-  const [userToken, setUserToken] = useState("")
+  const [token, setToken] = useState("")
+  const [bareToken, setBareToken] = useState("")
   const [statusCode, setStatusCode] = useState(0)
 
   useEffect(() => {
@@ -147,10 +152,12 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         userData,
         profileIsChanged,
         profileChangeHandler,
-        userToken,
-        setUserToken,
+        token,
+        setToken,
         statusCode,
-        setStatusCode
+        setStatusCode,
+        bareToken,
+        setBareToken
       }}
     >
       {children}

@@ -83,11 +83,12 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="Debit card" optionValue="DEBIT" />
         </FormSelect>
         <FormSelect register={register} inputName="Category" name="category">
-          <FormSelectOption optionName="Food" optionValue="1" />
+          
+          {/* <FormSelectOption optionName="Food" optionValue="1" />
           <FormSelectOption optionName="Tuition" optionValue="2" />
           <FormSelectOption optionName="Clothes" optionValue="3" />
           <FormSelectOption optionName="Transportation" optionValue="4" />
-          <FormSelectOption optionName="General" optionValue="5" />
+          <FormSelectOption optionName="General" optionValue="5" /> */}
         </FormSelect>
         <FormButtonContainer>
           <FormButton buttonName="Add"/>

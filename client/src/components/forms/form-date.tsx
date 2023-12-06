@@ -1,5 +1,5 @@
 // @ts-ignore
-export default function FormDate({name, inputName, register}) {
+export default function FormDate({ name, inputName, register }) {
   return (
     <div className="flex items-center justify-between">
       <h1 className="text-2xl dark:text-darkText">{inputName}</h1>

@@ -13,7 +13,7 @@ export default function Navbar() {
             <h1 className="font-bold text-contrast dark:text-contrast">BudgetBuddy</h1>
           </Link>
         </div>
-        <h1 className="text-3xl dark:text-contrast">Welcome, {ctx?.userToken?.username}</h1>
+        <h1 className="text-3xl dark:text-contrast">Welcome, {ctx?.token?.username}</h1>
         <div className="flex justify-between items-center">
           <DarkModeToggle />
           <Link to="/profile">

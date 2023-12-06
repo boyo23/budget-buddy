@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Collapse } from '@material-tailwind/react'
+import { Collapse, Tooltip } from '@material-tailwind/react'
 
 import ExpenseInfo from '@/components/expense-info/expense-info'
 import SavingsProgress from '@/components/savings-progress/savings-progress'
@@ -21,9 +21,9 @@ export default function Home() {
   const toggleOpenSavings = () => setOpenSavings((cur) => !cur)
   const ctx = useContext(SavingsContext)
 
-  if (ctx.userToken === "" && ctx.statusCode !== 401) {
-    return <Navigate to="/protectedRoute" replace />;
-  }
+  // if (ctx.userToken === "" && ctx.statusCode !== 401) {
+  //   return <Navigate to="/protectedRoute" replace />;
+  // }
 
   return (
     <div className="dark:bg-primary min-h-screen flex flex-col">
