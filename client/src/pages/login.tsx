@@ -40,7 +40,8 @@ export default function Login() {
         console.log(data)
         ctx.setStatusCode(response.status)
         const decodedToken = jwtDecode(data.token)
-        ctx.setUserToken(decodedToken)
+        ctx.setBareToken(data.token)
+        ctx.setToken(decodedToken)
         console.log(decodedToken)
         navigate("/protectedRoute")
       } else {

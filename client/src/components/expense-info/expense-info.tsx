@@ -46,6 +46,7 @@ export default function ExpenseInfo() {
       console.log(err)
     }
   }
+  
   const { register, handleSubmit, watch } = useForm()
 
   console.log(watch())
