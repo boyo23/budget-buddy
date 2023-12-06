@@ -28,6 +28,8 @@ function Profile() {
   const ctx = useContext(SavingsContext)
   const { register, watch, handleSubmit } = useForm()
   // console.log(watch())
+
+  
   return (
     <div className='dark:bg-primary h-screen'>
       <Navbar />

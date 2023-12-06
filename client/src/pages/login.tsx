@@ -35,6 +35,17 @@ export default function Login() {
     setShowPassword(!showPassword)
   }
 
+  const handlePost = (data) => {
+    console.log("Reached handlePost()")
+    fetch('http://localhost:3000/user/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+  }
+
   return (
     <div className=" bg-gradient-to-r from-pink-400 to-pink-600">
       <div className="inset-0 z-0 opacity-75"></div>
@@ -48,7 +59,7 @@ export default function Login() {
 
         <div className="z-10 flex justify-center self-center">
           <div className="w-100 mx-auto ml-3 mr-3 rounded-3xl bg-white shadow-lg p-16">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit((data) => handlePost(data))}>
               <div className="mb-4">
                 <h3 className="text-5xl font-bold text-gray-800 text-center">Login </h3>
               </div>
@@ -60,7 +71,7 @@ export default function Login() {
                     className="w-full rounded-lg border border-gray-300 bg-slate-100 px-4 py-2 text-black focus:border-pink-400 focus:outline-none text-xl"
                     type="text"
                     {...register('username', { required: true })}
-                    onChange={(event) => handleInputChange(event, setUsername)}
+                    // onChange={(event) => handleInputChange(event, setUsername)}
                   />
                 </div>
 
@@ -70,7 +81,7 @@ export default function Login() {
                     className={`w-full content-center rounded-lg border border-gray-300 bg-slate-100 px-4 py-2 pr-6 text-black focus:border-pink-400 focus:outline-none !font-serif text-xl ${showPassword && `!font-sans`}`}
                     type={showPassword ? 'text' : 'password'}
                     {...register('password', { required: true })}
-                    // onChange={(event) => handleInputChange(event, setPassword)}
+                  // onChange={(event) => handleInputChange(event, setPassword)}
                   />
                   <svg
                     onClick={togglePasswordVisibility}
@@ -95,9 +106,10 @@ export default function Login() {
                 </div>
 
                 <button
-                  className={`flex w-full justify-center ${isLoginButtonDisabled ? 'cursor-not-allowed bg-pink-400' : 'bg-pink-600 hover:bg-pink-500'
-                    } cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-gray-100 transition duration-100 ease-in`}
-                  disabled={isLoginButtonDisabled}
+                  type='submit'
+                // className={`flex w-full justify-center ${isLoginButtonDisabled ? 'cursor-not-allowed bg-pink-400' : 'bg-pink-600 hover:bg-pink-500'
+                //   } cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-gray-100 transition duration-100 ease-in`}
+                // disabled={isLoginButtonDisabled}
                 >
                   Login
                 </button>
