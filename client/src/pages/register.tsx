@@ -32,7 +32,7 @@ const Register: React.FC = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch("http://localhost:3000/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const Register: React.FC = () => {
 
   console.log(watch());
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(data => onSubmit(data))}>
       <div className=" bg-gradient-to-r from-pink-500 to-pink-400">
         <div className="opacity-75 inset-0 z-0"></div>
         <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
@@ -117,12 +117,12 @@ const Register: React.FC = () => {
                 <div>
                   <button
                     type="submit"
-                    className={`w-full flex justify-center ${
-                      isRegisterButtonDisabled
-                        ? "bg-pink-400 cursor-not-allowed"
-                        : "bg-pink-600 hover:bg-pink-500"
-                    } text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500`}
-                    disabled={isRegisterButtonDisabled}
+                    // className={`w-full flex justify-center ${
+                    //   isRegisterButtonDisabled
+                    //     ? "bg-pink-400 cursor-not-allowed"
+                    //     : "bg-pink-600 hover:bg-pink-500"
+                    // } text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500`}
+                    // disabled={isRegisterButtonDisabled}
                     // onClick={handleRegister}
                   >
                     Register

@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { SavingsContext } from '@/context/savings-context'
 import { Navigate, redirect, useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -10,7 +11,6 @@ export default function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
-  const [statusCode, setStatusCode] = useState(0)
   const ctx = useContext(SavingsContext)
 
   const isLoginButtonDisabled = username === '' || password === ''
@@ -22,45 +22,34 @@ export default function Login() {
     setStateFunction(event.target.value)
   }
 
-  // const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-  //   if (username !== '' && password !== '') {
-  //     setIsLoggedIn(true)
-  //     console.log('NICE')
-  //   }
-  // }
-
   const { register, handleSubmit } = useForm()
-
-  // const onSubmit = (data: any) => {
-  //   handleLogin(data)
-  //   console.log(data)
-  // }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
 
-  
-
-  const handlePost = async (data) => {
+  const handlePost = async (data: any) => {
     console.log("Reached handlePost()")
-    await fetch('http://localhost:3000/user/login', {
+    const response = await fetch('http://localhost:3000/user/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        response.json()
-        setStatusCode(response.status)
-      })
-      .then((data) => {
-        ctx.setUserToken(data)
+      if(response.ok) {
+        const data = await response.json()
         console.log(data)
-      })
+        ctx.setStatusCode(response.status)
+        const decodedToken = jwtDecode(data.token)
+        ctx.setUserToken(decodedToken)
+        console.log(decodedToken)
+        navigate("/protectedRoute")
+      } else {
+        navigate("/protectedRoute")
+      }
   }
-  useEffect(() => {
-    statusCode === 201 && navigate("/home")
-  }, [statusCode])
+  // useEffect(() => {
+  //   ctx.statusCode === 201 && navigate("/protectedRoute")
+  // }, [ctx.statusCode])
 
 
   return (

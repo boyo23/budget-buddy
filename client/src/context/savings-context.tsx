@@ -29,8 +29,10 @@ type SavingsContextProps = {
   profileIsChanged: boolean,
   setProfileIsChanged: Dispatch<SetStateAction<boolean>>
   profileChangeHandler: () => void,
-  userToken: string
-  setUserToken: Dispatch<SetStateAction<string>>
+  userToken: any
+  setUserToken: Dispatch<SetStateAction<any>>,
+  statusCode: number,
+  setStatusCode: Dispatch<SetStateAction<number>>
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
@@ -56,8 +58,10 @@ export const SavingsContext = createContext<SavingsContextProps>({
   profileIsChanged: false,
   setProfileIsChanged: () => {},
   profileChangeHandler: () => {},
-  userToken: "",
+  userToken: null,
   setUserToken: () => {},
+  statusCode: 0,
+  setStatusCode: () => {}
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -67,6 +71,7 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState("light")
   const [profileIsChanged, setProfileIsChanged] = useState<boolean>(false)
   const [userToken, setUserToken] = useState("")
+  const [statusCode, setStatusCode] = useState(0)
 
   useEffect(() => {
     theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
@@ -143,7 +148,9 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         profileIsChanged,
         profileChangeHandler,
         userToken,
-        setUserToken
+        setUserToken,
+        statusCode,
+        setStatusCode
       }}
     >
       {children}

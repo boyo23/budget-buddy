@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 import { Collapse } from '@material-tailwind/react'
 
 import ExpenseInfo from '@/components/expense-info/expense-info'
 import SavingsProgress from '@/components/savings-progress/savings-progress'
 import Navbar from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { SavingsContext } from '@/context/savings-context'
 
 import ExpenseCarousel from '@/components/expense-carousel/expense-carousel'
 // import Form from '@/components/form'
@@ -17,6 +19,11 @@ export default function Home() {
 
   const toggleOpenExpenses = () => setOpenExpenses((cur) => !cur)
   const toggleOpenSavings = () => setOpenSavings((cur) => !cur)
+  const ctx = useContext(SavingsContext)
+
+  if (ctx.userToken === "" && ctx.statusCode !== 401) {
+    return <Navigate to="/protectedRoute" replace />;
+  }
 
   return (
     <div className="dark:bg-primary min-h-screen flex flex-col">

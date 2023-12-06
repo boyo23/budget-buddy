@@ -10,6 +10,7 @@ import { SavingsContext } from '@/context/savings-context'
 import { useForm } from 'react-hook-form'
 import FormPassword from '@/components/forms/form-password'
 import { Dialog, Typography } from '@material-tailwind/react'
+import { Navigate } from 'react-router-dom'
 
 
 function Profile() {
@@ -29,7 +30,9 @@ function Profile() {
   const { register, watch, handleSubmit } = useForm()
   // console.log(watch())
 
-  
+  if (ctx.userToken === "" && ctx.statusCode !== 401) {
+    return <Navigate to="/protectedRoute" replace />;
+  }
   return (
     <div className='dark:bg-primary h-screen'>
       <Navbar />
@@ -47,10 +50,10 @@ function Profile() {
                 <FormHeading inputHeading="PROFILE" />
                 <FormFieldsContainer>
                   {/* @ts-ignore */}
-                  <FormText defaultValue={ctx.userData?.email} register={register} name="email" inputName="Email" isDisabled={true} />
-                  <FormText defaultValue={ctx.userData?.firstName} register={register} name="firstName" inputName="First name" />
-                  <FormText defaultValue={ctx.userData?.lastName} register={register} name="lastName" inputName="Last name" />
-                  <FormPassword defaultValue={ctx.userData?.password} register={register} name="password" inputName="Password" />
+                  <FormText defaultValue={ctx.userToken?.email} register={register} name="email" inputName="Email" isDisabled={true} />
+                  <FormText defaultValue={ctx.userToken?.firstName} register={register} name="firstName" inputName="First name" />
+                  <FormText defaultValue={ctx.userToken?.lastName} register={register} name="lastName" inputName="Last name" />
+                  <FormPassword defaultValue={ctx.userToken?.password} register={register} name="password" inputName="Password" />
 
                   {ctx.profileIsChanged && <FormPassword register={register} name="newPassword" inputName="New password" />}
 
@@ -100,10 +103,10 @@ function Profile() {
           <FormHeading inputHeading="Profile" />
           <FormFieldsContainer>
             {/* @ts-ignore */}
-            <FormText defaultValue={ctx.userData?.email} register={register} name="email" inputName="Email" isDisabled={true} />
-            <FormText defaultValue={ctx.userData?.firstName} register={register} name="firstName" inputName="First name" />
-            <FormText defaultValue={ctx.userData?.lastName} register={register} name="lastName" inputName="Last name" />
-            <FormPassword defaultValue={ctx.userData?.password} register={register} name="password" inputName="Current password" />
+            <FormText defaultValue={ctx.userToken?.email} register={register} name="email" inputName="Email" isDisabled={true} />
+            <FormText defaultValue={ctx.userToken?.firstName} register={register} name="firstName" inputName="First name" />
+            <FormText defaultValue={ctx.userToken?.lastName} register={register} name="lastName" inputName="Last name" />
+            <FormPassword defaultValue={ctx.userToken?.password} register={register} name="password" inputName="Current password" />
 
             <FormPassword register={register} name="newPassword" inputName="New password" />
 
