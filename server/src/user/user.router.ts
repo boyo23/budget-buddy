@@ -1,9 +1,20 @@
+import dotenv from 'dotenv'
 import { Router } from 'express'
-import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
-import crypto from 'crypto'
+import type { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 import * as UserServices from './user.service'
+
+dotenv.config()
+
+if (!process.env.SECRET_ACCESS_KEY) {
+  console.error('Error: Environment variable `SECRET_ACCESS_KEY` does not exist!')
+  process.exit(1)
+}
+
+const secretKey: string = process.env.SECRET_ACCESS_KEY as string
 
 export const userRouter = Router()
 
@@ -12,7 +23,7 @@ userRouter.post(
   [
     body('username').custom(async (value) => {
       if (await UserServices.findUser(value)) {
-        throw new Error('Username is already in use')
+        throw new Error('Username already exist')
       }
     }),
     /* prettier-ignore */
@@ -27,7 +38,7 @@ userRouter.post(
       .normalizeEmail()
       .custom(async (value) => {
         if (await UserServices.findUser(value)) {
-          throw new Error('Username is already in use')
+          throw new Error('Email already in use')
         }
       }),
   ],
@@ -36,18 +47,41 @@ userRouter.post(
       const errors = validationResult(request)
 
       if (!errors.isEmpty()) {
-        return response.status(400).json({ errors: errors.array() })
+        return response.status(400).json({ message: errors.array() })
       }
 
-      const hashedPassword = crypto.createHash('sha256').update(request.body.password).digest('hex')
+      const hashedPassword = await bcrypt.hash(request.body.password, 10)
+
       const user = { ...request.body, password: hashedPassword }
 
       const newUser = await UserServices.createUser(user)
 
       return response.status(201).json(newUser)
     } catch (error: any) {
-      console.error('Error creating user:', error)
-      return response.status(500).json({ error: 'Internal Server Error' })
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }
   },
 )
+
+userRouter.post('/login', async (request: Request, response: Response) => {
+  try {
+    const user = await UserServices.findUser(request.body.username)
+
+    if (!user) {
+      return response.status(404).json({ message: 'Username not found' })
+    }
+
+    const { password, ...userInfo } = user
+    const isPasswordValid = await bcrypt.compare(request.body.password, password)
+
+    if (!isPasswordValid) {
+      return response.status(401).json({ message: 'Incorrect password' })
+    }
+
+    const token = jwt.sign(userInfo, secretKey, { expiresIn: '1h' })
+
+    return response.status(201).json({ token, message: 'Login sucessful' })
+  } catch (error: any) {
+    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+  }
+})

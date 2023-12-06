@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "target": "ES2022",
-    "typeRoots": ["./node_modules/@types"],
     "module": "commonjs",
     "moduleResolution": "node",
     "rootDir": "src",
@@ -16,6 +12,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "types.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "files": ["./types.d.ts"],
+  "include": ["src/**/*"]
 }

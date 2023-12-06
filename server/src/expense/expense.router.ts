@@ -2,6 +2,7 @@ import { Router } from 'express'
 import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
+import { authenticateToken } from '../utils/jwt'
 import * as ExpenseServices from './expense.service'
 
 export const expenseRouter = Router()
@@ -15,10 +16,12 @@ expenseRouter.post(
     body('paymentMethod')
       .isString()
       .isIn(['CASH', 'GCASH', 'CREDIT', 'DEBIT'])
-      .withMessage((value) => `${value} not included in the available payment methods`),
-    body('userId').isString(),
-    body('categoryId').isString(),
+      .withMessage((value) => `The payment method ${value} is invalid.`),
+    body('date')
+      .matches(/^\d{4}-\d{2}-\d{2}$/)
+      .withMessage('Invalid date format. Enter the date in the following format: YYYY-MM-DD.'),
   ],
+  authenticateToken,
   async (request: Request, response: Response) => {
     try {
       const errors = validationResult(request)
@@ -31,8 +34,7 @@ expenseRouter.post(
 
       return response.status(201).json(newExpense)
     } catch (error: any) {
-      console.error('Error creating expense:', error)
-      return response.status(500).json({ error: 'Internal Server Error' })
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }
   },
 )
