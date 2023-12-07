@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
+import ImageAnimation from "@/components/image-animation";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -66,13 +67,17 @@ const Register: React.FC = () => {
       <div className=" bg-gradient-to-r from-pink-500 to-pink-400">
         <div className="opacity-75 inset-0 z-0"></div>
         <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
-          <div className="flex-col flex self-center p-10 sm:max-w-5xl xl:max-w-2xl z-10 mr-40 mb-60">
-            <div className="self-start hidden lg:flex flex-col text-white">
-              <h1 className="mb-3 font-bold text-7xl">BudgetBuddy</h1>
-              <p className="text-2xl">
-                {" "}
-                Ready to start your journey to Financial Wellness?{" "}
-              </p>
+          <div className="flex-col flex self-center p-10 sm:max-w-3xl xl:max-w-1xl z-10 mr-40">
+            <div className='relative top-28'>
+              <ImageAnimation
+                src_1="https://i.ibb.co/dKSyW6n/bb-2.png"
+                src_2="https://i.ibb.co/DbbfMNn/bb-1.png" />
+            </div>
+            <div className="hidden flex-col self-start text-white lg:flex relative right-28 bottom-72">
+              <h1 className="mb-3 text-7xl font-bold z-15
+whitespace-nowrap">Welcome to BudgetBuddy </h1>
+              <p className="pr-3 text-3xl text-white opacity-[0.7] z-15 text-[#4b011b]
+">your ultimate sidekick for crushing expenses</p>
             </div>
           </div>
           <div className="flex justify-center self-center z-10">
@@ -90,7 +95,7 @@ const Register: React.FC = () => {
                     type="text"
                     // value={username}
                     {...register("username")}
-                    // onChange={(e) => handleInputChange(e, setUsername)}
+                  // onChange={(e) => handleInputChange(e, setUsername)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -102,7 +107,7 @@ const Register: React.FC = () => {
                     type="email"
                     // value={email}
                     {...register("email", { required: true })}
-                    // onChange={(e) => handleInputChange(e, setEmail)}
+                  // onChange={(e) => handleInputChange(e, setEmail)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -120,13 +125,13 @@ const Register: React.FC = () => {
                 <div>
                   <button
                     type="submit"
-                    // className={`w-full flex justify-center ${
-                    //   isRegisterButtonDisabled
-                    //     ? "bg-pink-400 cursor-not-allowed"
-                    //     : "bg-pink-600 hover:bg-pink-500"
-                    // } text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500`}
-                    // disabled={isRegisterButtonDisabled}
-                    // onClick={handleRegister}
+                  // className={`w-full flex justify-center ${
+                  //   isRegisterButtonDisabled
+                  //     ? "bg-pink-400 cursor-not-allowed"
+                  //     : "bg-pink-600 hover:bg-pink-500"
+                  // } text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500`}
+                  // disabled={isRegisterButtonDisabled}
+                  // onClick={handleRegister}
                   >
                     Register
                   </button>

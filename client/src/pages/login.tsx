@@ -16,7 +16,6 @@ export default function Login() {
   const navigate = useNavigate()
   const ctx = useContext(SavingsContext)
 
-  const isLoginButtonDisabled = username === '' || password === ''
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -39,13 +38,7 @@ export default function Login() {
       body: JSON.stringify(data),
     })
     if (response.ok) {
-      const data = await response.json()
-      console.log(data)
-      ctx.setStatusCode(response.status)
-      const decodedToken = jwtDecode(data.token)
-      ctx.setBareToken(data.token)
-      ctx.setToken(decodedToken)
-      console.log(decodedToken)
+      
       navigate("/protectedRoute")
     } else {
       navigate("/protectedRoute")
@@ -61,14 +54,16 @@ export default function Login() {
       <div className="inset-0 z-0 opacity-75"></div>
       <div className="mx-0 min-h-screen justify-center sm:flex sm:flex-row">
         <div className="z-10 flex flex-col self-center p-20 sm:max-w-5xl xl:max-w-6xl relative">
-          <ImageAnimation
-            src_1="https://i.ibb.co/dKSyW6n/bb-2.png"
-            src_2="https://i.ibb.co/DbbfMNn/bb-1.png" />
-          <div className="hidden flex-col self-start text-white lg:flex relative right-8">
-            <h1 className="mb-3 text-7xl font-bold z-15 text-transparent 
-">Welcome back, Buddy </h1>
-            <p className="pr-3 text-3xl text-white opacity-[0.7] z-15 hidden
-">Ready for another planning? Let's GO!</p>
+          <div className='relative top-16'>
+            <ImageAnimation
+              src_1="https://i.ibb.co/dKSyW6n/bb-2.png"
+              src_2="https://i.ibb.co/DbbfMNn/bb-1.png" />
+          </div>
+          <div className="hidden flex-col self-start text-white lg:flex relative right-8 bottom-80">
+            <h1 className=" text-7xl font-bold
+">Welcome to BudgetBuddy </h1>
+            <p className="pr-3 text-3xl text-white opacity-[0.7] z-15 text-[#4b011b]
+">your ultimate sidekick for crushing expenses</p>
           </div>
         </div>
 
@@ -76,7 +71,7 @@ export default function Login() {
           <div className="w-100 mx-auto ml-3 mr-3 rounded-3xl bg-white shadow-lg p-16">
             <form onSubmit={handleSubmit((data) => handlePost(data))}>
               <div className="mb-4">
-                <h3 className="text-5xl font-bold text-gray-800 text-center">Login </h3>
+                <h3 className="text-5xl font-bold text-gray-800 text-center ">Login</h3>
               </div>
               <div className="space-y-5">
 
@@ -123,9 +118,7 @@ export default function Login() {
                 <button
                   onClick={() => setIsLoggedIn(true)}
                   type='submit'
-                // className={`flex w-full justify-center ${isLoginButtonDisabled ? 'cursor-not-allowed bg-pink-400' : 'bg-pink-600 hover:bg-pink-500'
-                //   } cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-gray-100 transition duration-100 ease-in`}
-                // disabled={isLoginButtonDisabled}
+                className={`flex w-full justify-center cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-white bg-pink-600 hover:bg-pink-700 transition duration-100 ease-in`}
                 >
                   Login
                 </button>
