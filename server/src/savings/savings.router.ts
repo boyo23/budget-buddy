@@ -25,9 +25,9 @@ savingsRouter.post(
         return response.status(400).json({ errors: errors.array() })
       }
 
-      const savings = await SavingsServices.createSavings(request.body)
+      const newSavings = await SavingsServices.createSavings(request.body)
 
-      return response.status(201).json(savings)
+      return response.status(201).json(newSavings)
     } catch (error: any) {
       return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }

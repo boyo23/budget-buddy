@@ -23,9 +23,9 @@ categoryRouter.post(
         return response.status(400).json({ message: errors.array() })
       }
 
-      const category = await CategoryServices.createCategory(request.body)
+      const newCategory = await CategoryServices.createCategory({ ...request.body, userId: request.user.id })
 
-      return response.status(201).json(category)
+      return response.status(201).json(newCategory)
     } catch (error: any) {
       return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }

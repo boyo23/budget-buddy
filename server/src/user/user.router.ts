@@ -5,6 +5,7 @@ import type { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
+import { authenticateToken } from 'src/utils/jwt'
 import * as UserServices from './user.service'
 
 dotenv.config()
@@ -17,6 +18,14 @@ if (!process.env.SECRET_ACCESS_KEY) {
 const secretKey: string = process.env.SECRET_ACCESS_KEY as string
 
 export const userRouter = Router()
+
+userRouter.get('/', authenticateToken, async (request: Request, response: Response) => {
+  try {
+    return response.status(201).json(request.user)
+  } catch (error: any) {
+    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+  }
+})
 
 userRouter.post(
   '/register',
@@ -51,9 +60,7 @@ userRouter.post(
       }
 
       const hashedPassword = await bcrypt.hash(request.body.password, 10)
-
       const user = { ...request.body, password: hashedPassword }
-
       const newUser = await UserServices.createUser(user)
 
       return response.status(201).json(newUser)
@@ -80,7 +87,7 @@ userRouter.post('/login', async (request: Request, response: Response) => {
 
     const token = jwt.sign(userInfo, secretKey, { expiresIn: '1h' })
 
-    return response.status(201).json({ token, message: 'Login sucessful' })
+    return response.status(201).json(token)
   } catch (error: any) {
     return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
   }
