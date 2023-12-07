@@ -32,21 +32,30 @@ export default function Login() {
 
   const handlePost = async (data: any) => {
     console.log("Reached handlePost()")
-    const response = await fetch('http://localhost:3000/user/login', {
+    fetch('http://localhost:3000/user/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json' 
+      },
       body: JSON.stringify(data),
-    })
-    if (response.ok) {
-      
-      navigate("/protectedRoute")
-    } else {
-      navigate("/protectedRoute")
-    }
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    }).then((json) => {
+      ctx.setToken(json)
+    }).catch((error) => {
+      console.error('Error during fetch:', error);
+    }).finally(() => {
+      navigate('/protectedRoute')
+    });
+    
   }
+
   // useEffect(() => {
-  //   ctx.statusCode === 201 && navigate("/protectedRoute")
-  // }, [ctx.statusCode])
+  //   console.log(ctx.token)
+  // }, [ctx.loginIsClicked])
 
 
   return (
@@ -116,7 +125,7 @@ export default function Login() {
                 </div>
 
                 <button
-                  onClick={() => setIsLoggedIn(true)}
+                  onClick={() => ctx.setLoginIsClicked(!ctx.loginIsClicked)}
                   type='submit'
                 className={`flex w-full justify-center cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-white bg-pink-600 hover:bg-pink-700 transition duration-100 ease-in`}
                 >

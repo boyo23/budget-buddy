@@ -33,39 +33,43 @@ type SavingsContextProps = {
   setToken: Dispatch<SetStateAction<any>>,
   statusCode: number,
   setStatusCode: Dispatch<SetStateAction<number>>,
-  bareToken: any,
-  setBareToken: Dispatch<SetStateAction<any>>
+  userInfo: any,
+  setUserInfo: Dispatch<SetStateAction<any>>,
+  loginIsClicked: boolean,
+  setLoginIsClicked: Dispatch<SetStateAction<boolean>>
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
   goalIsClicked: false,
-  setGoalIsClicked: () => {},
-  goalClickHandler: () => {},
-  addExpenseHandler: () => {},
-  addCategoryHandler: () => {},
+  setGoalIsClicked: () => { },
+  goalClickHandler: () => { },
+  addExpenseHandler: () => { },
+  addCategoryHandler: () => { },
   categoryClicked: false,
-  setCategoryClicked: () => {},
+  setCategoryClicked: () => { },
   expenseClicked: false,
-  setExpenseClicked: () => {},
+  setExpenseClicked: () => { },
   pieData: { categoryNames: [], data: [] },
-  setPieData: () => {},
+  setPieData: () => { },
   thresholdClicked: false,
-  setThresholdClicked: () => {},
-  clickThresholdHandler: () => {},
+  setThresholdClicked: () => { },
+  clickThresholdHandler: () => { },
   theme: "light",
-  setTheme: () => {},
-  handleThemeSwitch: () => {},
+  setTheme: () => { },
+  handleThemeSwitch: () => { },
   fetchedData: {},
   userData: {},
   profileIsChanged: false,
-  setProfileIsChanged: () => {},
-  profileChangeHandler: () => {},
+  setProfileIsChanged: () => { },
+  profileChangeHandler: () => { },
   token: null,
-  setToken: () => {},
+  setToken: () => { },
   statusCode: 0,
-  setStatusCode: () => {},
-  bareToken: null,
-  setBareToken: () => {}
+  setStatusCode: () => { },
+  userInfo: null,
+  setUserInfo: () => { },
+  loginIsClicked: false,
+  setLoginIsClicked: () => {}
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -74,8 +78,10 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [thresholdClicked, setThresholdClicked] = useState<boolean>(false)
   const [theme, setTheme] = useState("light")
   const [profileIsChanged, setProfileIsChanged] = useState<boolean>(false)
-  const [token, setToken] = useState("")
-  const [bareToken, setBareToken] = useState("")
+  const [token, setToken] = useState(null)
+  const [ loginIsClicked, setLoginIsClicked ] = useState<boolean>(false)
+  const [userInfo, setUserInfo] = useState({})
+  // const [bareToken, setBareToken] = useState("")
   const [statusCode, setStatusCode] = useState(0)
 
   useEffect(() => {
@@ -85,6 +91,11 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const handleThemeSwitch = () => {
     setTheme(theme === "dark" ? "light" : "dark")
   }
+
+  const loginHandler = (newToken: string) => {
+    // @ts-ignore
+    setToken(newToken)
+  } 
 
   const [pieData, setPieData] = useState<PieData>({
     categoryNames: [],
@@ -96,10 +107,10 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
     data: [3000, 1800, 30000, 5000, 6000],
   }
 
-  const profileChangeHandler = () => {
-    setProfileIsChanged(data)
-    // console.log(profileIsChanged)
-  }
+  // const profileChangeHandler = () => {
+  //   setProfileIsChanged(data)
+  //   // console.log(profileIsChanged)
+  // }
 
 
   const addCategoryHandler = () => {
@@ -111,10 +122,10 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
     setThresholdClicked(!thresholdClicked)
   }
 
-  useEffect(() => {
-    setPieData(fetchedData)
-    // console.log(goalIsClicked)
-  }, [goalIsClicked])
+  // useEffect(() => {
+  //   setPieData(fetchedData)
+  //   // console.log(goalIsClicked)
+  // }, [goalIsClicked])
 
   const goalClickHandler = () => {
     setGoalIsClicked(!goalIsClicked)
@@ -130,9 +141,14 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   // useEffect(() => {
   //   console.log(profileIsChanged)
   // }, [profileIsChanged])
+  // useEffect(() => {
+  //   console.log(`${token}`)
+  //   // console.log(1)
+  // }, [loginIsClicked])
 
   return (
     <SavingsContext.Provider
+      // @ts-expect-error
       value={{
         goalIsClicked,
         setGoalIsClicked,
@@ -150,14 +166,18 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         handleThemeSwitch,
         fetchedData,
         userData,
-        profileIsChanged,
-        profileChangeHandler,
+        // profileIsChanged,
+        // profileChangeHandler,
         token,
         setToken,
         statusCode,
         setStatusCode,
-        bareToken,
-        setBareToken
+        // @ts-ignore
+        userInfo,
+        // @ts-ignore
+        setUserInfo,
+        loginIsClicked,
+        setLoginIsClicked
       }}
     >
       {children}

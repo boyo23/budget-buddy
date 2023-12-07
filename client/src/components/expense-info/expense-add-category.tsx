@@ -16,35 +16,30 @@ export default function ExpenseAddCategory({ close }) {
   // @ts-ignore
   const [ categoryBody, setCategoryBody ] = useState({
     name: "",
-    userId: ""
   })
 
 
   const handlePost = async (data: any) => {
-    console.log("Reached handlePost()")
-
-    setCategoryBody({
-      name: data?.category,
-      userId: ctx.token.id
-    })
-    
-    const response = await fetch('http://localhost:3000/category', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ctx.bareToken}`,
-      },
-      body: JSON.stringify(categoryBody),
-    })
-      if(!response.ok) {
-        const data = await response.json()
-        console.log(data.message)
-        console.log()
-      } else {
-        console.error("OTIN")
-        console.log(categoryBody)
-      }
-  }
+    fetch('http://localhost:3000/category/create', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${ctx.token}`,
+      'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(data),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    console.log(response)
+    return response.json();
+  }).then((json) => {
+    console.log(json)
+  }).catch((error) => {
+    console.error('Error during fetch:', error);
+  }).finally(() => {
+    console.log("Post")
+  });}
 
   useEffect(() => {
     console.log(categoryBody)
@@ -57,7 +52,7 @@ export default function ExpenseAddCategory({ close }) {
       <FormHeading inputHeading="CATEGORY" />
       <FormFieldsContainer>
         {/* @ts-ignore */}
-        <FormText register={register} name="category" inputName="New category" />
+        <FormText register={register} name="name" inputName="New category" />
         <FormButtonContainer>
           <FormButton buttonName="Add" buttonAction={null} />
           <FormButton buttonName="Close" buttonAction={close} />

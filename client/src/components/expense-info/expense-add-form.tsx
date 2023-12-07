@@ -23,6 +23,7 @@ type Expense = {
 
 export default function ExpenseAddForm(props: any) {
   const [expenseClicked, setExpenseClicked] = useState<boolean>(false)
+  const [category, setCategory] = useState([])
   // const [expenseBody, setExpenseBody] = useState({
   //   price: 0,
   //   quantity: 0,
@@ -32,16 +33,18 @@ export default function ExpenseAddForm(props: any) {
   //   userId: "",
   // })
 
-  const handlePost = (data) => {
-    console.log("Reached handlePost()")
-    fetch('http://localhost:3000/expense', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-  }
+
+
+  // const handlePost = (data) => {
+  //   console.log("Reached handlePost()")
+  //   fetch('http://localhost:3000/expense', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => console.log(data))
+  // }
 
   // const addExpenseHandler = () => {
   //   console.log(expenseClicked)
@@ -63,10 +66,59 @@ export default function ExpenseAddForm(props: any) {
   //     console.log(err)
   //   }
   // }
-
+  
   const ctx = useContext(SavingsContext)
+  
+    useEffect(() => {
 
-  const { register, handleSubmit } = useForm()
+      fetch('http://localhost:3000/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json' 
+        },
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      }).then((json) => {
+        ctx.setUserInfo(json)
+      }).catch((error) => {
+        console.error('Error during fetch:', error);
+      }).finally(() => {
+        console.log(ctx.userInfo)
+        console.log(ctx.token)
+
+      });
+    }, [expenseClicked])
+
+    const handlePost = async (data: any) => {
+      fetch('http://localhost:3000/expense/create', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+        // if (!response.ok) {
+        //   throw new Error(`HTTP error! Status: ${response.status}`);
+        // }
+        return response.json();
+        
+      }).then((data) => {
+        console.log(data?.errors)
+      }).catch((error) => {
+        console.error('Error during fetch:', error);
+      }).finally(() => {
+        console.log(ctx.userInfo)
+      });
+      
+    }
+
+  const { register, handleSubmit, watch } = useForm()
+  console.log(watch())
   return (
     <Form handleSubmit={() => handleSubmit(data => handlePost(data))} className="">
       <FormHeading inputHeading="ADD EXPENSE" />
@@ -82,8 +134,11 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="Credit card" optionValue="CREDIT" />
           <FormSelectOption optionName="Debit card" optionValue="DEBIT" />
         </FormSelect>
-        <FormSelect register={register} inputName="Category" name="category">
+        <FormSelect register={register} inputName="Category" name="categoryId">
           
+          {ctx.userInfo.categories.map(({name, id}) => (
+            <FormSelectOption optionName={name} optionValue={id}/>
+          ))}
           {/* <FormSelectOption optionName="Food" optionValue="1" />
           <FormSelectOption optionName="Tuition" optionValue="2" />
           <FormSelectOption optionName="Clothes" optionValue="3" />
@@ -91,7 +146,7 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="General" optionValue="5" /> */}
         </FormSelect>
         <FormButtonContainer>
-          <FormButton buttonName="Add"/>
+          <FormButton buttonAction={null} buttonName="Add"/>
           <FormButton type="button" buttonName="Close" buttonAction={props.close} />
         </FormButtonContainer>
       </FormFieldsContainer>
