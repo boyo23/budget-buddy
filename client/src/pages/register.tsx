@@ -81,9 +81,9 @@ whitespace-nowrap">Welcome to BudgetBuddy </h1>
             </div>
           </div>
           <div className="flex justify-center self-center z-10">
-            <div className="p-12 bg-white mx-auto rounded-2xl w-100 ">
+            <div className="p-12 bg-white  rounded-2xl w-100 ">
               <div className="mb-4">
-                <h3 className="font-bold text-4xl text-gray-800">Register</h3>
+                <h3 className="font-bold text-4xl text-gray-800 text-center">Register</h3>
               </div>
               <div className="space-y-5">
                 <div className="space-y-2">
@@ -125,13 +125,7 @@ whitespace-nowrap">Welcome to BudgetBuddy </h1>
                 <div>
                   <button
                     type="submit"
-                  // className={`w-full flex justify-center ${
-                  //   isRegisterButtonDisabled
-                  //     ? "bg-pink-400 cursor-not-allowed"
-                  //     : "bg-pink-600 hover:bg-pink-500"
-                  // } text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500`}
-                  // disabled={isRegisterButtonDisabled}
-                  // onClick={handleRegister}
+                    className={`flex w-full justify-center cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-white bg-pink-600 hover:bg-pink-700 transition duration-100 ease-in`}
                   >
                     Register
                   </button>
