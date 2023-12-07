@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form'
 import { SavingsContext } from '@/context/savings-context'
 import { Navigate, redirect, useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
-import anime from "animejs/lib/anime.es.js"
+import { motion } from "framer-motion"
+import ImageAnimation from '@/components/image-animation'
 
 
 export default function Login() {
@@ -60,32 +61,14 @@ export default function Login() {
       <div className="inset-0 z-0 opacity-75"></div>
       <div className="mx-0 min-h-screen justify-center sm:flex sm:flex-row">
         <div className="z-10 flex flex-col self-center p-20 sm:max-w-5xl xl:max-w-6xl relative">
-          <div className="hidden flex-col self-start text-white lg:flex relative">
-            <h1 className="mb-3 text-7xl font-bold z-15">Welcome back, Buddy </h1>
-            <p className="pr-3 text-3xl text-white opacity-[0.7] z-15">Ready for another planning? Let's GO!</p>
-            <img
-              style={{
-                transform: "skew(4deg)",
-                width: "1000px",
-                zIndex: 2, // higher z-index for the first image
-                animation: "swapImages 10s infinite", // 10s duration, infinite loop
-              }}
-              src="https://i.ibb.co/DbbfMNn/bb-1.png"
-              alt="bb-1"
-              className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] shadow-md absolute rounded-md"
-            />
-            <img
-              style={{
-                transform: "skew(4deg) translate(50px, 150px)",
-                height: "auto",
-                width: "1000px",
-                zIndex: 1, // lower z-index for the second image
-                animation: "swapImages 10s infinite", // 10s duration, infinite loop
-              }}
-              src="https://i.ibb.co/dKSyW6n/bb-2.png"
-              alt="bb-1"
-              className="shadow-[1.0px_4.0px_8.0px_rgba(0,0,0,0.38)] absolute rounded-md"
-            />
+          <ImageAnimation
+            src_1="https://i.ibb.co/dKSyW6n/bb-2.png"
+            src_2="https://i.ibb.co/DbbfMNn/bb-1.png" />
+          <div className="hidden flex-col self-start text-white lg:flex relative right-8">
+            <h1 className="mb-3 text-7xl font-bold z-15 text-transparent 
+">Welcome back, Buddy </h1>
+            <p className="pr-3 text-3xl text-white opacity-[0.7] z-15 hidden
+">Ready for another planning? Let's GO!</p>
           </div>
         </div>
 
