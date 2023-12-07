@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form'
 import { SavingsContext } from '@/context/savings-context'
 import { Navigate, redirect, useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
+import { motion } from "framer-motion"
+import ImageAnimation from '@/components/image-animation'
+
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -35,18 +38,18 @@ export default function Login() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-      if(response.ok) {
-        const data = await response.json()
-        console.log(data)
-        ctx.setStatusCode(response.status)
-        const decodedToken = jwtDecode(data.token)
-        ctx.setBareToken(data.token)
-        ctx.setToken(decodedToken)
-        console.log(decodedToken)
-        navigate("/protectedRoute")
-      } else {
-        navigate("/protectedRoute")
-      }
+    if (response.ok) {
+      const data = await response.json()
+      console.log(data)
+      ctx.setStatusCode(response.status)
+      const decodedToken = jwtDecode(data.token)
+      ctx.setBareToken(data.token)
+      ctx.setToken(decodedToken)
+      console.log(decodedToken)
+      navigate("/protectedRoute")
+    } else {
+      navigate("/protectedRoute")
+    }
   }
   // useEffect(() => {
   //   ctx.statusCode === 201 && navigate("/protectedRoute")
@@ -57,10 +60,15 @@ export default function Login() {
     <div className=" bg-gradient-to-r from-pink-400 to-pink-600">
       <div className="inset-0 z-0 opacity-75"></div>
       <div className="mx-0 min-h-screen justify-center sm:flex sm:flex-row">
-        <div className="z-10 flex flex-col self-center p-20 sm:max-w-5xl xl:max-w-6xl">
-          <div className="hidden flex-col self-start text-white lg:flex">
-            <h1 className="mb-3 text-7xl font-bold">Welcome back, Buddy </h1>
-            <p className="pr-3 text-3xl text-white opacity-[0.7]">Ready for another planning? Let's GO!</p>
+        <div className="z-10 flex flex-col self-center p-20 sm:max-w-5xl xl:max-w-6xl relative">
+          <ImageAnimation
+            src_1="https://i.ibb.co/dKSyW6n/bb-2.png"
+            src_2="https://i.ibb.co/DbbfMNn/bb-1.png" />
+          <div className="hidden flex-col self-start text-white lg:flex relative right-8">
+            <h1 className="mb-3 text-7xl font-bold z-15 text-transparent 
+">Welcome back, Buddy </h1>
+            <p className="pr-3 text-3xl text-white opacity-[0.7] z-15 hidden
+">Ready for another planning? Let's GO!</p>
           </div>
         </div>
 
@@ -136,5 +144,3 @@ export default function Login() {
     </div>
   )
 }
-
-
