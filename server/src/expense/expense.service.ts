@@ -18,8 +18,14 @@ const createExpense = async (expense: Omit<Expense, 'id'>): Promise<Expense> => 
   })
 }
 
-const deleteExpense = async (id: string): Promise<void> => {
-  await prisma.expense.delete({ where: { id } })
+const deleteExpense = async (id: string): Promise<Pick<Expense, 'id' | 'name'>> => {
+  return prisma.expense.delete({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
 }
 
 export { createExpense, deleteExpense }

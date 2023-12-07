@@ -8,7 +8,7 @@ import * as GoalServices from './goal.service'
 export const goalRouter = Router()
 
 goalRouter.post(
-  '/',
+  '/create',
   [
     body('name').isString(),
     body('amount').isNumeric(),
@@ -33,3 +33,17 @@ goalRouter.post(
     }
   },
 )
+
+goalRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
+  try {
+    const { id, name } = await GoalServices.deleteGoal(request.body.id)
+
+    if (id !== request.body.id) {
+      return response.status(500).json({ message: 'Goal does not exist' })
+    }
+
+    return response.status(201).json({ message: `Successfully deleted ${name}` })
+  } catch (error: any) {
+    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+  }
+})

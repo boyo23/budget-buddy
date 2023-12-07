@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import type { Category, Expense, User } from '@prisma/client'
+import type { Category, Expense, Goal, User } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -14,6 +14,13 @@ const findExpenses = async (id: string): Promise<{ expenses: Expense[] } | null>
   return prisma.user.findFirst({
     where: { id },
     select: { expenses: true },
+  })
+}
+
+const findGoals = async (id: string): Promise<{ goals: Goal[] } | null> => {
+  return prisma.user.findFirst({
+    where: { id },
+    select: { goals: true },
   })
 }
 
@@ -34,8 +41,14 @@ const createUser = async (user: Pick<User, 'username' | 'password' | 'email'>): 
   })
 }
 
-const deleteUser = async (id: string): Promise<void> => {
-  await prisma.user.delete({ where: { id } })
+const deleteUser = async (id: string): Promise<Pick<User, 'id' | 'username'>> => {
+  return prisma.user.delete({
+    where: { id },
+    select: {
+      id: true,
+      username: true,
+    },
+  })
 }
 
-export { findCategories, findExpenses, findUser, createUser, deleteUser }
+export { findCategories, findExpenses, findGoals, findUser, createUser, deleteUser }

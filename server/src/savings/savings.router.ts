@@ -8,7 +8,7 @@ import * as SavingsServices from './savings.service'
 export const savingsRouter = Router()
 
 savingsRouter.post(
-  '/',
+  '/create',
   [
     body('amount').isNumeric(),
     body('target').isNumeric(),
@@ -33,3 +33,17 @@ savingsRouter.post(
     }
   },
 )
+
+savingsRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
+  try {
+    const { id, amount } = await SavingsServices.deleteSavings(request.body.id)
+
+    if (id !== request.body.id) {
+      return response.status(500).json({ message: 'Goal does not exist' })
+    }
+
+    return response.status(201).json({ message: `Successfully delete ${amount}` })
+  } catch (error: any) {
+    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+  }
+})

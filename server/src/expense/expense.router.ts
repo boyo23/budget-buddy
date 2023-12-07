@@ -8,7 +8,7 @@ import * as ExpenseServices from './expense.service'
 export const expenseRouter = Router()
 
 expenseRouter.post(
-  '/',
+  '/create',
   [
     body('name').isString(),
     body('price').isNumeric(),
@@ -38,3 +38,17 @@ expenseRouter.post(
     }
   },
 )
+
+expenseRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
+  try {
+    const { id, name } = await ExpenseServices.deleteExpense(request.body.id)
+
+    if (id !== request.body.id) {
+      return response.status(500).json({ message: 'Expense does not exist' })
+    }
+
+    return response.status(201).json({ message: `Successfully deleted ${name}` })
+  } catch (error: any) {
+    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+  }
+})
