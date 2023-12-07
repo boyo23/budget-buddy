@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import { Router } from 'express'
-import { body, validationResult } from 'express-validator'
 import type { Request, Response } from 'express'
+import { body, validationResult } from 'express-validator'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
@@ -21,7 +21,13 @@ export const userRouter = Router()
 
 userRouter.get('/', authenticateToken, async (request: Request, response: Response) => {
   try {
-    return response.status(201).json(request.user)
+    const [categories, expenses, goals] = await Promise.all([
+      UserServices.findCategories(request.user.id),
+      UserServices.findExpenses(request.user.id),
+      UserServices.findGoals(request.user.id),
+    ])
+
+    return response.status(201).json({ ...request.user, categories, expenses, goals })
   } catch (error: any) {
     return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
   }
@@ -88,6 +94,20 @@ userRouter.post('/login', async (request: Request, response: Response) => {
     const token = jwt.sign(userInfo, secretKey, { expiresIn: '1h' })
 
     return response.status(201).json(token)
+  } catch (error: any) {
+    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+  }
+})
+
+userRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
+  try {
+    const { id, username } = await UserServices.deleteUser(request.body.id)
+
+    if (id !== request.body.id) {
+      return response.status(500).json({ message: 'Goal does not exist' })
+    }
+
+    return response.status(201).json({ message: `Successfully delete ${username}` })
   } catch (error: any) {
     return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
   }
