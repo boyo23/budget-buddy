@@ -30,7 +30,7 @@ expenseRouter.post(
         return response.status(400).json({ errors: errors.array() })
       }
 
-      const newExpense = await ExpenseServices.createExpense(request.body)
+      const newExpense = await ExpenseServices.createExpense({ ...request.body, userId: request.user.id })
 
       return response.status(201).json(newExpense)
     } catch (error: any) {

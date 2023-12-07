@@ -25,7 +25,7 @@ goalRouter.post(
         return response.status(400).json({ errors: errors.array() })
       }
 
-      const newGoal = await GoalServices.createGoal(request.body)
+      const newGoal = await GoalServices.createGoal({ ...request.body, userId: request.user.id })
 
       return response.status(201).json(newGoal)
     } catch (error: any) {
