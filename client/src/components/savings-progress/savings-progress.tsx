@@ -55,8 +55,7 @@ export default function SavingsProgress() {
     }
   }
 
-  // console.log(ctx.userInfo.goals[2].id)
-  
+  // console.log(ctx.userInfo.goals[1].savings)
   return (
     <div
       className="mb-20 w-full min-h-[240px] max-h-[590px]"
@@ -85,9 +84,10 @@ export default function SavingsProgress() {
         <div style={{ maxHeight: '590px' }} className="flex h-full">
           <div className={`flex w-full flex-wrap justify-evenly overflow-x-auto`}>
             {/* <Suspense fallback={<span className="p-6 text-center text-5xl">Loading...</span>}> */}
-              {ctx?.userInfo?.goals?.map((item: any) => (
+              {ctx?.userInfo?.goals?.map((item) => (
                 <SavingsCard
                 // @ts-ignore
+                  savingsArray={item?.savings}
                   goalId={item.id}
                   key={item.id}
                   goalName={item.name}

@@ -4,7 +4,7 @@ import { SavingsContext } from '@/context/savings-context'
 import StickyAddNav from './savings-add-nav'
 import StickySavingsNav from './savings-edit-nav'
 
-export default function SavingsTable({goalId, goalName, percentage}) {
+export default function SavingsTable({ goalId, goalName, percentage, savingsArray }) {
   // const [data, setData] = useState<DataType[]>(sampleData)
   const [open, setOpen] = useState<boolean>(false)
   const [editId, setEditId] = useState<number | null>(null)
@@ -45,6 +45,7 @@ export default function SavingsTable({goalId, goalName, percentage}) {
     setAddNewSavingsClicked(!addNewSavingsClicked)
   }
 
+  console.log(savingsArray)
 
   return (
     <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md relative">
@@ -64,7 +65,7 @@ export default function SavingsTable({goalId, goalName, percentage}) {
       </div>
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
-          {editIsClicked && <StickySavingsNav action={() => editClickHandler()}/>}
+          {editIsClicked && <StickySavingsNav action={() => editClickHandler()} />}
 
           {addNewSavingsClicked && <StickyAddNav goalId={goalId} action={() => clickAddSavingsHandler()} />}
           <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{goalName}</h1>
@@ -78,25 +79,32 @@ export default function SavingsTable({goalId, goalName, percentage}) {
               </tr>
             </thead>
             <tbody>
-              {ctx?.userInfo?.goals?.map((item) => (
-                <tr key={item?.id} className="text-xl text-black dark:text-darkText">
+              {savingsArray?.map((saving) => (
+                // Map over savings for each goal
+                <tr key={saving?.id} className="text-xl text-black dark:text-darkText">
                   <td className="border border-gray-400 p-2 text-center">
-                    <h1>{item?.amount}</h1>
+                    <h1>{saving?.amount}</h1>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
-                    <p>{item?.date?.toLocaleDateString()}</p>
+                    <p>{new Date(saving?.date).toLocaleDateString()}</p>
                   </td>
                   <td className="flex gap-2 border border-gray-400 p-2 text-center">
-                    <button onClick={editClickHandler} className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300">
+                    <button
+                      onClick={editClickHandler}
+                      className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300"
+                    >
                       Edit
                     </button>
-                    <button className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300">
+                    <button
+                      className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300"
+                    >
                       Delete
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
+
           </table>
           <div className="relative w-full p-4">
             <div className="border-slate-500 flex h-10 w-full overflow-hidden border border-gray-400 dark:bg-darkWhite">

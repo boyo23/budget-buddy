@@ -60,6 +60,7 @@ export default function Login() {
   //   console.log(ctx.token)
   // }, [ctx.loginIsClicked])
 
+  localStorage.getItem("token") && navigate("/home")
 
   return (
     <div className=" bg-gradient-to-r from-pink-400 to-pink-600">

@@ -75,9 +75,8 @@ function Profile() {
                   <FormFieldsContainer>
                     {/* @ts-ignore */}
                     <FormText defaultValue={ctx.userInfo?.email} register={register} name="email" inputName="Email" isDisabled={true} />
-                    <FormText defaultValue={ctx.userInfo?.firstName} register={register} name="firstName" inputName="First name" />
-                    <FormText defaultValue={ctx.userInfo?.lastName} register={register} name="lastName" inputName="Last name" />
-                    <FormPassword defaultValue={ctx.userInfo?.password} register={register} name="password" inputName="Password" />
+                    <FormText defaultValue={ctx.userInfo?.username} register={register} name="username" inputName="Username" isDisabled={true} />
+                    <FormPassword defaultValue={"xxxxxxxxxxxxxxxx"} register={register} name="password" inputName="Password" isDisabled={true}/>
 
                     {ctx.profileIsChanged && <FormPassword register={register} name="newPassword" inputName="New password" />}
 
@@ -128,11 +127,10 @@ function Profile() {
             <FormFieldsContainer>
               {/* @ts-ignore */}
               <FormText defaultValue={ctx.userInfo?.email} register={register} name="email" inputName="Email" isDisabled={true} />
-              <FormText defaultValue={ctx.userInfo?.firstName} register={register} name="firstName" inputName="First name" />
-              <FormText defaultValue={ctx.userInfo?.lastName} register={register} name="lastName" inputName="Last name" />
-              <FormPassword defaultValue={ctx.userInfo?.password} register={register} name="password" inputName="Current password" />
+              <FormText defaultValue={ctx.userInfo?.username} register={register} name="username" inputName="Username" isDisabled={false}/>
+              <FormPassword defaultValue={null} register={register} name="password" inputName="New password" isDisabled={false}/>
 
-              <FormPassword register={register} name="newPassword" inputName="New password" />
+              {/* <FormPassword register={register} name="newPassword" inputName="New password" /> */}
 
               <FormButtonContainer>
                 <FormButton buttonName="Update profile" buttonAction={null} />
