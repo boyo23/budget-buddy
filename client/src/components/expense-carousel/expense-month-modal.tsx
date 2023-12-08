@@ -29,7 +29,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, onSave, children }) => {
   }
 
   return (
-    <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white p-6 text-black shadow-md">
+    <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white p-6 text-black shadow-md dark:bg-darkPrimary">
       <button className="absolute right-0 top-0 m-2 text-gray-500" onClick={onClose}>
         <svg
           className="h-6 w-6"

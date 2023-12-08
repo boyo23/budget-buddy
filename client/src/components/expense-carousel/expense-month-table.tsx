@@ -148,7 +148,7 @@ export default function ExpenseOverview(props: any) {
   }
 
   return (
-    <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md">
+    <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md dark:bg-darkPrimary">
       <div className="flex flex-col items-center relative">
 
         <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{monthName}</h1>

@@ -33,112 +33,33 @@ export default function SavingsProgress() {
       savingsBalance: 1000,
       savingsGoal: 10000,
     },
-    // {
-    //   goalName: "Xander's Dog",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 2000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: 'German Shepherd',
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 5000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Carlo's Penguin",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 12345,
-    // },
-    // {
-    //   goalName: "Yan and Aki's Cookie Shop",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 10000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Eatery",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Nissan GTR",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 5000,
-    //   savingsGoal: 12000000,
-    // },
-    // {
-    //   goalName: "Carlo's Penguin",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 12345,
-    // },
-    // {
-    //   goalName: "Yan and Aki's Cookie Shop",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 10000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Eatery",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Nissan GTR",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 5000,
-    //   savingsGoal: 12000000,
-    // },
   ]
-
-
   const handlePost = async (data: any) => {
-    fetch('http://localhost:3000/savings/create', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${ctx.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+    try {
+      const response = await fetch('http://localhost:3000/goal/create', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
       console.log(response)
-      return response.json();
-
-    }).then((data) => {
-      console.log(data?.errors)
-    }).catch((error) => {
-      console.error('Error during fetch:', error);
-    }).finally(() => {
-      // console.log(ctx.userInfo)
-      // ctx.setExpenseInfoData(ctx.userInfo)
-    });
-
+      console.log(data)
+      if (!response.ok) {
+        const json = await response.json()
+        console.log(json.message)
+      }
+    } catch(error: any) {
+      console.error(error)
+    }
   }
 
+  // console.log(ctx.userInfo.goals[2].id)
+  
   return (
     <div
-      style={{
-        minHeight: '240px',
-        maxHeight: '590px',
-      }}
-      className="mb-20 w-full"
+      className="mb-20 w-full min-h-[240px] max-h-[590px]"
     >
       <div className={`flex flex-col overflow-x-auto rounded-md bg-white dark:bg-darkPrimary`}>
         <div className="">
@@ -164,14 +85,16 @@ export default function SavingsProgress() {
         <div style={{ maxHeight: '590px' }} className="flex h-full">
           <div className={`flex w-full flex-wrap justify-evenly overflow-x-auto`}>
             {/* <Suspense fallback={<span className="p-6 text-center text-5xl">Loading...</span>}> */}
-              {ctx?.userInfo?.savings?.map((item, index) => (
+              {ctx?.userInfo?.goals?.map((item: any) => (
                 <SavingsCard
-                  key={index}
-                  goalName={item.goalName}
-                  dateAdded={item.dateAdded}
-                  targetDate={item.targetDate}
-                  savingsBalance={item.savingsBalance}
-                  savingsGoal={item.savingsGoal}
+                // @ts-ignore
+                  goalId={item.id}
+                  key={item.id}
+                  goalName={item.name}
+                  dateAdded={item.addedAt}
+                  targetDate={item.targetedAt}
+                  savingsBalance={item?.savingsBalance}
+                  savingsGoal={item.amount}
                 />
               ))}
             {/* </Suspense> */}
@@ -183,8 +106,8 @@ export default function SavingsProgress() {
                 <FormFieldsContainer>
                   {/* @ts-ignore */}
                   <FormText register={register} name="name" inputName="Name" />
-                  <FormNumber register={register} name="targetSavings" inputName="Target savings" />
-                  <FormDate register={register} name="targetDate" inputName="Date" />
+                  <FormNumber register={register} name="amount" inputName="Target savings" />
+                  <FormDate register={register} name="targetedAt" inputName="Date" />
                   <FormButtonContainer>
                     <FormButton buttonName="Add" buttonAction={null} />
                     <FormButton type="button" buttonName="Close" buttonAction={goalClickHandler} />

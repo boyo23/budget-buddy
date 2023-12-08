@@ -77,18 +77,21 @@ export default function ExpenseInfo() {
       const json = await response.json();
       ctx.setUserInfo(json);
 
+      // Sort expenses by date
+      const sortedExpenses = json.expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+
       // Using the callback form of setTableData to ensure the latest state
-      setTableData(prevTableData => {
-        // Assuming json is an object with an 'expenses' property
-        return { ...prevTableData, expenses: json.expenses };
-      });
+      setTableData(prevTableData => ({
+        ...prevTableData,
+        expenses: sortedExpenses,
+      }));
     } catch (error) {
       console.error('Error during fetch:', error);
     }
   }, [ctx.token, tableData]);
 
   useEffect(() => {
-    fetchUserInfo();
+    fetchUserInfo()
   }, [fetchUserInfo, expenseClicked]);
 
   // fetchUserInfo()
@@ -106,24 +109,24 @@ export default function ExpenseInfo() {
   return (
     <div className="flex w-4/6 min-w-min flex-col rounded-md bg-white dark:bg-darkPrimary ">
       <h1 className="p-4 text-center text-4xl font-bold dark:text-contrast shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] dark:shadow-[rgba(243,53,121,1)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]
-">INFORMATION</h1>
+">RECENTLY ADDED</h1>
       <hr className="w-full border-gray-400 dark:border-gray-700" />
 
       <div className="flex flex-grow flex-col p-6 overflow-y-scroll max-h-96">
         <table className="w-full table-auto text-left">
           <thead className=''>
-            <tr className='text-2xl dark:text-darkWhite'>
-              <th className='border-b border-b-gray-300 pb-4 flex-grow'>Expense</th>
-              <th className='border-b border-b-gray-300 pb-4 flex-grow'>Date added</th>
-              <th className='border-b border-b-gray-300 pb-4 flex-grow'>Price</th>
+            <tr className='text-2xl dark:text-darkWhite '>
+              <th className='border-b border-b-gray-300 dark:border-darkText pb-4 flex-grow'>Expense</th>
+              <th className='border-b border-b-gray-300 dark:border-darkText pb-4 flex-grow'>Date added</th>
+              <th className='border-b border-b-gray-300 dark:border-darkText pb-4 flex-grow'>Price</th>
             </tr>
           </thead>
           <tbody className='text-xl relative'>
             {tableData?.expenses?.map((item: any) => (
-              <tr className='dark:text-darkText' key={item?.id}>
-                <td className='border-b border-gray-300 py-2'>{item?.name}</td>
-                <td className='border-b border-gray-300 py-2'>{`${new Date(item?.date).toLocaleDateString()}`}</td>
-                <td className='border-b border-gray-300 py-2 dark:text-green-400'>{item?.price}</td>
+              <tr className='dark:text-darkText ' key={item?.id}>
+                <td className='border-b border-gray-300 dark:border-darkText py-2'>{item?.name}</td>
+                <td className='border-b border-gray-300 dark:border-darkText py-2'>{`${new Date(item?.date).toLocaleDateString()}`}</td>
+                <td className='border-b border-gray-300 dark:border-darkText py-2 text-green-500 dark:text-green-400'>{item?.price}</td>
               </tr>
             ))}
             {tableData?.expenses?.length === 0 && <h1 className='text-blue-gray-400 absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-transparent top-10 text-2xl whitespace-nowrap'>You have no recently added expenses.</h1>}
@@ -149,7 +152,7 @@ export default function ExpenseInfo() {
       <Dialog className='font-' open={expenseClicked} handler={addExpenseHandler}>
         {/* @ts-ignore */}
         <ExpenseAddForm buttonAction={formSubmitHandler}
-        close={() => setExpenseClicked(!expenseClicked)}
+          close={() => setExpenseClicked(!expenseClicked)}
         />
       </Dialog>
     </div>

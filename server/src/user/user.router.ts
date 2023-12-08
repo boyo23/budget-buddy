@@ -38,8 +38,8 @@ userRouter.post(
   [
     body('username')
       .exists()
-      .custom(async (value) => {
-        if (await UserServices.findUser(value)) {
+      .custom(async (username) => {
+        if (await UserServices.findUser(username)) {
           throw new Error('Username already exist')
         }
       }),
@@ -54,8 +54,8 @@ userRouter.post(
     body('email')
       .exists()
       .isEmail()
-      .custom(async (value) => {
-        if (await UserServices.findUser(value)) {
+      .custom(async (email) => {
+        if (await UserServices.findUser(email)) {
           throw new Error('Email already in use')
         }
       })

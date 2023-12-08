@@ -1,62 +1,18 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { StickyExpenseNav } from '../expense-summary/expense-edit-nav'
 import { StickyOverviewNav } from './expense-overview-nav'
+import { SavingsContext } from '@/context/savings-context'
 
-type DataType = {
-  id: number
-  expense: string
-  category: string
-  paymentMethod: string
-  amount: number
-  date: string
-}
-
-const sampleData: DataType[] = [
-  { id: 1, expense: 'This is Detail 1', category: 'Food', paymentMethod: 'GCash', amount: 1000, date: '10/10/2023' },
-  {
-    id: 2,
-    expense: 'This is Detail 2',
-    category: 'Transportation',
-    paymentMethod: 'Credit Card',
-    amount: 100,
-    date: '10/10/2023',
-  },
-  { id: 3, expense: 'This is Detail 3', category: 'Tuition', paymentMethod: 'Cash', amount: 1000, date: '10/10/2023' },
-  {
-    id: 4,
-    expense: 'This is Detail 4',
-    category: 'Food',
-    paymentMethod: 'Debit Card',
-    amount: 1000,
-    date: '10/10/2023',
-  },
-  { id: 1, expense: 'This is Detail 1', category: 'Food', paymentMethod: 'GCash', amount: 1000, date: '10/10/2023' },
-  {
-    id: 2,
-    expense: 'This is Detail 2',
-    category: 'Transportation',
-    paymentMethod: 'Credit Card',
-    amount: 100,
-    date: '10/10/2023',
-  },
-  { id: 3, expense: 'This is Detail 3', category: 'Tuition', paymentMethod: 'Cash', amount: 1000, date: '10/10/2023' },
-  {
-    id: 4,
-    expense: 'This is Detail 4',
-    category: 'Food',
-    paymentMethod: 'Debit Card',
-    amount: 1000,
-    date: '10/10/2023',
-  },
-]
 
 export default function ExpenseOverview() {
-  const [data, setData] = useState<DataType[]>(sampleData)
+  // const [data, setData] = useState<DataType[]>(sampleData)
   const [editIsClicked, setEditIsClicked] = useState<boolean>(false)
+  const ctx = useContext(SavingsContext)
   
   const editClickHandler = () => {
     setEditIsClicked(!editIsClicked)
   }
+  // console.log(ctx.userInfo)
 
   return (
     <div className="max-h-[520px] overflow-y-auto scroll-smooth ">
@@ -77,24 +33,24 @@ export default function ExpenseOverview() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {ctx?.userInfo?.expenses?.map((item) => (
                 <tr key={item.id} className="text-xl text-black dark:text-darkText">
                   <td className="border border-gray-400 p-2 text-center">
-                    <p>{item.expense}</p>
+                    <p>{item.name}</p>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
-                    <h1>{item.category}</h1>
+                    <h1>{item?.categoryId}</h1>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
                     <h1>{item.paymentMethod}</h1>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
-                    <h1>{item.amount}</h1>
+                    <h1>{item.price}</h1>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
-                    <p>{item.date}</p>
+                    <p>{new Date(item?.date).toLocaleDateString()}</p>
                   </td>
-                  <td className="flex gap-2 border border-gray-400 p-2 text-center">
+                  <td className="flex flex-col gap-2 border-b border-b-gray-400  p-2 text-center">
                     <button onClick={editClickHandler} className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:text-contrast dark:border-gray-700 dark:border dark:hover:border-gray-500">
                       Edit
                     </button>

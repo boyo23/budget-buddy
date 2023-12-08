@@ -45,6 +45,7 @@ export default function Login() {
       return response.json();
     }).then((json) => {
       ctx.setToken(json)
+      console.log(ctx.userInfo)
       localStorage.setItem("token", JSON.stringify(json))
       console.log(localStorage.getItem("token"))
     }).catch((error) => {
