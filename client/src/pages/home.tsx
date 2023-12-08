@@ -22,9 +22,10 @@ export default function Home() {
   const toggleOpenSavings = () => setOpenSavings((cur) => !cur)
   const ctx = useContext(SavingsContext)
 
-  // if (ctx.token) {
-  //   return <Navigate to="/protectedRoute" replace />;
-  // }
+  if (!ctx.token) {
+    console.log(ctx.token)
+    return <Navigate to="/protectedRoute" replace />;
+  }
 
   // @ts-ignore
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Home() {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${ctx.token}`,
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
     }).then((response) => {
       if (!response.ok) {
@@ -42,10 +43,17 @@ export default function Home() {
     }).then((json) => {
       console.log(json)
       ctx.setUserInfo(json)
+
+      localStorage.setItem("userInfo", JSON.stringify(json));
     }).catch((error) => {
       console.error('Error during fetch:', error);
     }).finally(() => {
-      console.log(ctx.userInfo)
+      // Retrieve and parse user info from localStorage
+      const storedUserInfo = localStorage.getItem("userInfo");
+
+      // Parse the JSON string if it exists
+      const parsedUserInfo = storedUserInfo && JSON.parse(storedUserInfo);
+      console.log(parsedUserInfo);
     });
   }, [])
 

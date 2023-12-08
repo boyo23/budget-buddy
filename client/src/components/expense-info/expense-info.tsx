@@ -5,6 +5,7 @@ import { Dialog, input } from '@material-tailwind/react'
 import ExpenseAddForm from './expense-add-form'
 import { useForm } from 'react-hook-form'
 import ExpenseAddCategory from './expense-add-category'
+import { useNavigate, Navigate } from 'react-router-dom'
 
 type Expense = {
   price: number
@@ -25,6 +26,9 @@ export default function ExpenseInfo() {
     categoryId: "",
     userId: "",
   })
+  const [tableData, setTableData] = useState([])
+  const ctx = useContext(SavingsContext)
+  const navigate = useNavigate()
 
   const addExpenseHandler = () => {
     console.log(expenseClicked)
@@ -46,19 +50,27 @@ export default function ExpenseInfo() {
       console.log(err)
     }
   }
-  
+
   const { register, handleSubmit, watch } = useForm()
 
-  console.log(watch())
+  // console.log(watch())
 
   useEffect(() => {
-    console.log(expenseBody)
-  }, [expenseBody])
+    setTableData(ctx.userInfo.expenses)
+    return () => {
+      // navigate("/login")
+      navigate("/home")
+    }
+  }, [ctx.addExpenseFormIsClicked])
 
-  const ctx = useContext(SavingsContext)
+  // useEffect(() => {
+  //   setTableData(ctx.userInfo.expenses)
+  // }, [ctx.addExpenseFormIsClicked])
+  
+
 
   return (
-    <div style={{ width: '' }} className="flex w-full flex-col rounded-md bg-white dark:bg-darkPrimary ">
+    <div className="flex w-full flex-col rounded-md bg-white dark:bg-darkPrimary ">
       <h1 className="p-4 text-center text-4xl font-bold dark:text-contrast shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] dark:shadow-[rgba(243,53,121,1)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]
 ">INFORMATION</h1>
       <hr className="w-full border-gray-400 dark:border-gray-700" />
@@ -73,66 +85,13 @@ export default function ExpenseInfo() {
             </tr>
           </thead>
           <tbody className='text-xl'>
-            <tr className='dark:text-darkText'>
-              <td className='border-b border-gray-300 py-2'>Hotdog</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2 dark:text-green-400'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Donut</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Chickenjoy</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Jolibbee Fries</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Hotdog</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Donut</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Chickenjoy</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Jolibbee Fries</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Hotdog</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Donut</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Chickenjoy</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Jolibbee Fries</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
+            {ctx.userInfo.expenses?.map((item: any) => (
+              <tr className='dark:text-darkText' key={item.id}>
+                <td className='border-b border-gray-300 py-2'>{item.name}</td>
+                <td className='border-b border-gray-300 py-2'>{`${new Date(item.date).toLocaleDateString()}`}</td>
+                <td className='border-b border-gray-300 py-2 dark:text-green-400'>{item.price}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

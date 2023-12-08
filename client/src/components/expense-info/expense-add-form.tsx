@@ -32,7 +32,7 @@ export default function ExpenseAddForm(props: any) {
   //   categoryId: "",
   //   userId: "",
   // })
-
+  const [formIsSubmitted, setFormIsSubmitted] = useState(false)
 
 
   // const handlePost = (data) => {
@@ -113,6 +113,7 @@ export default function ExpenseAddForm(props: any) {
         console.error('Error during fetch:', error);
       }).finally(() => {
         console.log(ctx.userInfo)
+        ctx.setExpenseInfoData(ctx.userInfo)
       });
       
     }
@@ -146,7 +147,7 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="General" optionValue="5" /> */}
         </FormSelect>
         <FormButtonContainer>
-          <FormButton buttonAction={null} buttonName="Add"/>
+          <FormButton buttonAction={() => ctx.setAddExpenseFormIsClicked(!ctx.addExpenseFormIsClicked)} buttonName="Add"/>
           <FormButton type="button" buttonName="Close" buttonAction={props.close} />
         </FormButtonContainer>
       </FormFieldsContainer>

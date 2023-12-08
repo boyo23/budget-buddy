@@ -19,6 +19,9 @@ export default function Navbar() {
           <Link to="/profile">
             <h1 className='dark:text-contrast'>Profile</h1>
           </Link>
+          <Link to="/protectedRoute">
+            <h1 className='dark:text-contrast text-red-500'>Profile</h1>
+          </Link>
         </div>
       </div>
     </nav>

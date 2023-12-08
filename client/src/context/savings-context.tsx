@@ -36,7 +36,11 @@ type SavingsContextProps = {
   userInfo: any,
   setUserInfo: Dispatch<SetStateAction<any>>,
   loginIsClicked: boolean,
-  setLoginIsClicked: Dispatch<SetStateAction<boolean>>
+  setLoginIsClicked: Dispatch<SetStateAction<boolean>>,
+  addExpenseFormIsClicked: any,
+  setAddExpenseFormIsClicked: Dispatch<SetStateAction<boolean>>,
+  expenseInfoData: any,
+  setExpenseInfoData: Dispatch<SetStateAction<any>>
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
@@ -69,7 +73,11 @@ export const SavingsContext = createContext<SavingsContextProps>({
   userInfo: null,
   setUserInfo: () => { },
   loginIsClicked: false,
-  setLoginIsClicked: () => {}
+  setLoginIsClicked: () => { },
+  addExpenseFormIsClicked: false,
+  setAddExpenseFormIsClicked: () => { },
+  expenseInfoData: {},
+  setExpenseInfoData: () => { },
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -79,10 +87,12 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState("light")
   const [profileIsChanged, setProfileIsChanged] = useState<boolean>(false)
   const [token, setToken] = useState(null)
-  const [ loginIsClicked, setLoginIsClicked ] = useState<boolean>(false)
+  const [loginIsClicked, setLoginIsClicked] = useState<boolean>(false)
   const [userInfo, setUserInfo] = useState({})
   // const [bareToken, setBareToken] = useState("")
   const [statusCode, setStatusCode] = useState(0)
+  const [addExpenseFormIsClicked, setAddExpenseFormIsClicked] = useState(false)
+  const [expenseInfoData, setExpenseInfoData] = useState({})
 
   useEffect(() => {
     theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
@@ -95,7 +105,7 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const loginHandler = (newToken: string) => {
     // @ts-ignore
     setToken(newToken)
-  } 
+  }
 
   const [pieData, setPieData] = useState<PieData>({
     categoryNames: [],
@@ -139,12 +149,36 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   // useEffect(() => {
+  //   console.log(addExpenseFormIsClicked)
+  // }, [addExpenseFormIsClicked])
+
+  // useEffect(() => {
   //   console.log(profileIsChanged)
   // }, [profileIsChanged])
   // useEffect(() => {
   //   console.log(`${token}`)
   //   // console.log(1)
   // }, [loginIsClicked])
+
+
+  useEffect(() => {
+    console.log(loginIsClicked)
+    try {
+      // Retrieve and parse user info from localStorage
+      const storedUserInfo = localStorage.getItem("userInfo");
+      const storedToken = localStorage.getItem("token")
+
+      // Parse the JSON string if it exists
+      const parsedUserInfo = storedUserInfo && JSON.parse(storedUserInfo);
+      const parsedToken = storedToken && JSON.parse(storedToken)
+
+      setUserInfo(parsedUserInfo)
+      setToken(parsedToken)
+    } catch (error) {
+      // Handle JSON parsing errors
+      console.error('Error parsing user info:', error);
+    }
+  }, [loginIsClicked]);
 
   return (
     <SavingsContext.Provider
@@ -177,7 +211,11 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         // @ts-ignore
         setUserInfo,
         loginIsClicked,
-        setLoginIsClicked
+        setLoginIsClicked,
+        addExpenseFormIsClicked,
+        setAddExpenseFormIsClicked,
+        expenseInfoData,
+        setExpenseInfoData
       }}
     >
       {children}

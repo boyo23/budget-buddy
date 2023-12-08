@@ -35,7 +35,7 @@ export default function Login() {
     fetch('http://localhost:3000/user/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data),
     }).then((response) => {
@@ -44,13 +44,15 @@ export default function Login() {
       }
       return response.json();
     }).then((json) => {
-      ctx.setToken(json)
+      // ctx.setToken(json)
+      // localStorage.setItem("token", JSON.stringify(json))
+      // console.log(localStorage.getItem("token"))
     }).catch((error) => {
       console.error('Error during fetch:', error);
     }).finally(() => {
-      navigate('/protectedRoute')
+      navigate('/home')
     });
-    
+
   }
 
   // useEffect(() => {
@@ -127,7 +129,7 @@ export default function Login() {
                 <button
                   onClick={() => ctx.setLoginIsClicked(!ctx.loginIsClicked)}
                   type='submit'
-                className={`flex w-full justify-center cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-white bg-pink-600 hover:bg-pink-700 transition duration-100 ease-in`}
+                  className={`flex w-full justify-center cursor-pointer rounded-lg p-3 font-semibold tracking-wide text-white bg-pink-600 hover:bg-pink-700 transition duration-100 ease-in`}
                 >
                   Login
                 </button>
