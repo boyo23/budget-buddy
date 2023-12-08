@@ -55,13 +55,13 @@ export default function ExpenseInfo() {
 
   // console.log(watch())
 
-  useEffect(() => {
-    setTableData(ctx.userInfo.expenses)
-    return () => {
-      // navigate("/login")
-      navigate("/home")
-    }
-  }, [ctx.addExpenseFormIsClicked])
+  // useEffect(() => {
+  //   setTableData(ctx.userInfo.expenses)
+  //   return () => {
+  //     // navigate("/login")
+  //     navigate("/home")
+  //   }
+  // }, [ctx.addExpenseFormIsClicked])
 
   // useEffect(() => {
   //   setTableData(ctx.userInfo.expenses)
@@ -85,7 +85,7 @@ export default function ExpenseInfo() {
             </tr>
           </thead>
           <tbody className='text-xl'>
-            {ctx.userInfo.expenses?.map((item: any) => (
+            {ctx?.userInfo?.expenses?.map((item: any) => (
               <tr className='dark:text-darkText' key={item.id}>
                 <td className='border-b border-gray-300 py-2'>{item.name}</td>
                 <td className='border-b border-gray-300 py-2'>{`${new Date(item.date).toLocaleDateString()}`}</td>

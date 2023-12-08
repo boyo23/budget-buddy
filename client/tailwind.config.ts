@@ -35,6 +35,17 @@ const config: Config = {
     require('flowbite/plugin')
   ],
 }
+export const theme = {
+  menu: {
+    styles: {
+      base: {
+        menu: {
+          bg: "bg-black"
+        }
+      }
+    }
+  }
+}
 
 // Wrap your configuration using withMT
 module.exports = withMT(config)

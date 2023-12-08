@@ -174,6 +174,8 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
 
       setUserInfo(parsedUserInfo)
       setToken(parsedToken)
+      // console.log(parsedToken)
+      // console.log(parsedUserInfo)
     } catch (error) {
       // Handle JSON parsing errors
       console.error('Error parsing user info:', error);

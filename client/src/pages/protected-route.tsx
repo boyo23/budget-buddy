@@ -1,17 +1,18 @@
 import React, { useContext } from 'react'
 import { SavingsContext } from '@/context/savings-context'
-import { Navigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
+import Home from './home'
 
 export default function ProtectedRoute() {
   const ctx = useContext(SavingsContext)
-  return <div className='text-6xl'>You are not authorized.</div>
-  // if (ctx.token) {
-  //   return (
-  //     <Navigate to="/home" replace />
-  //   )
-  // } else {
-  //   return (
-  //     <div className='text-6xl'>You are not authorized.</div>
-  //   )
-  // }
+  if (localStorage.getItem("token")) {
+    console.log(localStorage.getItem("token"))
+    return (
+      <Navigate to="/home" replace />
+    )
+  } else {
+    return (
+      <div className='text-6xl'>You are not authorized.</div>
+    )
+  }
 }

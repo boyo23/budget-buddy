@@ -32,7 +32,7 @@ export default function Login() {
 
   const handlePost = async (data: any) => {
     console.log("Reached handlePost()")
-    fetch('http://localhost:3000/user/login', {
+    await fetch('http://localhost:3000/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -44,9 +44,9 @@ export default function Login() {
       }
       return response.json();
     }).then((json) => {
-      // ctx.setToken(json)
-      // localStorage.setItem("token", JSON.stringify(json))
-      // console.log(localStorage.getItem("token"))
+      ctx.setToken(json)
+      localStorage.setItem("token", JSON.stringify(json))
+      console.log(localStorage.getItem("token"))
     }).catch((error) => {
       console.error('Error during fetch:', error);
     }).finally(() => {

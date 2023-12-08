@@ -22,7 +22,7 @@ export default function Home() {
   const toggleOpenSavings = () => setOpenSavings((cur) => !cur)
   const ctx = useContext(SavingsContext)
 
-  if (!ctx.token) {
+  if (!localStorage.getItem("token")) {
     console.log(ctx.token)
     return <Navigate to="/protectedRoute" replace />;
   }
