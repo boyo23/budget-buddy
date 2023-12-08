@@ -13,6 +13,7 @@ categoryRouter.post(
   body('name')
     .exists()
     .isString()
+    .notEmpty()
     .custom(async (name) => {
       if (await CategoryServices.findCategory(name)) {
         throw new Error('Category already exist')

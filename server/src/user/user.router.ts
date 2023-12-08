@@ -7,7 +7,6 @@ import jwt from 'jsonwebtoken'
 
 import { authenticateToken } from '../utils/jwt'
 import * as UserServices from './user.service'
-import { findCategory } from 'src/category/category.service'
 
 dotenv.config()
 
@@ -23,21 +22,8 @@ export const userRouter = Router()
 userRouter.get('/', authenticateToken, async (request: Request, response: Response) => {
   try {
     const categories = await UserServices.findCategories(request.user.id)
+    const expenses = await UserServices.findExpenses(request.user.id)
     const goals = await UserServices.findGoals(request.user.id)
-    let expenses = await UserServices.findExpenses(request.user.id)
-
-    if (expenses) {
-      const expensesArray = Object.values(expenses)
-      for (const expense of expensesArray) {
-        const name = await findCategory((expense as any).categoryId)
-
-        // @ts-expect-error Adds categoryName on expense object
-        expense.categoryName = name
-      }
-
-      // @ts-expect-error Adds categoryName on expenses obect array
-      expenses = expensesArray
-    }
 
     return response.status(201).json({ ...request.user, ...categories, ...expenses, ...goals })
   } catch (error: any) {

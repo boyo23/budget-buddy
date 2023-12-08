@@ -23,6 +23,7 @@ expenseRouter.post(
       .isString()
       .isIn(['CASH', 'GCASH', 'CREDIT', 'DEBIT'])
       .withMessage((paymentMethod) => `The payment method ${paymentMethod} is invalid.`),
+    body('categoryName').exists().isString(),
     body('categoryId').exists().isString(),
   ],
   async (request: Request, response: Response) => {

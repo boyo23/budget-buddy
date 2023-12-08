@@ -37,6 +37,7 @@ model Expense {
   quantity      Int
   date          DateTime
   paymentMethod String
+  categoryName  String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   categoryId    String
