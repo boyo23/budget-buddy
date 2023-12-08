@@ -54,7 +54,7 @@ const Register: React.FC = () => {
         const responseData = await response.json();
         console.log("Registration successful", responseData);
         setIsRegistered(true);
-        navigate("/login")
+        navigate("/")
       }
     } catch (error) {
       console.error("Error during registration:", error);

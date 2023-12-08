@@ -10,13 +10,14 @@ import { SavingsContext } from '@/context/savings-context'
 import { useForm } from 'react-hook-form'
 import FormPassword from '@/components/forms/form-password'
 import { Dialog, Typography } from '@material-tailwind/react'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 function Profile() {
   const [isHovering, setIsHovering] = useState(false)
   const [isDeleteClicked, setIsDeleteClicked] = useState(false)
   const [isUpdateClicked, setIsUpdateClicked] = useState(false)
+  const navigate = useNavigate()
 
   const updateClickHandler = () => {
     setIsUpdateClicked(!isUpdateClicked)
@@ -28,9 +29,35 @@ function Profile() {
 
   const ctx = useContext(SavingsContext)
   const { register, watch, handleSubmit } = useForm()
+
+  const handlePost = async () => {
+    await fetch('http://localhost:3000/user/delete', {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${ctx?.token}`,
+        'Content-Type': 'application/json'
+      },
+    }).then((response) => {
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! Status: ${response.status}`);
+      // } else {
+      //   console.log("otin")
+        // localStorage.clear()
+        // navigate("/")
+      // }
+      console.log(response)
+      // navigate("/protectedRoute")
+      return response.json();
+
+    }).then((data) => {
+      console.log(data?.message)
+    }).catch((error) => {
+      console.error('Error during fetch:', error);
+    })
+  }
   // console.log(watch())
-  console.log(ctx.token)
-  if (ctx.token) {
+  // console.log(ctx.token)
+  if (localStorage.getItem("token")) {
     return (
       <div className='dark:bg-primary h-screen'>
         <Navbar />
@@ -68,11 +95,11 @@ function Profile() {
 
                   <div className="flex justify-center">
                     <Dialog open={isDeleteClicked} handler={deleteClickHandler}>
-                      <Form handleSubmit={handleSubmit}>
+                      <Form handleSubmit={handleSubmit(() => handlePost)}>
                         <FormHeading inputHeading="Are you sure?" />
                         <Typography className='m-auto text-center w-4/6 text-xl'>Deleting your account would permanently remove your account from our database which is irreversible.</Typography>
                         <FormButtonContainer className="pb-6 px-6">
-                          <FormButton buttonAction={null} buttonName="Yes, I think." />
+                          <FormButton buttonAction={handleSubmit(() => handlePost())} buttonName="Yes, I think." />
                           <FormButton buttonAction={deleteClickHandler} buttonName="No." />
                         </FormButtonContainer>
                       </Form>

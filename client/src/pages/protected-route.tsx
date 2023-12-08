@@ -12,7 +12,7 @@ export default function ProtectedRoute() {
     )
   } else {
     return (
-      <div className='text-6xl'>You are not authorized.</div>
+      <div className='text-6xl text-center'>You are not authorized.</div>
     )
   }
 }

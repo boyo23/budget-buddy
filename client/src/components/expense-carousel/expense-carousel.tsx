@@ -11,7 +11,7 @@ export default function ExpenseCarousel(props: any) {
   const ctx = useContext(SavingsContext)
 
   return (
-    <div className={`${props.className} flex w-4/6 dark:bg-darkPrimary rounded-md`}>
+    <div className={`${props.className} flex w-full dark:bg-darkPrimary rounded-md`}>
       <Carousel
         prevArrow={({ handlePrev }) => (
           <IconButton
@@ -60,10 +60,10 @@ export default function ExpenseCarousel(props: any) {
         <Suspense
           fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading statistics...</span>}
         >
-          <ExpenseStatistics />
+          {/* <ExpenseStatistics /> */}
         </Suspense>
 
-        <div className="">
+        {/* <div className="">
           <Suspense
             fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading overview...</span>}
           >
@@ -82,7 +82,7 @@ export default function ExpenseCarousel(props: any) {
 
             <ExpenseOverview />
           </Suspense>
-        </div>
+        </div> */}
       </Carousel>
     </div>
   )
