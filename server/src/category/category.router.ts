@@ -4,27 +4,29 @@ import { body, validationResult } from 'express-validator'
 
 import { authenticateToken } from '../utils/jwt'
 import * as CategoryServices from './category.service'
+import { findCategories } from '../user/user.service'
 
 export const categoryRouter = Router()
 
 categoryRouter.post(
   '/create',
   authenticateToken,
-  body('name')
-    .exists()
-    .isString()
-    .notEmpty()
-    .custom(async (name) => {
-      if (await CategoryServices.findCategory(name)) {
-        throw new Error('Category already exist')
-      }
-    }),
+  body('name').exists().isString().notEmpty(),
   async (request: Request, response: Response) => {
     try {
       const errors = validationResult(request)
 
       if (!errors.isEmpty()) {
         return response.status(400).json({ message: errors.array() })
+      }
+
+      const categoriesResult = await findCategories(request.user.id)
+
+      if (categoriesResult) {
+        const categoryExists = categoriesResult.categories.some((category) => category.name === request.body.name)
+        if (categoryExists) {
+          return response.status(400).json({ message: 'Category already exists for this user' })
+        }
       }
 
       const newCategory = await CategoryServices.createCategory({ ...request.body, userId: request.user.id })
@@ -39,23 +41,22 @@ categoryRouter.post(
 categoryRouter.put(
   '/update',
   authenticateToken,
-  [
-    body('id').exists().isString(),
-    body('name')
-      .exists()
-      .isString()
-      .custom(async (value) => {
-        if (await CategoryServices.findCategory(value)) {
-          throw new Error('Category already exist')
-        }
-      }),
-  ],
+  [body('id').exists().isString(), body('name').exists().isString()],
   async (request: Request, response: Response) => {
     try {
       const errors = validationResult(request)
 
       if (!errors.isEmpty()) {
         return response.status(400).json({ message: errors.array() })
+      }
+
+      const categoriesResult = await findCategories(request.user.id)
+
+      if (categoriesResult) {
+        const categoryExists = categoriesResult.categories.some((category) => category.name === request.body.name)
+        if (categoryExists) {
+          return response.status(400).json({ message: 'Category already exists for this user' })
+        }
       }
 
       const updatedCategory = await CategoryServices.updateCategory({ ...request.body })
