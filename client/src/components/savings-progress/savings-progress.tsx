@@ -11,11 +11,13 @@ import FormFieldsContainer from '../forms/form-container'
 import FormText from '../forms/form-text'
 import FormDate from '../forms/form-date'
 import SavingsCard from './savings-card'
+import { useNavigate } from 'react-router-dom'
 
 export default function SavingsProgress() {
   const [goalIsClicked, setGoalIsClicked] = useState(false)
   const { register, handleSubmit, watch } = useForm()
   const ctx = useContext(SavingsContext)
+  const navigate = useNavigate()
 
   // useEffect(() => {
   //   console.log(goalIsClicked)
@@ -50,12 +52,12 @@ export default function SavingsProgress() {
         const json = await response.json()
         console.log(json.message)
       }
+      if (ctx?.userInfo?.goals?.length === 0) navigate("/home")
     } catch(error: any) {
       console.error(error)
     }
   }
 
-  // console.log(ctx.userInfo.goals[1].savings)
   return (
     <div
       className="mb-20 w-full min-h-[240px] max-h-[590px]"

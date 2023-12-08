@@ -39,7 +39,7 @@ export default function ExpenseOverview() {
                     <p>{item.name}</p>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
-                    <h1>{item?.categoryId}</h1>
+                    <h1>{item?.categoryName}</h1>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
                     <h1>{item.paymentMethod}</h1>

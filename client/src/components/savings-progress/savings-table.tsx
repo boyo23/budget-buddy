@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react'
 import { SavingsContext } from '@/context/savings-context'
+import { useForm } from 'react-hook-form'
 
 import StickyAddNav from './savings-add-nav'
 import StickySavingsNav from './savings-edit-nav'
@@ -12,40 +13,44 @@ export default function SavingsTable({ goalId, goalName, percentage, savingsArra
   const [editIsClicked, setEditIsClicked] = useState<boolean>(false)
   const [addNewSavingsClicked, setAddNewSavingsClicked] = useState<boolean>(false)
   const ctx = useContext(SavingsContext)
+  const { register, watch, handleSubmit } = useForm()
+  const [id, setId] = useState("")
 
-  const editClickHandler = () => {
+
+  const editClickHandler = (id) => {
     setEditIsClicked(!editIsClicked)
-    console.log(editIsClicked)
+    setId(id)
+    // console.log(editIsClicked)
   }
 
-  // console.log(ctx.userInfo)
+  const handleDelete = async (data: any) => {
+    console.log(data);
+    try {
+      const response = await fetch('http://localhost:3000/savings/delete', {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id: data}), // Assuming your server expects an object with a key 'data'
+      });
 
-  // const deleteItem = (id: number) => {
-  //   setData((prevData) => prevData.filter((item) => item.id !== id))
-  // }
+      console.log(response);
 
-  // const handleCloseModal = () => {
-  //   setOpen(false)
-  //   setEditId(null)
-  //   setSelectedItem(null)
-  // }
-
-  // const handleSave = (updatedData: DataType) => {
-  //   if (selectedItem) {
-  //     const newData = data.map((item) => (item.id === selectedItem.id ? { ...item, ...updatedData } : item))
-  //     console.log(newData)
-  //     setData(newData)
-
-  //     console.log('sad', data)
-  //     handleCloseModal()
-  //   }
-  // }
+      if (!response.ok) {
+        const json = await response.json();
+        console.log(json.message);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  }
 
   const clickAddSavingsHandler = () => {
     setAddNewSavingsClicked(!addNewSavingsClicked)
   }
 
-  console.log(savingsArray)
+  // console.log(savingsArray)
 
   return (
     <div className="max-h-[700px] overflow-y-auto scroll-smooth rounded-md relative">
@@ -65,7 +70,7 @@ export default function SavingsTable({ goalId, goalName, percentage, savingsArra
       </div>
       <div className="flex">
         <div className="w-full bg-white dark:bg-darkPrimary">
-          {editIsClicked && <StickySavingsNav action={() => editClickHandler()} />}
+          {editIsClicked && <StickySavingsNav id={id} action={() => editClickHandler()} />}
 
           {addNewSavingsClicked && <StickyAddNav goalId={goalId} action={() => clickAddSavingsHandler()} />}
           <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{goalName}</h1>
@@ -90,16 +95,19 @@ export default function SavingsTable({ goalId, goalName, percentage, savingsArra
                   </td>
                   <td className="flex gap-2 border border-gray-400 p-2 text-center">
                     <button
-                      onClick={editClickHandler}
+                      onClick={() => editClickHandler(saving?.id)}
                       className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300"
                     >
                       Edit
                     </button>
-                    <button
-                      className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300"
-                    >
-                      Delete
-                    </button>
+                    {/* <form onSubmit={() => handleDelete(saving?.id)}> */}
+                      <button
+                        onClick={() => handleDelete(saving?.id)}
+                        className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300"
+                      >
+                        Delete
+                      </button>
+                    {/* </form> */}
                   </td>
                 </tr>
               ))}
