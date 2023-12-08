@@ -9,20 +9,28 @@ export const goalRouter = Router()
 
 goalRouter.post(
   '/create',
-  [
-    body('name').isString(),
-    body('amount').isNumeric(),
-    body('targetedAt')
-      .matches(/^\d{4}-\d{2}-\d{2}$/)
-      .withMessage('Invalid date format. Enter the date in the following format: YYYY-MM-DD.'),
-  ],
   authenticateToken,
+  [
+    body('name')
+      .exists()
+      .isString()
+      .custom(async (name) => {
+        if (await GoalServices.findGoal(name)) {
+          throw new Error('Goal already exist')
+        }
+      }),
+    body('amount').exists().isNumeric().toFloat(),
+    body('targetedAt')
+      .exists()
+      .isDate()
+      .customSanitizer((date) => new Date(date).toISOString()),
+  ],
   async (request: Request, response: Response) => {
     try {
       const errors = validationResult(request)
 
       if (!errors.isEmpty()) {
-        return response.status(400).json({ errors: errors.array() })
+        return response.status(400).json({ message: errors.array() })
       }
 
       const newGoal = await GoalServices.createGoal({ ...request.body, userId: request.user.id })
@@ -34,16 +42,53 @@ goalRouter.post(
   },
 )
 
-goalRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
-  try {
-    const { id, name } = await GoalServices.deleteGoal(request.body.id)
+goalRouter.put(
+  '/update',
+  authenticateToken,
+  [
+    body('id').exists().isString(),
+    body('name')
+      .exists()
+      .isString()
+      .custom(async (name) => {
+        if (await GoalServices.findGoal(name)) {
+          throw new Error('Goal already exist')
+        }
+      }),
+    body('amount').exists().isNumeric().toFloat(),
+    body('targetedAt')
+      .exists()
+      .isDate()
+      .customSanitizer((date) => new Date(date).toISOString()),
+  ],
+  async (request: Request, response: Response) => {
+    try {
+      const errors = validationResult(request)
 
-    if (id !== request.body.id) {
-      return response.status(500).json({ message: 'Goal does not exist' })
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ message: errors.array() })
+      }
+
+      const updateGoal = await GoalServices.updateGoal({ ...request.body })
+
+      return response.status(201).json(updateGoal)
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }
+  },
+)
 
-    return response.status(201).json({ message: `Successfully deleted ${name}` })
-  } catch (error: any) {
-    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
-  }
-})
+goalRouter.delete(
+  '/delete',
+  authenticateToken,
+  body('id').exists().isString(),
+  async (request: Request, response: Response) => {
+    try {
+      const { name } = await GoalServices.deleteGoal(request.body.id)
+
+      return response.status(201).json({ message: `Successfully deleted ${name}` })
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+    }
+  },
+)

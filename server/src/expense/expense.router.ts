@@ -9,36 +9,31 @@ export const expenseRouter = Router()
 
 expenseRouter.post(
   '/create',
+  authenticateToken,
   [
-    body('name').isString(),
-    body('price').toFloat(),
-    body('quantity').toInt(10),
+    body('name').exists().isString(),
+    body('price').exists().isNumeric().toFloat(),
+    body('quantity').exists().isNumeric().toInt(10),
+    body('date')
+      .exists()
+      .isDate()
+      .customSanitizer((date) => new Date(date).toISOString()),
     body('paymentMethod')
+      .exists()
       .isString()
       .isIn(['CASH', 'GCASH', 'CREDIT', 'DEBIT'])
-      .withMessage((value) => `The payment method ${value} is invalid.`),
-    body('date')
-      .custom((value) => {
-        const parsedDate = new Date(value);
-        if (isNaN(parsedDate.getTime())) {
-          throw new Error('Invalid date format. Enter the date in a valid format.');
-        }
-        return true;
-      })
+      .withMessage((paymentMethod) => `The payment method ${paymentMethod} is invalid.`),
+    body('categoryId').exists().isString(),
   ],
-  authenticateToken,
   async (request: Request, response: Response) => {
     try {
       const errors = validationResult(request)
 
       if (!errors.isEmpty()) {
-        return response.status(400).json({ errors: errors.array() })
+        return response.status(400).json({ message: errors.array() })
       }
 
-      // Now `request.body.date` should be a valid ISO string
-      const isoDateString = new Date(request.body.date).toISOString();
-
-      const newExpense = await ExpenseServices.createExpense({ ...request.body, userId: request.user.id, date: isoDateString })
+      const newExpense = await ExpenseServices.createExpense({ ...request.body, userId: request.user.id })
 
       return response.status(201).json(newExpense)
     } catch (error: any) {
@@ -47,16 +42,52 @@ expenseRouter.post(
   },
 )
 
-expenseRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
-  try {
-    const { id, name } = await ExpenseServices.deleteExpense(request.body.id)
+expenseRouter.put(
+  '/update',
+  authenticateToken,
+  [
+    body('id').exists().isString(),
+    body('name').exists().isString(),
+    body('price').exists().isNumeric().toFloat(),
+    body('date')
+      .exists()
+      .isDate()
+      .customSanitizer((date) => new Date(date).toISOString()),
+    body('quantity').exists().isNumeric().toInt(10),
+    body('paymentMethod')
+      .exists()
+      .isString()
+      .isIn(['CASH', 'GCASH', 'CREDIT', 'DEBIT'])
+      .withMessage((paymentMethod) => `The payment method ${paymentMethod} is invalid.`),
+  ],
+  async (request: Request, response: Response) => {
+    try {
+      const errors = validationResult(request)
 
-    if (id !== request.body.id) {
-      return response.status(500).json({ message: 'Expense does not exist' })
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ message: errors.array() })
+      }
+
+      const updatedExpense = await ExpenseServices.updateExpense({ ...request.body })
+
+      return response.status(201).json(updatedExpense)
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occurred while processing your request: ${error.message}` })
     }
+  },
+)
 
-    return response.status(201).json({ message: `Successfully deleted ${name}` })
-  } catch (error: any) {
-    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
-  }
-})
+expenseRouter.delete(
+  '/delete',
+  authenticateToken,
+  body('id').exists().isString(),
+  async (request: Request, response: Response) => {
+    try {
+      const { name } = await ExpenseServices.deleteExpense(request.body.id)
+
+      return response.status(201).json({ message: `Successfully deleted ${name}` })
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+    }
+  },
+)

@@ -19,14 +19,19 @@ const createCategory = async (category: Omit<Category, 'id'>): Promise<Category>
   })
 }
 
-const deleteCategory = async (id: string): Promise<Omit<Category, 'userId'>> => {
-  return prisma.category.delete({
+const updateCategory = async (category: Omit<Category, 'userId'>): Promise<Pick<Category, 'name'>> => {
+  const { id, name } = category
+  return prisma.category.update({
     where: { id },
-    select: {
-      id: true,
-      name: true,
-    },
+    data: { name },
   })
 }
 
-export { findCategory, createCategory, deleteCategory }
+const deleteCategory = async (id: string): Promise<Pick<Category, 'name'>> => {
+  return prisma.category.delete({
+    where: { id },
+    select: { name: true },
+  })
+}
+
+export { findCategory, createCategory, updateCategory, deleteCategory }
