@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, lazy } from 'react'
+import { useState, useEffect, useCallback, useContext } from 'react'
 import { Dialog } from '@material-tailwind/react'
 import { SavingsContext } from '@/context/savings-context'
 import { useForm } from 'react-hook-form'
@@ -10,10 +10,12 @@ import FormButton from '../forms/form-button'
 import FormFieldsContainer from '../forms/form-container'
 import FormText from '../forms/form-text'
 import FormDate from '../forms/form-date'
+import SavingsCard from './savings-card'
 
 export default function SavingsProgress() {
   const [goalIsClicked, setGoalIsClicked] = useState(false)
   const { register, handleSubmit, watch } = useForm()
+  const ctx = useContext(SavingsContext)
 
   // useEffect(() => {
   //   console.log(goalIsClicked)
@@ -31,79 +33,104 @@ export default function SavingsProgress() {
       savingsBalance: 1000,
       savingsGoal: 10000,
     },
-    {
-      goalName: "Xander's Dog",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 2000,
-      savingsGoal: 10000,
-    },
-    {
-      goalName: 'German Shepherd',
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 5000,
-      savingsGoal: 10000,
-    },
-    {
-      goalName: "Carlo's Penguin",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 7500,
-      savingsGoal: 12345,
-    },
-    {
-      goalName: "Yan and Aki's Cookie Shop",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 10000,
-      savingsGoal: 10000,
-    },
-    {
-      goalName: "Dianne's Eatery",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 7500,
-      savingsGoal: 10000,
-    },
-    {
-      goalName: "Dianne's Nissan GTR",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 5000,
-      savingsGoal: 12000000,
-    },
-    {
-      goalName: "Carlo's Penguin",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 7500,
-      savingsGoal: 12345,
-    },
-    {
-      goalName: "Yan and Aki's Cookie Shop",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 10000,
-      savingsGoal: 10000,
-    },
-    {
-      goalName: "Dianne's Eatery",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 7500,
-      savingsGoal: 10000,
-    },
-    {
-      goalName: "Dianne's Nissan GTR",
-      dateAdded: '11/11/2088',
-      targetDate: '11/11/2099',
-      savingsBalance: 5000,
-      savingsGoal: 12000000,
-    },
+    // {
+    //   goalName: "Xander's Dog",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 2000,
+    //   savingsGoal: 10000,
+    // },
+    // {
+    //   goalName: 'German Shepherd',
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 5000,
+    //   savingsGoal: 10000,
+    // },
+    // {
+    //   goalName: "Carlo's Penguin",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 7500,
+    //   savingsGoal: 12345,
+    // },
+    // {
+    //   goalName: "Yan and Aki's Cookie Shop",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 10000,
+    //   savingsGoal: 10000,
+    // },
+    // {
+    //   goalName: "Dianne's Eatery",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 7500,
+    //   savingsGoal: 10000,
+    // },
+    // {
+    //   goalName: "Dianne's Nissan GTR",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 5000,
+    //   savingsGoal: 12000000,
+    // },
+    // {
+    //   goalName: "Carlo's Penguin",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 7500,
+    //   savingsGoal: 12345,
+    // },
+    // {
+    //   goalName: "Yan and Aki's Cookie Shop",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 10000,
+    //   savingsGoal: 10000,
+    // },
+    // {
+    //   goalName: "Dianne's Eatery",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 7500,
+    //   savingsGoal: 10000,
+    // },
+    // {
+    //   goalName: "Dianne's Nissan GTR",
+    //   dateAdded: '11/11/2088',
+    //   targetDate: '11/11/2099',
+    //   savingsBalance: 5000,
+    //   savingsGoal: 12000000,
+    // },
   ]
 
-  const SavingsCard = lazy(() => import('./savings-card'))
+
+  const handlePost = async (data: any) => {
+    fetch('http://localhost:3000/savings/create', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${ctx.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      console.log(response)
+      return response.json();
+
+    }).then((data) => {
+      console.log(data?.errors)
+    }).catch((error) => {
+      console.error('Error during fetch:', error);
+    }).finally(() => {
+      // console.log(ctx.userInfo)
+      // ctx.setExpenseInfoData(ctx.userInfo)
+    });
+
+  }
 
   return (
     <div
@@ -136,8 +163,8 @@ export default function SavingsProgress() {
         {/* Progress Card */}
         <div style={{ maxHeight: '590px' }} className="flex h-full">
           <div className={`flex w-full flex-wrap justify-evenly overflow-x-auto`}>
-            <Suspense fallback={<span className="p-6 text-center text-5xl">Loading...</span>}>
-              {sampleData.map((item, index) => (
+            {/* <Suspense fallback={<span className="p-6 text-center text-5xl">Loading...</span>}> */}
+              {ctx?.userInfo?.savings?.map((item, index) => (
                 <SavingsCard
                   key={index}
                   goalName={item.goalName}
@@ -147,11 +174,11 @@ export default function SavingsProgress() {
                   savingsGoal={item.savingsGoal}
                 />
               ))}
-            </Suspense>
+            {/* </Suspense> */}
           </div>
           {
             <Dialog className="font-" open={goalIsClicked} handler={goalClickHandler}>
-              <Form handleSubmit={handleSubmit} key="88">
+              <Form handleSubmit={() => handleSubmit(data => handlePost(data))}>
                 <FormHeading inputHeading="Add a goal" />
                 <FormFieldsContainer>
                   {/* @ts-ignore */}
@@ -159,7 +186,7 @@ export default function SavingsProgress() {
                   <FormNumber register={register} name="targetSavings" inputName="Target savings" />
                   <FormDate register={register} name="targetDate" inputName="Date" />
                   <FormButtonContainer>
-                    <FormButton buttonName="Update" />
+                    <FormButton buttonName="Add" buttonAction={null} />
                     <FormButton type="button" buttonName="Close" buttonAction={goalClickHandler} />
                   </FormButtonContainer>
                 </FormFieldsContainer>

@@ -62,7 +62,7 @@ export default function Home() {
       <Navbar />
 
       <div className="flex-grow flex flex-col mt-4 justify-start">
-        <div className="w-full px-4 grid grid-cols-5 grid-rows-1 gap-4">
+        <div className="w-auto px-4 grid grid-cols-5 grid-rows-1 gap-4">
           <div className="col-span-5 col-start-1">
             <div className="cursor-pointer rounded-md bg-contrast dark:bg-darkPrimary">
               <h1 onClick={toggleOpenExpenses} className="flex justify-center p-4 text-5xl font-bold text-white dark:text-contrast">

@@ -18,14 +18,6 @@ type Expense = {
 
 export default function ExpenseInfo() {
   const [expenseClicked, setExpenseClicked] = useState<boolean>(false)
-  const [expenseBody, setExpenseBody] = useState<Expense>({
-    price: 0,
-    quantity: 0,
-    date: new Date(),
-    paymentMethod: "",
-    categoryId: "",
-    userId: "",
-  })
   const [tableData, setTableData] = useState({})
   const ctx = useContext(SavingsContext)
   const navigate = useNavigate()
@@ -84,16 +76,27 @@ export default function ExpenseInfo() {
 
       const json = await response.json();
       ctx.setUserInfo(json);
-      setTableData(json); // Assuming setTableData is a state updater function
-      console.log(tableData)
+
+      // Using the callback form of setTableData to ensure the latest state
+      setTableData(prevTableData => {
+        // Assuming json is an object with an 'expenses' property
+        return { ...prevTableData, expenses: json.expenses };
+      });
     } catch (error) {
       console.error('Error during fetch:', error);
     }
-  }, [ctx.token, expenseClicked]); // Make sure to include all dependencies
+  }, [ctx.token, tableData]);
 
   useEffect(() => {
     fetchUserInfo();
-  }, [fetchUserInfo]);
+  }, [fetchUserInfo, expenseClicked]);
+
+  // fetchUserInfo()
+
+  const formSubmitHandler = () => {
+    fetchUserInfo()
+    setExpenseClicked(!expenseClicked)
+  }
 
   // Note: The dependencies array in useEffect should include fetchUserInfo to avoid stale closures.
 
@@ -101,7 +104,7 @@ export default function ExpenseInfo() {
   // console.log(tableData)
 
   return (
-    <div className="flex w-full flex-col rounded-md bg-white dark:bg-darkPrimary ">
+    <div className="flex w-4/6 min-w-min flex-col rounded-md bg-white dark:bg-darkPrimary ">
       <h1 className="p-4 text-center text-4xl font-bold dark:text-contrast shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] dark:shadow-[rgba(243,53,121,1)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]
 ">INFORMATION</h1>
       <hr className="w-full border-gray-400 dark:border-gray-700" />
@@ -115,7 +118,7 @@ export default function ExpenseInfo() {
               <th className='border-b border-b-gray-300 pb-4 flex-grow'>Price</th>
             </tr>
           </thead>
-          <tbody className='text-xl'>
+          <tbody className='text-xl relative'>
             {tableData?.expenses?.map((item: any) => (
               <tr className='dark:text-darkText' key={item?.id}>
                 <td className='border-b border-gray-300 py-2'>{item?.name}</td>
@@ -123,6 +126,7 @@ export default function ExpenseInfo() {
                 <td className='border-b border-gray-300 py-2 dark:text-green-400'>{item?.price}</td>
               </tr>
             ))}
+            {tableData?.expenses?.length === 0 && <h1 className='text-blue-gray-400 absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-transparent top-10 text-2xl whitespace-nowrap'>You have no recently added expenses.</h1>}
           </tbody>
         </table>
       </div>
@@ -144,7 +148,9 @@ export default function ExpenseInfo() {
       </Dialog>
       <Dialog className='font-' open={expenseClicked} handler={addExpenseHandler}>
         {/* @ts-ignore */}
-        <ExpenseAddForm buttonAction={fetchUserInfo} close={() => setExpenseClicked(!expenseClicked)} />
+        <ExpenseAddForm buttonAction={formSubmitHandler}
+        close={() => setExpenseClicked(!expenseClicked)}
+        />
       </Dialog>
     </div>
   )

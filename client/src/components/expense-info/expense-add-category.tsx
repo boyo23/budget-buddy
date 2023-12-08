@@ -14,39 +14,39 @@ export default function ExpenseAddCategory({ close }) {
   const ctx = useContext(SavingsContext)
   const { register, handleSubmit, watch } = useForm()
   // @ts-ignore
-  const [ categoryBody, setCategoryBody ] = useState({
+  const [categoryBody, setCategoryBody] = useState({
     name: "",
   })
 
 
   const handlePost = async (data: any) => {
+    console.log(data)
     fetch('http://localhost:3000/category/create', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${ctx.token}`,
-      'Content-Type': 'application/json' 
-    },
-    body: JSON.stringify(data),
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    console.log(response)
-    return response.json();
-  }).then((json) => {
-    console.log(json)
-  }).catch((error) => {
-    console.error('Error during fetch:', error);
-  }).finally(() => {
-    console.log("Post")
-  });}
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${ctx.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      console.log(response)
+      return response.json();
+    }).then((json) => {
+      console.log(json)
+    }).catch((error) => {
+      console.error('Error during fetch:', error);
+    }).finally(() => {
+      // console.log("Post")
+    })
+  }
 
-  useEffect(() => {
-    console.log(categoryBody)
-    console.log(ctx.token)
-  }, [categoryBody])
+  // useEffect(() => {
+  //   console.log(ctx.token)
+  // }, [categoryBody])
 
-  console.log(watch())
   return (
     <Form action={handleSubmit(data => handlePost(data))} handleSubmit={handleSubmit}>
       <FormHeading inputHeading="CATEGORY" />

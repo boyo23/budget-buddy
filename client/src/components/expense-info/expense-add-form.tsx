@@ -22,102 +22,37 @@ type Expense = {
 }
 
 export default function ExpenseAddForm(props: any) {
-  const [expenseClicked, setExpenseClicked] = useState<boolean>(false)
-  const [category, setCategory] = useState([])
-  // const [expenseBody, setExpenseBody] = useState({
-  //   price: 0,
-  //   quantity: 0,
-  //   date: new Date(),
-  //   paymentMethod: "",
-  //   categoryId: "",
-  //   userId: "",
-  // })
-  const [formIsSubmitted, setFormIsSubmitted] = useState(false)
+  // const [expenseClicked, setExpenseClicked] = useState<boolean>(false)
+  // const [category, setCategory] = useState([])
+  // const [formIsSubmitted, setFormIsSubmitted] = useState(false)
 
-
-  // const handlePost = (data) => {
-  //   console.log("Reached handlePost()")
-  //   fetch('http://localhost:3000/expense', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => console.log(data))
-  // }
-
-  // const addExpenseHandler = () => {
-  //   console.log(expenseClicked)
-  //   setExpenseClicked(!expenseClicked)
-  // }
-
-  // const API_ADDEXPENSE = async () => {
-  //   const url = "https://localhost:3000/api/expense"
-
-  //   try {
-  //     await fetch(url, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       body: JSON.stringify(expenseBody)
-  //     })
-  //   } catch (err: any) {
-  //     console.log(err)
-  //   }
-  // }
-  
   const ctx = useContext(SavingsContext)
-  
-    // useEffect(() => {
 
-    //   fetch('http://localhost:3000/user', {
-    //     method: 'GET',
-    //     headers: {
-    //       'Authorization': `Bearer ${ctx.token}`,
-    //       'Content-Type': 'application/json' 
-    //     },
-    //   }).then((response) => {
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-    //     return response.json();
-    //   }).then((json) => {
-    //     ctx.setUserInfo(json)
-    //   }).catch((error) => {
-    //     console.error('Error during fetch:', error);
-    //   }).finally(() => {
-    //     console.log(ctx.userInfo)
-    //     console.log(ctx.token)
+  const handlePost = async (data: any) => {
+    fetch('http://localhost:3000/expense/create', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${ctx.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      console.log(response)
+      return response.json();
 
-    //   });
-    // }, [expenseClicked])
+    }).then((data) => {
+      // console.log(data?.errors)
+    }).catch((error) => {
+      console.error('Error during fetch:', error);
+    }).finally(() => {
+      // console.log(ctx.userInfo)
+      // ctx.setExpenseInfoData(ctx.userInfo)
+    });
 
-    const handlePost = async (data: any) => {
-      fetch('http://localhost:3000/expense/create', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${ctx.token}`,
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(data),
-      }).then((response) => {
-        // if (!response.ok) {
-        //   throw new Error(`HTTP error! Status: ${response.status}`);
-        // }
-        console.log(response)
-        return response.json();
-        
-      }).then((data) => {
-        // console.log(data?.errors)
-      }).catch((error) => {
-        console.error('Error during fetch:', error);
-      }).finally(() => {
-        // console.log(ctx.userInfo)
-        // ctx.setExpenseInfoData(ctx.userInfo)
-      });
-      
-    }
+  }
 
   const { register, handleSubmit, watch } = useForm()
   // console.log(watch())
@@ -137,10 +72,11 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="Debit card" optionValue="DEBIT" />
         </FormSelect>
         <FormSelect register={register} inputName="Category" name="categoryId">
-          
-          {ctx.userInfo.categories.map(({name, id}) => (
-            <FormSelectOption optionName={name} optionValue={id}/>
+
+          {ctx?.userInfo?.categories?.map(({ name, id }) => (
+            <FormSelectOption optionName={name} optionValue={id} />
           ))}
+          {ctx?.userInfo?.categories?.length === 0 && <FormSelectOption optionName={"No existing categories yet."} />}
           {/* <FormSelectOption optionName="Food" optionValue="1" />
           <FormSelectOption optionName="Tuition" optionValue="2" />
           <FormSelectOption optionName="Clothes" optionValue="3" />
@@ -148,7 +84,7 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="General" optionValue="5" /> */}
         </FormSelect>
         <FormButtonContainer>
-          <FormButton buttonAction={props.buttonAction} buttonName="Add"/>
+          <FormButton buttonAction={props.buttonAction} buttonName="Add" />
           <FormButton type="button" buttonName="Close" buttonAction={props.close} />
         </FormButtonContainer>
       </FormFieldsContainer>
