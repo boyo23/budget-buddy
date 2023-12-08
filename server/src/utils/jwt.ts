@@ -11,7 +11,7 @@ if (!process.env.SECRET_ACCESS_KEY) {
 
 const secretKey: Secret = process.env.SECRET_ACCESS_KEY as string
 
-const authenticateToken = async (request: Request, response: Response, next: NextFunction) => {
+export const authenticateToken = async (request: Request, response: Response, next: NextFunction) => {
   const authHeader = request.headers.authorization
 
   if (!authHeader) {
@@ -33,5 +33,3 @@ const authenticateToken = async (request: Request, response: Response, next: Nex
     next()
   })
 }
-
-export { authenticateToken }

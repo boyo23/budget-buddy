@@ -14,14 +14,24 @@ const createSavings = async (savings: Omit<Savings, 'id'>): Promise<Savings> => 
   })
 }
 
-const deleteSavings = async (id: string): Promise<Pick<Savings, 'id' | 'amount'>> => {
+const updateSavings = async (savings: Omit<Savings, 'goalId'>): Promise<Savings> => {
+  const { id, amount, date } = savings
+  return prisma.savings.update({
+    where: { id },
+    data: {
+      amount,
+      date,
+    },
+  })
+}
+
+const deleteSavings = async (id: string): Promise<Pick<Savings, 'amount'>> => {
   return prisma.savings.delete({
     where: { id },
     select: {
-      id: true,
       amount: true,
     },
   })
 }
 
-export { createSavings, deleteSavings }
+export { createSavings, updateSavings, deleteSavings }

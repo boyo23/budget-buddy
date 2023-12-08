@@ -9,12 +9,15 @@ export const categoryRouter = Router()
 
 categoryRouter.post(
   '/create',
-  body('name').custom(async (value) => {
-    if (await CategoryServices.findCategory(value)) {
-      throw new Error('Category already exist')
-    }
-  }),
   authenticateToken,
+  body('name')
+    .exists()
+    .isString()
+    .custom(async (name) => {
+      if (await CategoryServices.findCategory(name)) {
+        throw new Error('Category already exist')
+      }
+    }),
   async (request: Request, response: Response) => {
     try {
       const errors = validationResult(request)
@@ -32,16 +35,48 @@ categoryRouter.post(
   },
 )
 
-categoryRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
-  try {
-    const { id, name } = await CategoryServices.deleteCategory(request.body.id)
+categoryRouter.put(
+  '/update',
+  authenticateToken,
+  [
+    body('id').exists().isString(),
+    body('name')
+      .exists()
+      .isString()
+      .custom(async (value) => {
+        if (await CategoryServices.findCategory(value)) {
+          throw new Error('Category already exist')
+        }
+      }),
+  ],
+  async (request: Request, response: Response) => {
+    try {
+      const errors = validationResult(request)
 
-    if (id !== request.body.id) {
-      return response.status(500).json({ message: 'Category does not exist' })
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ message: errors.array() })
+      }
+
+      const updatedCategory = await CategoryServices.updateCategory({ ...request.body })
+
+      return response.status(201).json(updatedCategory)
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }
+  },
+)
 
-    return response.status(201).json({ message: `Successfully deleted ${name}` })
-  } catch (error: any) {
-    return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
-  }
-})
+categoryRouter.delete(
+  '/delete',
+  authenticateToken,
+  body('id').exists().isString(),
+  async (request: Request, response: Response) => {
+    try {
+      const { name } = await CategoryServices.deleteCategory(request.body.id)
+
+      return response.status(201).json({ message: `Successfully deleted ${name}` })
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+    }
+  },
+)

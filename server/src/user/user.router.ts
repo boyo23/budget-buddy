@@ -36,26 +36,30 @@ userRouter.get('/', authenticateToken, async (request: Request, response: Respon
 userRouter.post(
   '/register',
   [
-    body('username').custom(async (value) => {
-      if (await UserServices.findUser(value)) {
-        throw new Error('Username already exist')
-      }
-    }),
+    body('username')
+      .exists()
+      .custom(async (value) => {
+        if (await UserServices.findUser(value)) {
+          throw new Error('Username already exist')
+        }
+      }),
     /* prettier-ignore */
     body('password')
+      .exists()
       .isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
       .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
       .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
       .matches(/\d/).withMessage('Password must contain at least one number')
       .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special character'),
     body('email')
+      .exists()
       .isEmail()
-      .normalizeEmail()
       .custom(async (value) => {
         if (await UserServices.findUser(value)) {
           throw new Error('Email already in use')
         }
-      }),
+      })
+      .normalizeEmail(),
   ],
   async (request: Request, response: Response) => {
     try {
@@ -88,7 +92,7 @@ userRouter.post('/login', async (request: Request, response: Response) => {
     const isPasswordValid = await bcrypt.compare(request.body.password, password)
 
     if (!isPasswordValid) {
-      return response.status(401).json({ message: 'Incorrect password' })
+      return response.status(401).json({ message: 'Password incorrect' })
     }
 
     const token = jwt.sign(userInfo, secretKey, { expiresIn: '1h' })
@@ -99,15 +103,49 @@ userRouter.post('/login', async (request: Request, response: Response) => {
   }
 })
 
-userRouter.post('/delete', authenticateToken, async (request: Request, response: Response) => {
-  try {
-    const { id, username } = await UserServices.deleteUser(request.body.id)
+userRouter.put(
+  '/update',
+  authenticateToken,
+  body('username')
+    .exists()
+    .custom(async (value) => {
+      if (await UserServices.findUser(value)) {
+        throw new Error('Username already exist')
+      }
+    }),
+  /* prettier-ignore */
+  body('password')
+    .exists()
+    .isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+    .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+    .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+    .matches(/\d/).withMessage('Password must contain at least one number')
+    .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special character'),
+  body('threshold').exists().isNumeric().toFloat(),
+  async (request: Request, response: Response) => {
+    try {
+      const errors = validationResult(request)
 
-    if (id !== request.body.id) {
-      return response.status(500).json({ message: 'Goal does not exist' })
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ message: errors.array() })
+      }
+
+      const hashedPassword = await bcrypt.hash(request.body.password, 10)
+      const user = { ...request.body, password: hashedPassword }
+      const updatedUser = await UserServices.updateUser({ ...user, id: request.user.id })
+
+      return response.status(201).json(updatedUser)
+    } catch (error: any) {
+      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
     }
+  },
+)
 
-    return response.status(201).json({ message: `Successfully delete ${username}` })
+userRouter.delete('/delete', authenticateToken, async (request: Request, response: Response) => {
+  try {
+    const { username } = await UserServices.deleteUser(request.user.id)
+
+    return response.status(201).json({ message: `Successfully deleted ${username}` })
   } catch (error: any) {
     return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
   }

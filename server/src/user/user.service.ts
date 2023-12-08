@@ -30,7 +30,9 @@ const findUser = async (key: string): Promise<User | null> => {
   })
 }
 
-const createUser = async (user: Pick<User, 'username' | 'password' | 'email'>): Promise<Omit<User, 'id'>> => {
+const createUser = async (
+  user: Pick<User, 'username' | 'password' | 'email'>,
+): Promise<Omit<User, 'id' | 'password'>> => {
   const { username, password, email } = user
   return prisma.user.create({
     data: {
@@ -41,14 +43,25 @@ const createUser = async (user: Pick<User, 'username' | 'password' | 'email'>): 
   })
 }
 
-const deleteUser = async (id: string): Promise<Pick<User, 'id' | 'username'>> => {
-  return prisma.user.delete({
+const updateUser = async (
+  user: Pick<User, 'id' | 'username' | 'password' | 'threshold'>,
+): Promise<Omit<User, 'id' | 'password'>> => {
+  const { id, username, password, threshold } = user
+  return prisma.user.update({
     where: { id },
-    select: {
-      id: true,
-      username: true,
+    data: {
+      username,
+      password,
+      threshold,
     },
   })
 }
 
-export { findCategories, findExpenses, findGoals, findUser, createUser, deleteUser }
+const deleteUser = async (id: string): Promise<Pick<User, 'username'>> => {
+  return prisma.user.delete({
+    where: { id },
+    select: { username: true },
+  })
+}
+
+export { findCategories, findExpenses, findGoals, findUser, createUser, updateUser, deleteUser }
