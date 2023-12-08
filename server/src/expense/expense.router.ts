@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator'
 
 import { authenticateToken } from '../utils/jwt'
 import * as ExpenseServices from './expense.service'
+import { findCategory } from '../category/category.service'
 
 export const expenseRouter = Router()
 
@@ -34,8 +35,13 @@ expenseRouter.post(
       }
 
       const newExpense = await ExpenseServices.createExpense({ ...request.body, userId: request.user.id })
+      const category = await findCategory(newExpense.categoryId)
 
-      return response.status(201).json(newExpense)
+      if (!category) {
+        return response.status(404).json({ message: 'Category not found' })
+      }
+
+      return response.status(201).json({ category: category.name, ...newExpense })
     } catch (error: any) {
       return response.status(500).json({ message: `An error occurred while processing your request: ${error.message}` })
     }

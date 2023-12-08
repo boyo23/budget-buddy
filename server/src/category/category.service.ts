@@ -3,9 +3,9 @@ import type { Category } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const findCategory = async (name: string): Promise<Category | null> => {
+const findCategory = async (key: string): Promise<Category | null> => {
   return prisma.category.findFirst({
-    where: { name },
+    where: { OR: [{ id: key }, { name: key }] },
   })
 }
 
