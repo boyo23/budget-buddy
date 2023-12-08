@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator'
 
 import { authenticateToken } from '../utils/jwt'
 import * as GoalServices from './goal.service'
+import { findGoals } from '../user/user.service'
 
 export const goalRouter = Router()
 
@@ -11,14 +12,7 @@ goalRouter.post(
   '/create',
   authenticateToken,
   [
-    body('name')
-      .exists()
-      .isString()
-      .custom(async (name) => {
-        if (await GoalServices.findGoal(name)) {
-          throw new Error('Goal already exist')
-        }
-      }),
+    body('name').exists().isString(),
     body('amount').exists().isNumeric().toFloat(),
     body('targetedAt')
       .exists()
@@ -31,6 +25,15 @@ goalRouter.post(
 
       if (!errors.isEmpty()) {
         return response.status(400).json({ message: errors.array() })
+      }
+
+      const goalsResult = await findGoals(request.user.id)
+
+      if (goalsResult) {
+        const goalExists = goalsResult.goals.some((goal) => goal.name === request.body.name)
+        if (goalExists) {
+          return response.status(400).json({ message: 'Goal already exists for this user' })
+        }
       }
 
       const newGoal = await GoalServices.createGoal({ ...request.body, userId: request.user.id })
@@ -47,14 +50,6 @@ goalRouter.put(
   authenticateToken,
   [
     body('id').exists().isString(),
-    body('name')
-      .exists()
-      .isString()
-      .custom(async (name) => {
-        if (await GoalServices.findGoal(name)) {
-          throw new Error('Goal already exist')
-        }
-      }),
     body('amount').exists().isNumeric().toFloat(),
     body('targetedAt')
       .exists()
@@ -67,6 +62,15 @@ goalRouter.put(
 
       if (!errors.isEmpty()) {
         return response.status(400).json({ message: errors.array() })
+      }
+
+      const goalsResult = await findGoals(request.user.id)
+
+      if (goalsResult) {
+        const goalExists = goalsResult.goals.some((goal) => goal.name === request.body.name)
+        if (goalExists) {
+          return response.status(400).json({ message: 'Goal already exists for this user' })
+        }
       }
 
       const updateGoal = await GoalServices.updateGoal({ ...request.body })
