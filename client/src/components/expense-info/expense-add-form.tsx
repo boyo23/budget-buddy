@@ -28,31 +28,34 @@ export default function ExpenseAddForm(props: any) {
 
   const ctx = useContext(SavingsContext)
 
-  const handlePost = async (data: any) => {
-    fetch('http://localhost:3000/expense/create', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${ctx.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+  const handlePost = async(data: any) => {
+    const { category, ...newData } = data
+    const [categoryId, categoryName] = category.split(",")
+    const body = { ...newData, categoryId, categoryName}
+
+    try {
+      const response = await fetch('http://localhost:3000/expense/create', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body),
+      })  
+
       console.log(response)
-      return response.json();
 
-    }).then((data) => {
-      // console.log(data?.errors)
-    }).catch((error) => {
-      console.error('Error during fetch:', error);
-    }).finally(() => {
-      // console.log(ctx.userInfo)
-      // ctx.setExpenseInfoData(ctx.userInfo)
-    });
-
+      if (!response.ok) {
+      const json = await response.json()
+        console.log(json.message)
+      }
+    } catch(error: any) {
+      console.error(error)
+    }
   }
+  // useEffect(() => {
+  //   console.log(body)
+  // }, [handlePost])
 
   const { register, handleSubmit, watch } = useForm()
   // console.log(watch())
@@ -71,10 +74,10 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="Credit card" optionValue="CREDIT" />
           <FormSelectOption optionName="Debit card" optionValue="DEBIT" />
         </FormSelect>
-        <FormSelect register={register} inputName="Category" name="categoryId">
+        <FormSelect register={register} inputName="Category" name="category" >
 
           {ctx?.userInfo?.categories?.map(({ name, id }) => (
-            <FormSelectOption optionName={name} optionValue={id} />
+            <FormSelectOption optionName={name} optionValue={[id, name]} />
           ))}
           {ctx?.userInfo?.categories?.length === 0 && <FormSelectOption optionName={"No existing categories yet."} />}
           {/* <FormSelectOption optionName="Food" optionValue="1" />

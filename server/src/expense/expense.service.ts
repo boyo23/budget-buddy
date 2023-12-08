@@ -3,8 +3,8 @@ import type { Expense } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const createExpense = async (expense: Omit<Expense, 'id'>): Promise<Expense> => {
-  const { name, price, quantity, date, paymentMethod, categoryId, userId } = expense
+const createExpense = async (expense: Omit<Expense, 'id' | 'createdAt' | 'updatedAt'>): Promise<Expense> => {
+  const { name, price, quantity, date, paymentMethod, categoryName, categoryId, userId } = expense
   return prisma.expense.create({
     data: {
       name,
@@ -12,13 +12,16 @@ const createExpense = async (expense: Omit<Expense, 'id'>): Promise<Expense> => 
       quantity,
       date,
       paymentMethod,
+      categoryName,
       categoryId,
       userId,
     },
   })
 }
 
-const updateExpense = async (expense: Omit<Expense, 'userId' | 'categoryId'>): Promise<Expense> => {
+const updateExpense = async (
+  expense: Omit<Expense, 'categoryName' | 'userId' | 'categoryId' | 'createdAt' | 'updatedAt'>,
+): Promise<Expense> => {
   const { id, name, price, quantity, date, paymentMethod } = expense
   return prisma.expense.update({
     where: { id },
