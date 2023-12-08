@@ -18,8 +18,8 @@ export default function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/" element={<Login/>}></Route>
-          <Route path="/redirect" element={ <Navigate to="/home" /> } />
+          <Route path="/" element={<Login/>} />
+          {/* <Route path="/redirect" element={ <Navigate to="/home" /> } /> */}
           <Route path="/register" element={<Register/>}></Route>
           <Route path="/protectedRoute" element={<ProtectedRoute/>}></Route>
           <Route path="/*" element={<NotFound />} />

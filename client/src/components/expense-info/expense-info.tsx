@@ -1,10 +1,11 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect, useMemo, useCallback } from 'react'
 import Form from '../form'
 import { SavingsContext } from '@/context/savings-context'
 import { Dialog, input } from '@material-tailwind/react'
 import ExpenseAddForm from './expense-add-form'
 import { useForm } from 'react-hook-form'
 import ExpenseAddCategory from './expense-add-category'
+import { useNavigate, Navigate } from 'react-router-dom'
 
 type Expense = {
   price: number
@@ -25,40 +26,82 @@ export default function ExpenseInfo() {
     categoryId: "",
     userId: "",
   })
+  const [tableData, setTableData] = useState({})
+  const ctx = useContext(SavingsContext)
+  const navigate = useNavigate()
 
   const addExpenseHandler = () => {
     console.log(expenseClicked)
     setExpenseClicked(!expenseClicked)
   }
 
-  const API_ADDEXPENSE = async (data) => {
-    const url = "https://localhost:3000/api/expense"
+  // const API_ADDEXPENSE = async (data) => {
+  //   const url = "https://localhost:3000/api/expense"
 
-    try {
-      await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
-    } catch (err: any) {
-      console.log(err)
-    }
-  }
-  
+  //   try {
+  //     await fetch(url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify(data)
+  //     })
+  //   } catch (err: any) {
+  //     console.log(err)
+  //   }
+  // }
+
   const { register, handleSubmit, watch } = useForm()
 
-  console.log(watch())
+  // console.log(watch())
+
+  // useEffect(() => {
+  //   setTableData(ctx.userInfo.expenses)
+  //   return () => {
+  //     // navigate("/login")
+  //     navigate("/home")
+  //   }
+  // }, [ctx.addExpenseFormIsClicked])
+
+  // useEffect(() => {
+  //   setTableData(ctx.userInfo.expenses)
+  // }, [ctx.addExpenseFormIsClicked])
+
+  // Inside your component
+  const fetchUserInfo = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3000/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      ctx.setUserInfo(json);
+      setTableData(json); // Assuming setTableData is a state updater function
+      console.log(tableData)
+    } catch (error) {
+      console.error('Error during fetch:', error);
+    }
+  }, [ctx.token, expenseClicked]); // Make sure to include all dependencies
 
   useEffect(() => {
-    console.log(expenseBody)
-  }, [expenseBody])
+    fetchUserInfo();
+  }, [fetchUserInfo]);
 
-  const ctx = useContext(SavingsContext)
+  // Note: The dependencies array in useEffect should include fetchUserInfo to avoid stale closures.
+
+
+  // console.log(tableData)
 
   return (
-    <div style={{ width: '' }} className="flex w-full flex-col rounded-md bg-white dark:bg-darkPrimary ">
+    <div className="flex w-full flex-col rounded-md bg-white dark:bg-darkPrimary ">
       <h1 className="p-4 text-center text-4xl font-bold dark:text-contrast shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] dark:shadow-[rgba(243,53,121,1)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]
 ">INFORMATION</h1>
       <hr className="w-full border-gray-400 dark:border-gray-700" />
@@ -73,66 +116,13 @@ export default function ExpenseInfo() {
             </tr>
           </thead>
           <tbody className='text-xl'>
-            <tr className='dark:text-darkText'>
-              <td className='border-b border-gray-300 py-2'>Hotdog</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2 dark:text-green-400'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Donut</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Chickenjoy</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Jolibbee Fries</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Hotdog</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Donut</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Chickenjoy</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Jolibbee Fries</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Hotdog</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Donut</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Chickenjoy</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
-            <tr>
-              <td className='border-b border-gray-300 py-2'>Jolibbee Fries</td>
-              <td className='border-b border-gray-300 py-2'>11/22/33</td>
-              <td className='border-b border-gray-300 py-2'>P100,000</td>
-            </tr>
+            {tableData?.expenses?.map((item: any) => (
+              <tr className='dark:text-darkText' key={item?.id}>
+                <td className='border-b border-gray-300 py-2'>{item?.name}</td>
+                <td className='border-b border-gray-300 py-2'>{`${new Date(item?.date).toLocaleDateString()}`}</td>
+                <td className='border-b border-gray-300 py-2 dark:text-green-400'>{item?.price}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -154,7 +144,7 @@ export default function ExpenseInfo() {
       </Dialog>
       <Dialog className='font-' open={expenseClicked} handler={addExpenseHandler}>
         {/* @ts-ignore */}
-        <ExpenseAddForm close={addExpenseHandler} />
+        <ExpenseAddForm buttonAction={fetchUserInfo} close={() => setExpenseClicked(!expenseClicked)} />
       </Dialog>
     </div>
   )

@@ -5,17 +5,12 @@ import Home from './home'
 
 export default function ProtectedRoute() {
   const ctx = useContext(SavingsContext)
-
-  if (ctx.token) {
+  if (localStorage.getItem("token")) {
+    console.log(localStorage.getItem("token"))
     return (
       <Navigate to="/home" replace />
     )
   } else {
-
-    console.log(1)
-    console.log(ctx.token)
-    console.log(2)
-
     return (
       <div className='text-6xl'>You are not authorized.</div>
     )

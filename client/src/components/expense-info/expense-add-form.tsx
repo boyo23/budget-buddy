@@ -32,7 +32,7 @@ export default function ExpenseAddForm(props: any) {
   //   categoryId: "",
   //   userId: "",
   // })
-
+  const [formIsSubmitted, setFormIsSubmitted] = useState(false)
 
 
   // const handlePost = (data) => {
@@ -69,29 +69,29 @@ export default function ExpenseAddForm(props: any) {
   
   const ctx = useContext(SavingsContext)
   
-    useEffect(() => {
+    // useEffect(() => {
 
-      fetch('http://localhost:3000/user', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${ctx.token}`,
-          'Content-Type': 'application/json' 
-        },
-      }).then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      }).then((json) => {
-        ctx.setUserInfo(json)
-      }).catch((error) => {
-        console.error('Error during fetch:', error);
-      }).finally(() => {
-        console.log(ctx.userInfo)
-        console.log(ctx.token)
+    //   fetch('http://localhost:3000/user', {
+    //     method: 'GET',
+    //     headers: {
+    //       'Authorization': `Bearer ${ctx.token}`,
+    //       'Content-Type': 'application/json' 
+    //     },
+    //   }).then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! Status: ${response.status}`);
+    //     }
+    //     return response.json();
+    //   }).then((json) => {
+    //     ctx.setUserInfo(json)
+    //   }).catch((error) => {
+    //     console.error('Error during fetch:', error);
+    //   }).finally(() => {
+    //     console.log(ctx.userInfo)
+    //     console.log(ctx.token)
 
-      });
-    }, [expenseClicked])
+    //   });
+    // }, [expenseClicked])
 
     const handlePost = async (data: any) => {
       fetch('http://localhost:3000/expense/create', {
@@ -105,20 +105,22 @@ export default function ExpenseAddForm(props: any) {
         // if (!response.ok) {
         //   throw new Error(`HTTP error! Status: ${response.status}`);
         // }
+        console.log(response)
         return response.json();
         
       }).then((data) => {
-        console.log(data?.errors)
+        // console.log(data?.errors)
       }).catch((error) => {
         console.error('Error during fetch:', error);
       }).finally(() => {
-        console.log(ctx.userInfo)
+        // console.log(ctx.userInfo)
+        // ctx.setExpenseInfoData(ctx.userInfo)
       });
       
     }
 
   const { register, handleSubmit, watch } = useForm()
-  console.log(watch())
+  // console.log(watch())
   return (
     <Form handleSubmit={() => handleSubmit(data => handlePost(data))} className="">
       <FormHeading inputHeading="ADD EXPENSE" />
@@ -146,7 +148,7 @@ export default function ExpenseAddForm(props: any) {
           <FormSelectOption optionName="General" optionValue="5" /> */}
         </FormSelect>
         <FormButtonContainer>
-          <FormButton buttonAction={null} buttonName="Add"/>
+          <FormButton buttonAction={props.buttonAction} buttonName="Add"/>
           <FormButton type="button" buttonName="Close" buttonAction={props.close} />
         </FormButtonContainer>
       </FormFieldsContainer>
