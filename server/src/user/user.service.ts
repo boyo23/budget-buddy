@@ -20,7 +20,19 @@ const findExpenses = async (id: string): Promise<{ expenses: Expense[] } | null>
 const findGoals = async (id: string): Promise<{ goals: Goal[] } | null> => {
   return prisma.user.findFirst({
     where: { id },
-    select: { goals: true },
+    select: {
+      goals: {
+        select: {
+          id: true,
+          name: true,
+          amount: true,
+          addedAt: true,
+          targetedAt: true,
+          userId: true,
+          savings: true,
+        },
+      },
+    },
   })
 }
 
