@@ -27,7 +27,7 @@ model Category {
   userId   String
   expenses Expense[]
 
-  User User @relation(fields: [userId], references: [id])
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Expense {
@@ -40,8 +40,8 @@ model Expense {
   categoryId    String
   userId        String
 
-  Category Category @relation(fields: [categoryId], references: [id])
-  User     User     @relation(fields: [userId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  User     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Goal {
@@ -53,7 +53,7 @@ model Goal {
   userId     String
   savings    Savings[]
 
-  User User @relation(fields: [userId], references: [id])
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Savings {
@@ -62,5 +62,5 @@ model Savings {
   date   DateTime
   goalId String
 
-  Goal Goal @relation(fields: [goalId], references: [id])
+  Goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
 }
