@@ -12,6 +12,7 @@ import SavingsTable from '@/components/savings-progress/savings-table'
 // }
 
 export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBalance, savingsGoal, key, goalId, savingsArray }) {
+  // console.log(savingsArray)
   const [progressIsClicked, setProgressIsClicked] = useState(false)
   const [cardIsClicked, setCardIsClicked] = useState(false)
   const ctx = useContext(SavingsContext)
@@ -26,7 +27,9 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
     // console.log(cardIsClicked)
   }
 
-  const percentage = ((savingsBalance / savingsGoal) * 100).toFixed(1)
+  const totalAmount = savingsArray.reduce((sum, savings) => sum + savings.amount, 0);
+  const percentage = ((totalAmount / savingsGoal) * 100).toFixed(1)
+
 
   return (
     <div style={{ width: '350px' }} className="m-4 cursor-pointer p-2 transition-all duration-100 hover:scale-105 ">
@@ -55,12 +58,11 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
               onClick={progressClickHandler}
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer whitespace-nowrap text-xl text-primary transition-all hover:scale-110 hover:font-bold"
             >
-              TEST
-              {/* {`${
-                progressIsClicked
+              {/* {percentage} */}
+              {`${progressIsClicked
                   ? `${percentage}%`
-                  : `${savingsBalance.toLocaleString()} / ${savingsGoal.toLocaleString()}`
-              }`} */}
+                  : `${totalAmount?.toLocaleString()} / ${savingsGoal?.toLocaleString()}`
+                }`}
             </h1>
 
             <div className={`bg-contrast`} style={{ width: `${percentage}%` }} />

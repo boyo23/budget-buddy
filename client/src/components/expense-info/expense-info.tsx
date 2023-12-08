@@ -123,7 +123,7 @@ export default function ExpenseInfo() {
           </thead>
           <tbody className='text-xl relative'>
             {tableData?.expenses?.map((item: any) => (
-              <tr className='dark:text-darkText ' key={item?.id}>
+              <tr className='dark:text-darkText' key={item?.id}>
                 <td className='border-b border-gray-300 dark:border-darkText py-2'>{item?.name}</td>
                 <td className='border-b border-gray-300 dark:border-darkText py-2'>{`${new Date(item?.date).toLocaleDateString()}`}</td>
                 <td className='border-b border-gray-300 dark:border-darkText py-2 text-green-500 dark:text-green-400'>{item?.price}</td>
