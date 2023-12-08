@@ -4,14 +4,15 @@ import ExpenseSummary from '../expense-summary/expense-summary'
 import IconButton from '@material-tailwind/react/components/IconButton'
 import { SavingsContext } from '@/context/savings-context'
 import { Select, Option } from '@material-tailwind/react'
+import ExpenseOverview from './expense-overview'
 
 export default function ExpenseCarousel(props: any) {
   const ExpenseStatistics = lazy(() => import('./expense-statistics'))
-  const ExpenseOverview = lazy(() => import('./expense-overview'))
+  // const ExpenseOverview = lazy(() => import('./expense-overview'))
   const ctx = useContext(SavingsContext)
 
   return (
-    <div className={`${props.className} flex w-full dark:bg-darkPrimary rounded-md`}>
+    <div className={`${props.className} flex w-4/6 dark:bg-darkPrimary rounded-md`}>
       <Carousel
         prevArrow={({ handlePrev }) => (
           <IconButton
@@ -57,32 +58,30 @@ export default function ExpenseCarousel(props: any) {
       >
         <ExpenseSummary />
 
-        <Suspense
+        {/* <Suspense
           fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading statistics...</span>}
         >
-          {/* <ExpenseStatistics /> */}
-        </Suspense>
+          <ExpenseStatistics />
+        </Suspense> */}
 
-        {/* <div className="">
-          <Suspense
-            fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading overview...</span>}
-          >
-            <div className='relative'>
-              <h1 className="flex justify-center p-4 text-4xl font-bold text-primary dark:text-contrast">OVERVIEW</h1>
+        <div className="">
 
-              <div className='px-4 w-3/12 absolute top-4 right-20'>
-                <Select label='Filter by category' className='text-xl' size='lg'>
-                  <Option value="1" className='text-xl'>Food</Option>
-                  <Option value="2" className='text-xl'>Transportation</Option>
-                </Select>
-              </div>
+          <div className='relative'>
+            <h1 className="flex justify-center p-4 text-4xl font-bold text-primary dark:text-contrast">OVERVIEW</h1>
 
+            <div className='px-4 w-3/12 absolute top-4 right-20'>
+              <Select label='Filter by category' className='text-xl' size='lg'>
+                <Option value="1" className='text-xl'>Food</Option>
+                <Option value="2" className='text-xl'>Transportation</Option>
+              </Select>
             </div>
-            <hr className="flex w-full border-gray-400 dark:border-gray-700" />
 
-            <ExpenseOverview />
-          </Suspense>
-        </div> */}
+          </div>
+          <hr className="flex w-full border-gray-400 dark:border-gray-700" />
+
+          <ExpenseOverview />
+
+        </div>
       </Carousel>
     </div>
   )

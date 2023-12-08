@@ -1,58 +1,45 @@
-import { useState } from 'react'
-type DataType = {
-  id: number
-  amount: number
-  date: Date
-}
+import { useState, useContext } from 'react'
+import { SavingsContext } from '@/context/savings-context'
+
 import StickyAddNav from './savings-add-nav'
 import StickySavingsNav from './savings-edit-nav'
 
-const sampleData: DataType[] = [
-  {
-    id: 1,
-    amount: 1222,
-    date: new Date('2023-10-10'),
-  },
-  {
-    id: 2,
-    amount: 132,
-    date: new Date('2023-10-10'),
-  },
-]
-
 export default function SavingsTable(props: any) {
-  const [data, setData] = useState<DataType[]>(sampleData)
+  // const [data, setData] = useState<DataType[]>(sampleData)
   const [open, setOpen] = useState<boolean>(false)
   const [editId, setEditId] = useState<number | null>(null)
   const [selectedItem, setSelectedItem] = useState<DataType | null>(null)
   const [editIsClicked, setEditIsClicked] = useState<boolean>(false)
   const [addNewSavingsClicked, setAddNewSavingsClicked] = useState<boolean>(false)
+  const ctx = useContext(SavingsContext)
 
   const editClickHandler = () => {
     setEditIsClicked(!editIsClicked)
     console.log(editIsClicked)
   }
 
-  const deleteItem = (id: number) => {
-    setData((prevData) => prevData.filter((item) => item.id !== id))
-  }
+  // console.log(ctx.userInfo)
 
-  const handleCloseModal = () => {
-    setOpen(false)
-    setEditId(null)
-    setSelectedItem(null)
-  }
+  // const deleteItem = (id: number) => {
+  //   setData((prevData) => prevData.filter((item) => item.id !== id))
+  // }
 
-  const handleSave = (updatedData: DataType) => {
-    if (selectedItem) {
-      const newData = data.map((item) => (item.id === selectedItem.id ? { ...item, ...updatedData } : item))
-      console.log(newData)
-      setData(newData)
+  // const handleCloseModal = () => {
+  //   setOpen(false)
+  //   setEditId(null)
+  //   setSelectedItem(null)
+  // }
 
-      console.log('sad', data)
-      handleCloseModal()
-    }
-  }
+  // const handleSave = (updatedData: DataType) => {
+  //   if (selectedItem) {
+  //     const newData = data.map((item) => (item.id === selectedItem.id ? { ...item, ...updatedData } : item))
+  //     console.log(newData)
+  //     setData(newData)
+
+  //     console.log('sad', data)
+  //     handleCloseModal()
+  //   }
+  // }
 
   const clickAddSavingsHandler = () => {
     setAddNewSavingsClicked(!addNewSavingsClicked)
@@ -91,13 +78,13 @@ export default function SavingsTable(props: any) {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
-                <tr key={item.id} className="text-xl text-black dark:text-darkText">
+              {ctx?.userInfo?.goals?.map((item) => (
+                <tr key={item?.id} className="text-xl text-black dark:text-darkText">
                   <td className="border border-gray-400 p-2 text-center">
-                    <h1>{item.amount}</h1>
+                    <h1>{item?.amount}</h1>
                   </td>
                   <td className="border border-gray-400 p-2 text-center">
-                    <p>{item.date.toLocaleDateString()}</p>
+                    <p>{item?.date?.toLocaleDateString()}</p>
                   </td>
                   <td className="flex gap-2 border border-gray-400 p-2 text-center">
                     <button onClick={editClickHandler} className="flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:border dark:border-gray-400 dark:text-contrast dark:hover:border-gray-300">

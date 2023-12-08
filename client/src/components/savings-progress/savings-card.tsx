@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { SavingsContext } from '@/context/savings-context'
+import { useState, useContext } from 'react'
 import { Dialog } from '@material-tailwind/react'
 import SavingsTable from '@/components/savings-progress/savings-table'
 
@@ -13,6 +14,7 @@ type SampleData = {
 export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBalance, savingsGoal }: SampleData) {
   const [progressIsClicked, setProgressIsClicked] = useState(false)
   const [cardIsClicked, setCardIsClicked] = useState(false)
+  const ctx = useContext(SavingsContext)
 
   const progressClickHandler = () => {
     setProgressIsClicked(!progressIsClicked)
@@ -39,12 +41,12 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
 
         <div className="flex justify-between text-xl dark:text-darkText text-blue-gray-500">
           <h1>Date added</h1>
-          <h1 className="font-bold text-green-500 ">{dateAdded}</h1>
+          <h1 className="font-bold text-green-500 ">{new Date(dateAdded).toLocaleDateString()}</h1>
         </div>
 
         <div className="flex justify-between text-xl dark:text-darkText text-blue-gray-500">
           <h1>Target date</h1>
-          <h1 className="font-bold text-green-500">{targetDate}</h1>
+          <h1 className="font-bold text-green-500">{new Date(targetDate).toLocaleDateString()}</h1>
         </div>
 
         <div className="relative mt-4 w-full dark:bg-darkWhite">
@@ -53,11 +55,12 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
               onClick={progressClickHandler}
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer whitespace-nowrap text-xl text-primary transition-all hover:scale-110 hover:font-bold"
             >
-              {`${
+              TEST
+              {/* {`${
                 progressIsClicked
                   ? `${percentage}%`
                   : `${savingsBalance.toLocaleString()} / ${savingsGoal.toLocaleString()}`
-              }`}
+              }`} */}
             </h1>
 
             <div className={`bg-contrast`} style={{ width: `${percentage}%` }} />

@@ -32,7 +32,7 @@ const Register: React.FC = () => {
   };
 
   const { register, watch, handleSubmit } = useForm();
-
+  console.log(watch())
   const onSubmit = async (data: any) => {
     try {
       const response = await fetch("http://localhost:3000/user/register", {
@@ -42,14 +42,9 @@ const Register: React.FC = () => {
         },
         body: JSON.stringify(data),
       });
-
       if (!response.ok) {
-        const errorData = await response.json();
-
-        const errorMessage = errorData.errors
-          .map((error: { msg: string }) => error.msg)
-          .join(", ");
-        setErrorState(errorMessage);
+        const json = await response.json()
+        console.log(json.message)
       } else {
         const responseData = await response.json();
         console.log("Registration successful", responseData);

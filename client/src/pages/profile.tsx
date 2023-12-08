@@ -38,13 +38,12 @@ function Profile() {
         'Content-Type': 'application/json'
       },
     }).then((response) => {
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! Status: ${response.status}`);
-      // } else {
-      //   console.log("otin")
-        // localStorage.clear()
-        // navigate("/")
-      // }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        localStorage.clear()
+        navigate("/")
+      }
       console.log(response)
       // navigate("/protectedRoute")
       return response.json();
