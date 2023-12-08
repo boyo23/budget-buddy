@@ -41,7 +41,7 @@ export default function Home() {
       }
       return response.json();
     }).then((json) => {
-      console.log(json)
+      // console.log(json)
       ctx.setUserInfo(json)
 
       localStorage.setItem("userInfo", JSON.stringify(json));
@@ -53,7 +53,7 @@ export default function Home() {
 
       // Parse the JSON string if it exists
       const parsedUserInfo = storedUserInfo && JSON.parse(storedUserInfo);
-      console.log(parsedUserInfo);
+      // console.log(parsedUserInfo);
     });
   }, [])
 

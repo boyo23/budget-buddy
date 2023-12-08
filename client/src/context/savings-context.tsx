@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react'
+import { createContext, useState, ReactNode, Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import { redirect } from 'react-router-dom'
 
 type PieData = {
@@ -160,6 +160,10 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   //   // console.log(1)
   // }, [loginIsClicked])
 
+  // const printUserInfo = useCallback(() => {
+  //   console.log(userInfo)
+  // }, [userInfo])
+  // printUserInfo
 
   useEffect(() => {
     console.log(loginIsClicked)
@@ -181,6 +185,7 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
       console.error('Error parsing user info:', error);
     }
   }, [loginIsClicked]);
+  
 
   return (
     <SavingsContext.Provider

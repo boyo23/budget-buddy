@@ -15,9 +15,9 @@ export default function SavingsProgress() {
   const [goalIsClicked, setGoalIsClicked] = useState(false)
   const { register, handleSubmit, watch } = useForm()
 
-  useEffect(() => {
-    console.log(goalIsClicked)
-  }, [goalIsClicked])
+  // useEffect(() => {
+  //   console.log(goalIsClicked)
+  // }, [goalIsClicked])
 
   const goalClickHandler = () => {
     setGoalIsClicked(!goalIsClicked)

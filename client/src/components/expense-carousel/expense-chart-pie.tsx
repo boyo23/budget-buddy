@@ -9,11 +9,11 @@ export default function ExpenseChartPie() {
   const ctx = useContext(SavingsContext)
 
   const data = {
-    labels: ctx.pieData.categoryNames,
+    labels: ["Food", "General"],
     datasets: [
       {
         label: 'Overall expenses',
-        data: ctx.pieData.data,
+        data: [1,1,1,1,1],
         backgroundColor: [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',

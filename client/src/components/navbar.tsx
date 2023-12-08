@@ -39,7 +39,7 @@ export default function Navbar() {
                   <h1 className='dark:text-contrast text-xl'>Profile</h1>
                 </Link>
               </MenuItem>
-              <MenuItem className='hover:bg-contrast'>
+              <MenuItem className=''>
                 <h1 onClick={logoutHandler} className='dark:text-contrast text-xl cursor-pointer'>Logout</h1>
               </MenuItem>
             </MenuList>

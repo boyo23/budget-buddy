@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect, useMemo, useCallback } from 'react'
 import Form from '../form'
 import { SavingsContext } from '@/context/savings-context'
 import { Dialog, input } from '@material-tailwind/react'
@@ -26,7 +26,7 @@ export default function ExpenseInfo() {
     categoryId: "",
     userId: "",
   })
-  const [tableData, setTableData] = useState([])
+  const [tableData, setTableData] = useState({})
   const ctx = useContext(SavingsContext)
   const navigate = useNavigate()
 
@@ -35,21 +35,21 @@ export default function ExpenseInfo() {
     setExpenseClicked(!expenseClicked)
   }
 
-  const API_ADDEXPENSE = async (data) => {
-    const url = "https://localhost:3000/api/expense"
+  // const API_ADDEXPENSE = async (data) => {
+  //   const url = "https://localhost:3000/api/expense"
 
-    try {
-      await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
-    } catch (err: any) {
-      console.log(err)
-    }
-  }
+  //   try {
+  //     await fetch(url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify(data)
+  //     })
+  //   } catch (err: any) {
+  //     console.log(err)
+  //   }
+  // }
 
   const { register, handleSubmit, watch } = useForm()
 
@@ -66,8 +66,39 @@ export default function ExpenseInfo() {
   // useEffect(() => {
   //   setTableData(ctx.userInfo.expenses)
   // }, [ctx.addExpenseFormIsClicked])
-  
 
+  // Inside your component
+  const fetchUserInfo = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3000/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      ctx.setUserInfo(json);
+      setTableData(json); // Assuming setTableData is a state updater function
+      console.log(tableData)
+    } catch (error) {
+      console.error('Error during fetch:', error);
+    }
+  }, [ctx.token, expenseClicked]); // Make sure to include all dependencies
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [fetchUserInfo]);
+
+  // Note: The dependencies array in useEffect should include fetchUserInfo to avoid stale closures.
+
+
+  // console.log(tableData)
 
   return (
     <div className="flex w-full flex-col rounded-md bg-white dark:bg-darkPrimary ">
@@ -85,11 +116,11 @@ export default function ExpenseInfo() {
             </tr>
           </thead>
           <tbody className='text-xl'>
-            {ctx?.userInfo?.expenses?.map((item: any) => (
-              <tr className='dark:text-darkText' key={item.id}>
-                <td className='border-b border-gray-300 py-2'>{item.name}</td>
-                <td className='border-b border-gray-300 py-2'>{`${new Date(item.date).toLocaleDateString()}`}</td>
-                <td className='border-b border-gray-300 py-2 dark:text-green-400'>{item.price}</td>
+            {tableData?.expenses?.map((item: any) => (
+              <tr className='dark:text-darkText' key={item?.id}>
+                <td className='border-b border-gray-300 py-2'>{item?.name}</td>
+                <td className='border-b border-gray-300 py-2'>{`${new Date(item?.date).toLocaleDateString()}`}</td>
+                <td className='border-b border-gray-300 py-2 dark:text-green-400'>{item?.price}</td>
               </tr>
             ))}
           </tbody>
@@ -113,7 +144,7 @@ export default function ExpenseInfo() {
       </Dialog>
       <Dialog className='font-' open={expenseClicked} handler={addExpenseHandler}>
         {/* @ts-ignore */}
-        <ExpenseAddForm close={addExpenseHandler} />
+        <ExpenseAddForm buttonAction={fetchUserInfo} close={() => setExpenseClicked(!expenseClicked)} />
       </Dialog>
     </div>
   )
