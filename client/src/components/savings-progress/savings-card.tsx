@@ -11,7 +11,7 @@ import SavingsTable from '@/components/savings-progress/savings-table'
 //   savingsGoal: number
 // }
 
-export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBalance, savingsGoal, key, goalId }) {
+export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBalance, savingsGoal, key, goalId, savingsArray }) {
   const [progressIsClicked, setProgressIsClicked] = useState(false)
   const [cardIsClicked, setCardIsClicked] = useState(false)
   const ctx = useContext(SavingsContext)
@@ -32,11 +32,11 @@ export default function SavingsCard({ goalName, dateAdded, targetDate, savingsBa
     <div style={{ width: '350px' }} className="m-4 cursor-pointer p-2 transition-all duration-100 hover:scale-105 ">
       <Dialog size="xl" open={cardIsClicked} handler={cardClickHandler}>
         {/* @ts-ignore */}
-        <SavingsTable goalId={goalId} goalName={goalName} percentage={percentage} />
+        <SavingsTable savingsArray={savingsArray} goalId={goalId} goalName={goalName} percentage={percentage} />
       </Dialog>
       <div className="rounded-md border border-gray-400 p-6 dark:border-gray-700 dark:bg-darkCard ">
         <h1 onClick={cardClickHandler} className="mb-4 flex justify-center text-2xl  dark:text-contrast text-primary">
-          {goalId}
+          {goalName}
         </h1>
 
         <div className="flex justify-between text-xl dark:text-darkText text-blue-gray-500">
