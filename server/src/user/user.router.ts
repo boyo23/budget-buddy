@@ -5,7 +5,7 @@ import { body, validationResult } from 'express-validator'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { authenticateToken } from 'src/utils/jwt'
+import { authenticateToken } from '../utils/jwt'
 import * as UserServices from './user.service'
 
 dotenv.config()
@@ -27,7 +27,7 @@ userRouter.get('/', authenticateToken, async (request: Request, response: Respon
       UserServices.findGoals(request.user.id),
     ])
 
-    return response.status(201).json({ ...request.user, categories, expenses, goals })
+    return response.status(201).json({ ...request.user, ...categories, ...expenses, ...goals })
   } catch (error: any) {
     return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
   }

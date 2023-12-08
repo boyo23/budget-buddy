@@ -11,15 +11,20 @@ expenseRouter.post(
   '/create',
   [
     body('name').isString(),
-    body('price').isNumeric(),
-    body('quantity').isNumeric(),
+    body('price').toFloat(),
+    body('quantity').toInt(10),
     body('paymentMethod')
       .isString()
       .isIn(['CASH', 'GCASH', 'CREDIT', 'DEBIT'])
       .withMessage((value) => `The payment method ${value} is invalid.`),
     body('date')
-      .matches(/^\d{4}-\d{2}-\d{2}$/)
-      .withMessage('Invalid date format. Enter the date in the following format: YYYY-MM-DD.'),
+      .custom((value) => {
+        const parsedDate = new Date(value);
+        if (isNaN(parsedDate.getTime())) {
+          throw new Error('Invalid date format. Enter the date in a valid format.');
+        }
+        return true;
+      })
   ],
   authenticateToken,
   async (request: Request, response: Response) => {
@@ -30,11 +35,14 @@ expenseRouter.post(
         return response.status(400).json({ errors: errors.array() })
       }
 
-      const newExpense = await ExpenseServices.createExpense({ ...request.body, userId: request.user.id })
+      // Now `request.body.date` should be a valid ISO string
+      const isoDateString = new Date(request.body.date).toISOString();
+
+      const newExpense = await ExpenseServices.createExpense({ ...request.body, userId: request.user.id, date: isoDateString })
 
       return response.status(201).json(newExpense)
     } catch (error: any) {
-      return response.status(500).json({ message: `An error occured while processing your request: ${error.message}` })
+      return response.status(500).json({ message: `An error occurred while processing your request: ${error.message}` })
     }
   },
 )

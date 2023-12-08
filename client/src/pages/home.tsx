@@ -1,5 +1,5 @@
-import { useState, useContext } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useState, useContext, useEffect } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Collapse, Tooltip } from '@material-tailwind/react'
 
 import ExpenseInfo from '@/components/expense-info/expense-info'
@@ -16,14 +16,38 @@ import ExpenseCarousel from '@/components/expense-carousel/expense-carousel'
 export default function Home() {
   const [openExpenses, setOpenExpenses] = useState(true)
   const [openSavings, setOpenSavings] = useState(true)
+  const navigate = useNavigate()
 
   const toggleOpenExpenses = () => setOpenExpenses((cur) => !cur)
   const toggleOpenSavings = () => setOpenSavings((cur) => !cur)
   const ctx = useContext(SavingsContext)
 
-  // if (ctx.userToken === "" && ctx.statusCode !== 401) {
+  // if (ctx.token) {
   //   return <Navigate to="/protectedRoute" replace />;
   // }
+
+  // @ts-ignore
+  useEffect(() => {
+    fetch('http://localhost:3000/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${ctx.token}`,
+        'Content-Type': 'application/json' 
+      },
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    }).then((json) => {
+      console.log(json)
+      ctx.setUserInfo(json)
+    }).catch((error) => {
+      console.error('Error during fetch:', error);
+    }).finally(() => {
+      console.log(ctx.userInfo)
+    });
+  }, [])
 
   return (
     <div className="dark:bg-primary min-h-screen flex flex-col">
