@@ -118,7 +118,7 @@ export default function ExpenseInfo() {
       </div>
 
       <Dialog className="font-" open={ctx.categoryClicked} handler={ctx.setCategoryClicked}>
-        <ExpenseAddCategory close={() => ctx.setCategoryClicked(!ctx.categoryClicked)} />
+        <ExpenseAddCategory close={ctx.closeCategoryModal} />
       </Dialog>
       <Dialog className='font-' open={expenseClicked} handler={addExpenseHandler}>
         {/* @ts-ignore */}
