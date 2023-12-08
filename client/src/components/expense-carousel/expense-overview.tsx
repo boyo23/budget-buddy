@@ -50,7 +50,7 @@ export default function ExpenseOverview() {
                   <td className="border border-gray-400 p-2 text-center">
                     <p>{new Date(item?.date).toLocaleDateString()}</p>
                   </td>
-                  <td className="flex gap-2 border border-gray-400 p-2 text-center">
+                  <td className="flex flex-col gap-2 border-b border-b-gray-400  p-2 text-center">
                     <button onClick={editClickHandler} className=" flex w-3/6 items-center justify-center rounded-md bg-contrast p-2 text-center text-white dark:bg-transparent dark:text-contrast dark:border-gray-700 dark:border dark:hover:border-gray-500">
                       Edit
                     </button>

@@ -33,76 +33,6 @@ export default function SavingsProgress() {
       savingsBalance: 1000,
       savingsGoal: 10000,
     },
-    // {
-    //   goalName: "Xander's Dog",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 2000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: 'German Shepherd',
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 5000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Carlo's Penguin",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 12345,
-    // },
-    // {
-    //   goalName: "Yan and Aki's Cookie Shop",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 10000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Eatery",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Nissan GTR",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 5000,
-    //   savingsGoal: 12000000,
-    // },
-    // {
-    //   goalName: "Carlo's Penguin",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 12345,
-    // },
-    // {
-    //   goalName: "Yan and Aki's Cookie Shop",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 10000,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Eatery",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 7500,
-    //   savingsGoal: 10000,
-    // },
-    // {
-    //   goalName: "Dianne's Nissan GTR",
-    //   dateAdded: '11/11/2088',
-    //   targetDate: '11/11/2099',
-    //   savingsBalance: 5000,
-    //   savingsGoal: 12000000,
-    // },
   ]
   const handlePost = async (data: any) => {
     try {
@@ -114,7 +44,8 @@ export default function SavingsProgress() {
         },
         body: JSON.stringify(data)
       })
-
+      console.log(response)
+      console.log(data)
       if (!response.ok) {
         const json = await response.json()
         console.log(json.message)
@@ -124,6 +55,8 @@ export default function SavingsProgress() {
     }
   }
 
+  // console.log(ctx.userInfo.goals[2].id)
+  
   return (
     <div
       className="mb-20 w-full min-h-[240px] max-h-[590px]"
@@ -154,6 +87,8 @@ export default function SavingsProgress() {
             {/* <Suspense fallback={<span className="p-6 text-center text-5xl">Loading...</span>}> */}
               {ctx?.userInfo?.goals?.map((item: any) => (
                 <SavingsCard
+                // @ts-ignore
+                  goalId={item.id}
                   key={item.id}
                   goalName={item.name}
                   dateAdded={item.addedAt}

@@ -4,7 +4,7 @@ import { SavingsContext } from '@/context/savings-context'
 import StickyAddNav from './savings-add-nav'
 import StickySavingsNav from './savings-edit-nav'
 
-export default function SavingsTable(props: any) {
+export default function SavingsTable({goalId, goalName, percentage}) {
   // const [data, setData] = useState<DataType[]>(sampleData)
   const [open, setOpen] = useState<boolean>(false)
   const [editId, setEditId] = useState<number | null>(null)
@@ -66,8 +66,8 @@ export default function SavingsTable(props: any) {
         <div className="w-full bg-white dark:bg-darkPrimary">
           {editIsClicked && <StickySavingsNav action={() => editClickHandler()}/>}
 
-          {addNewSavingsClicked && <StickyAddNav action={() => clickAddSavingsHandler()} />}
-          <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{props.goalName}</h1>
+          {addNewSavingsClicked && <StickyAddNav goalId={goalId} action={() => clickAddSavingsHandler()} />}
+          <h1 className="my-4 text-center text-5xl font-bold text-primary dark:text-contrast">{goalName}</h1>
 
           <table className="w-full border border-gray-400">
             <thead className="bg-contrast text-2xl text-white dark:bg-primary">
@@ -104,9 +104,9 @@ export default function SavingsTable(props: any) {
                 // onClick={progressClickHandler}
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform whitespace-nowrap text-xl text-primary transition-all"
               >
-                {`${props.percentage}%`}
+                {`${percentage}%`}
               </h1>
-              <div className={`bg-contrast`} style={{ width: `${props.percentage}%` }} />
+              <div className={`bg-contrast`} style={{ width: `${percentage}%` }} />
             </div>
           </div>
         </div>
