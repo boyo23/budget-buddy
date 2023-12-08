@@ -54,7 +54,7 @@ export default function ExpenseAddCategory({ close }) {
         {/* @ts-ignore */}
         <FormText register={register} name="name" inputName="New category" />
         <FormButtonContainer>
-          <FormButton buttonName="Add" buttonAction={null} />
+          <FormButton buttonName="Add" buttonAction={close} />
           <FormButton buttonName="Close" buttonAction={close} />
         </FormButtonContainer>
       </FormFieldsContainer>

@@ -27,37 +27,8 @@ export default function ExpenseInfo() {
     setExpenseClicked(!expenseClicked)
   }
 
-  // const API_ADDEXPENSE = async (data) => {
-  //   const url = "https://localhost:3000/api/expense"
-
-  //   try {
-  //     await fetch(url, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       body: JSON.stringify(data)
-  //     })
-  //   } catch (err: any) {
-  //     console.log(err)
-  //   }
-  // }
-
   const { register, handleSubmit, watch } = useForm()
 
-  // console.log(watch())
-
-  // useEffect(() => {
-  //   setTableData(ctx.userInfo.expenses)
-  //   return () => {
-  //     // navigate("/login")
-  //     navigate("/home")
-  //   }
-  // }, [ctx.addExpenseFormIsClicked])
-
-  // useEffect(() => {
-  //   setTableData(ctx.userInfo.expenses)
-  // }, [ctx.addExpenseFormIsClicked])
 
   // Inside your component
   const fetchUserInfo = useCallback(async () => {
@@ -147,7 +118,7 @@ export default function ExpenseInfo() {
       </div>
 
       <Dialog className="font-" open={ctx.categoryClicked} handler={ctx.setCategoryClicked}>
-        <ExpenseAddCategory close={() => ctx.setCategoryClicked(false)} />
+        <ExpenseAddCategory close={ctx.closeCategoryModal} />
       </Dialog>
       <Dialog className='font-' open={expenseClicked} handler={addExpenseHandler}>
         {/* @ts-ignore */}

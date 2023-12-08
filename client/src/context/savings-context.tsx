@@ -40,7 +40,8 @@ type SavingsContextProps = {
   addExpenseFormIsClicked: any,
   setAddExpenseFormIsClicked: Dispatch<SetStateAction<boolean>>,
   expenseInfoData: any,
-  setExpenseInfoData: Dispatch<SetStateAction<any>>
+  setExpenseInfoData: Dispatch<SetStateAction<any>>,
+  closeCategoryModal: () => void
 }
 
 export const SavingsContext = createContext<SavingsContextProps>({
@@ -78,6 +79,7 @@ export const SavingsContext = createContext<SavingsContextProps>({
   setAddExpenseFormIsClicked: () => { },
   expenseInfoData: {},
   setExpenseInfoData: () => { },
+  closeCategoryModal: () => {},
 })
 
 const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -93,6 +95,10 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
   const [statusCode, setStatusCode] = useState(0)
   const [addExpenseFormIsClicked, setAddExpenseFormIsClicked] = useState(false)
   const [expenseInfoData, setExpenseInfoData] = useState({})
+
+  const closeCategoryModal = () => {
+    setCategoryClicked(!categoryClicked);
+  };
 
   useEffect(() => {
     theme === "dark" ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
@@ -148,22 +154,6 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
     password: "dianneMyLove",
   }
 
-  // useEffect(() => {
-  //   console.log(addExpenseFormIsClicked)
-  // }, [addExpenseFormIsClicked])
-
-  // useEffect(() => {
-  //   console.log(profileIsChanged)
-  // }, [profileIsChanged])
-  // useEffect(() => {
-  //   console.log(`${token}`)
-  //   // console.log(1)
-  // }, [loginIsClicked])
-
-  // const printUserInfo = useCallback(() => {
-  //   console.log(userInfo)
-  // }, [userInfo])
-  // printUserInfo
 
   useEffect(() => {
     console.log(loginIsClicked)
@@ -222,7 +212,8 @@ const SavingsContextProvider = ({ children }: { children: ReactNode }) => {
         addExpenseFormIsClicked,
         setAddExpenseFormIsClicked,
         expenseInfoData,
-        setExpenseInfoData
+        setExpenseInfoData,
+        closeCategoryModal
       }}
     >
       {children}
