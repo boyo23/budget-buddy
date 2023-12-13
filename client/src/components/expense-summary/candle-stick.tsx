@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Dialog } from '@material-tailwind/react';
 import ExpenseMonthTable from '../expense-carousel/expense-month-table';
 import { SavingsContext } from '@/context/savings-context';

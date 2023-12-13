@@ -55,7 +55,7 @@ export default function Home() {
       const parsedUserInfo = storedUserInfo && JSON.parse(storedUserInfo);
       // console.log(parsedUserInfo);
     });
-  }, [])
+  }, [ctx.userInfo])
 
   return (
     <div className="dark:bg-primary min-h-screen flex flex-col">
@@ -71,7 +71,6 @@ export default function Home() {
             </div>
             <Collapse open={openExpenses} className="rounded-md">
               <div className="mt-4 flex gap-4">
-                {/* <ExpenseSummary /> */}
                 <ExpenseCarousel />
                 <ExpenseInfo />
               </div>
