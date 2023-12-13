@@ -5,9 +5,10 @@ import IconButton from '@material-tailwind/react/components/IconButton'
 import { SavingsContext } from '@/context/savings-context'
 import { Select, Option } from '@material-tailwind/react'
 import ExpenseOverview from './expense-overview'
+import ExpenseStatistics from './expense-statistics'
 
 export default function ExpenseCarousel(props: any) {
-  const ExpenseStatistics = lazy(() => import('./expense-statistics'))
+  // const ExpenseStatistics = lazy(() => import('./expense-statistics'))
   // const ExpenseOverview = lazy(() => import('./expense-overview'))
   const ctx = useContext(SavingsContext)
 
@@ -58,23 +59,23 @@ export default function ExpenseCarousel(props: any) {
       >
         <ExpenseSummary />
 
-        {/* <Suspense
-          fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading statistics...</span>}
-        >
+        {/* <Suspense */}
+          {/* fallback={<span className="flex w-full justify-center p-6 text-center text-5xl">Loading statistics...</span>}
+        > */}
           <ExpenseStatistics />
-        </Suspense> */}
+        {/* </Suspense> */}
 
         <div className="">
 
           <div className='relative'>
             <h1 className="flex justify-center p-4 text-4xl font-bold text-primary dark:text-contrast">OVERVIEW</h1>
 
-            <div className='px-4 w-3/12 absolute top-4 right-20'>
+            {/* <div className='px-4 w-3/12 absolute top-4 right-20'>
               <Select label='Filter by category' className='text-xl' size='lg'>
                 <Option value="1" className='text-xl'>Food</Option>
                 <Option value="2" className='text-xl'>Transportation</Option>
               </Select>
-            </div>
+            </div> */}
 
           </div>
           <hr className="flex w-full border-gray-400 dark:border-gray-700" />

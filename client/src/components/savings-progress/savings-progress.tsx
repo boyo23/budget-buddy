@@ -99,6 +99,7 @@ export default function SavingsProgress() {
                   savingsGoal={item.amount}
                 />
               ))}
+              {ctx?.userInfo?.goals?.length === 0 && <h1 className='text-blue-gray-300 bg-transparent text-3xl whitespace-nowrap p-6'>No goals as of the moment. Click the + button at the right to start saving up for a goal.</h1>}
             {/* </Suspense> */}
           </div>
           {
@@ -111,7 +112,7 @@ export default function SavingsProgress() {
                   <FormNumber register={register} name="amount" inputName="Target savings" />
                   <FormDate register={register} name="targetedAt" inputName="Date" />
                   <FormButtonContainer>
-                    <FormButton buttonName="Add" buttonAction={null} />
+                    <FormButton buttonName="Add" buttonAction={() => setGoalIsClicked(!goalIsClicked)} />
                     <FormButton type="button" buttonName="Close" buttonAction={goalClickHandler} />
                   </FormButtonContainer>
                 </FormFieldsContainer>

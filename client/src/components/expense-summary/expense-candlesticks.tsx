@@ -1,6 +1,6 @@
-import CandleStick from './candle-stick';
 import { useContext } from 'react';
 import { SavingsContext } from '@/context/savings-context';
+import CandleStick from './candle-stick';
 
 export default function ExpenseCandlesticks() {
   const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -10,14 +10,12 @@ export default function ExpenseCandlesticks() {
   const expenses = ctx?.userInfo?.expenses || [];
 
   // Map over the expenses and extract the month from the date
-  const expensesByMonth = expenses.reduce((acc, expense) => {
-    const month = new Date(expense.date).getMonth(); // Assuming the date is a valid date string
-    if (!acc[month]) {
-      acc[month] = [];
-    }
-    acc[month].push(expense);
-    return acc;
-  }, {});
+  const expensesByMonth = months.map((month) => {
+    return expenses.filter((expense) => {
+      const expenseMonth = new Date(expense.date).toLocaleString('en-US', { month: 'short' }).toUpperCase();
+      return expenseMonth === month;
+    });
+  });
 
   return (
     <div className="flex border-gray-400 p-3">

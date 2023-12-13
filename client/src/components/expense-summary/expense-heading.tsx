@@ -23,7 +23,7 @@ export default function ExpenseHeading() {
         <div className="flex-grow">
           <h1 className="flex justify-center p-4 text-4xl font-bold text-primary dark:text-contrast">SUMMARY</h1>
         </div>
-        <div onClick={ctx.clickThresholdHandler} className="relative right-20">
+        {/* <div onClick={ctx.clickThresholdHandler} className="relative right-20">
           <svg className="h-12 w-12 cursor-pointer dark:fill-darkText fill-primary" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -36,7 +36,7 @@ export default function ExpenseHeading() {
               ></path>{' '}
             </g>
           </svg>
-        </div>
+        </div> */}
       </div>
       <hr className="flex w-full border-gray-400 dark:border-gray-700" />
 

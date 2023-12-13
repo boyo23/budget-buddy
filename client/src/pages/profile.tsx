@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form'
 import FormPassword from '@/components/forms/form-password'
 import { Dialog, Typography } from '@material-tailwind/react'
 import { useNavigate } from 'react-router-dom'
+import FormNumber from '@/components/forms/form-number'
 
 
 function Profile() {
@@ -54,6 +55,33 @@ function Profile() {
       console.error('Error during fetch:', error);
     })
   }
+
+  const handleUpdate = async ({username, password, threshold}) => {
+    // console.log({username, password});
+    const data = {username, password, threshold}
+    console.log(data)
+    try {
+      const response = await fetch('http://localhost:3000/user/update', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${ctx.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data), // Assuming your server expects an object with a key 'data'
+      });
+      const json = await response.json();
+      console.log(json.message);
+
+      console.log(response);
+      localStorage.clear()
+      navigate("/")
+
+      // if (!response.ok) {
+      // }
+    } catch (error: any) {
+      console.error(error);
+    }
+  }
   // console.log(watch())
   // console.log(ctx.token)
   if (localStorage.getItem("token")) {
@@ -76,9 +104,9 @@ function Profile() {
                     {/* @ts-ignore */}
                     <FormText defaultValue={ctx.userInfo?.email} register={register} name="email" inputName="Email" isDisabled={true} />
                     <FormText defaultValue={ctx.userInfo?.username} register={register} name="username" inputName="Username" isDisabled={true} />
-                    <FormPassword defaultValue={"xxxxxxxxxxxxxxxx"} register={register} name="password" inputName="Password" isDisabled={true}/>
+                    <FormPassword defaultValue={"xxxxxxxxxxxxxxxx"} register={register} name="password" inputName="Password" isDisabled={true} />
 
-                    {ctx.profileIsChanged && <FormPassword register={register} name="newPassword" inputName="New password" />}
+                    {ctx.profileIsChanged && <FormPassword register={register} name="password" inputName="New password" />}
 
                     <FormButtonContainer>
                       <FormButton type="button" buttonName="Update profile" buttonAction={updateClickHandler} />
@@ -122,13 +150,14 @@ function Profile() {
           </div>
         </div>
         <Dialog open={isUpdateClicked} handler={updateClickHandler}>
-          <Form className={``} handleSubmit={handleSubmit}>
+          <Form className={``} handleSubmit={() => handleSubmit(data => handleUpdate(data))}>
             <FormHeading inputHeading="Profile" />
             <FormFieldsContainer>
               {/* @ts-ignore */}
               <FormText defaultValue={ctx.userInfo?.email} register={register} name="email" inputName="Email" isDisabled={true} />
-              <FormText defaultValue={ctx.userInfo?.username} register={register} name="username" inputName="Username" isDisabled={false}/>
-              <FormPassword defaultValue={null} register={register} name="password" inputName="New password" isDisabled={false}/>
+              <FormText defaultValue={ctx.userInfo?.username} register={register} name="username" inputName="New username" isDisabled={false} />
+              <FormNumber defaultValue={ctx.userInfo?.threshold} register={register} name="threshold" inputName="New threshold" isDisabled={false} />
+              <FormPassword defaultValue={null} register={register} name="password" inputName="New password" isDisabled={false} />
 
               {/* <FormPassword register={register} name="newPassword" inputName="New password" /> */}
 

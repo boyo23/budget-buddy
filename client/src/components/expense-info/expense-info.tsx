@@ -48,8 +48,8 @@ export default function ExpenseInfo() {
       const json = await response.json();
       ctx.setUserInfo(json);
 
-      // Sort expenses by date
-      const sortedExpenses = json.expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+      // Sort expenses by createdAt
+      const sortedExpenses = json.expenses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       // Using the callback form of setTableData to ensure the latest state
       setTableData(prevTableData => ({
